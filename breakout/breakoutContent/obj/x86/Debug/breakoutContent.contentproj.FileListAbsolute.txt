@@ -1,0 +1,1 @@
+c:\users\thomas fossati\documents\visual studio 2013\Projects\breakout\breakout\breakoutContent\obj\x86\Debug\breakoutContent.contentprojResolveAssemblyReference.cache
