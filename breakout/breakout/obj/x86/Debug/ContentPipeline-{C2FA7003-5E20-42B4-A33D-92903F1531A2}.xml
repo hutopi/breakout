@@ -2,12 +2,12 @@
 <XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline">
   <Asset Type="Pipeline:BuildItemCollection">
     <Item>
-      <Source>bat.JPG</Source>
+      <Source>bat.jpg</Source>
       <Name>bat</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>c:\users\thomas fossati\documents\visual studio 2013\Projects\breakout\breakout\breakout\bin\x86\Debug\Content\bat.xnb</Output>
+      <Output>C:\Users\Thomas Fossati\Documents\GitHub\breakout\breakout\breakout\bin\x86\Debug\Content\bat.xnb</Output>
       <Time>2015-05-24T17:12:34.2113511+02:00</Time>
     </Item>
     <Item>
@@ -16,7 +16,7 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>c:\users\thomas fossati\documents\visual studio 2013\Projects\breakout\breakout\breakout\bin\x86\Debug\Content\ball.xnb</Output>
+      <Output>C:\Users\Thomas Fossati\Documents\GitHub\breakout\breakout\breakout\bin\x86\Debug\Content\ball.xnb</Output>
       <Time>2015-05-24T18:05:03.043454+02:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
@@ -26,10 +26,10 @@
       <TargetProfile>Reach</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>c:\users\thomas fossati\documents\visual studio 2013\Projects\breakout\breakout\breakoutContent\</RootDirectory>
-      <LoggerRootDirectory>c:\users\thomas fossati\documents\visual studio 2013\Projects\breakout\breakout\breakout\</LoggerRootDirectory>
-      <IntermediateDirectory>c:\users\thomas fossati\documents\visual studio 2013\Projects\breakout\breakout\breakout\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>c:\users\thomas fossati\documents\visual studio 2013\Projects\breakout\breakout\breakout\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Users\Thomas Fossati\Documents\GitHub\breakout\breakout\breakoutContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\Thomas Fossati\Documents\GitHub\breakout\breakout\breakout\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\Thomas Fossati\Documents\GitHub\breakout\breakout\breakout\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\Thomas Fossati\Documents\GitHub\breakout\breakout\breakout\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>

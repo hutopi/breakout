@@ -6,3 +6,11 @@ c:\users\thomas fossati\documents\visual studio 2013\Projects\breakout\breakout\
 c:\users\thomas fossati\documents\visual studio 2013\Projects\breakout\breakout\breakout\obj\x86\Debug\breakout.pdb
 c:\users\thomas fossati\documents\visual studio 2013\Projects\breakout\breakout\breakout\bin\x86\Debug\Content\bat.xnb
 c:\users\thomas fossati\documents\visual studio 2013\Projects\breakout\breakout\breakout\bin\x86\Debug\Content\ball.xnb
+C:\Users\Thomas Fossati\Documents\GitHub\breakout\breakout\breakout\bin\x86\Debug\Content\bat.xnb
+C:\Users\Thomas Fossati\Documents\GitHub\breakout\breakout\breakout\bin\x86\Debug\Content\ball.xnb
+C:\Users\Thomas Fossati\Documents\GitHub\breakout\breakout\breakout\bin\x86\Debug\breakout.exe
+C:\Users\Thomas Fossati\Documents\GitHub\breakout\breakout\breakout\bin\x86\Debug\breakout.pdb
+C:\Users\Thomas Fossati\Documents\GitHub\breakout\breakout\breakout\obj\x86\Debug\breakout.csprojResolveAssemblyReference.cache
+C:\Users\Thomas Fossati\Documents\GitHub\breakout\breakout\breakout\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\Thomas Fossati\Documents\GitHub\breakout\breakout\breakout\obj\x86\Debug\breakout.exe
+C:\Users\Thomas Fossati\Documents\GitHub\breakout\breakout\breakout\obj\x86\Debug\breakout.pdb
