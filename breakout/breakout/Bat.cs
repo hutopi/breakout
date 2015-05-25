@@ -32,7 +32,6 @@ namespace breakout {
         public override void LoadContent(ContentManager content, string assetName) {
             base.LoadContent(content, assetName);
             Position = new Vector2(screenWidth / 2 - Texture.Width/2, screenHeight - 10 - Texture.Height / 2);
-            //Position = new Vector2(100, 100);
         }
 
         public override void HandleInput(KeyboardState keyboardState, MouseState mouseState) {
@@ -46,7 +45,7 @@ namespace breakout {
             } else {
                 Speed = 0;
             }
-            Position = new Vector2(mouseState.X, Position.Y);
+            //Position = new Vector2(mouseState.X, Position.Y);
             
             base.HandleInput(keyboardState, mouseState);
 
