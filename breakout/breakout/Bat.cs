@@ -19,6 +19,7 @@ namespace breakout {
         public Rectangle hitbox {
             get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height); }
         }
+
         public Bat(int screenWidth, int screenHeight ){
             this.screenHeight = screenHeight;
             this.screenWidth = screenWidth;
@@ -27,6 +28,7 @@ namespace breakout {
         public override void Initialize() {
             base.Initialize();
         }
+
         public override void LoadContent(ContentManager content, string assetName) {
             base.LoadContent(content, assetName);
             Position = new Vector2(screenWidth / 2 - Texture.Width/2, screenHeight - 10 - Texture.Height / 2);
@@ -49,6 +51,7 @@ namespace breakout {
             base.HandleInput(keyboardState, mouseState);
 
         }
+
         public override void Update(GameTime gameTime) {
             if ((Position.X <= 0 && Direction.X < 0) || (Position.X >= screenWidth - Texture.Width && Direction.X > 0))
                 Speed = 0;
