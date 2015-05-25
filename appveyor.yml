@@ -1,4 +1,5 @@
 version: 1.0.{build}
+skip_tags: true
 os: Windows Server 2012 R2
 configuration: Release
 install:
@@ -30,14 +31,6 @@ install:
     		$content = Get-Content ($installLocation + "\XNA Game Studio 4.0\extension.vsixmanifest");
     		$content = $content -replace "Version=`"10.0`">", "Version=`"$version`">`r`n        <Edition>WDExpress</Edition>";
     		$content | Out-File ($installLocation + "\XNA Game Studio 4.0\extension.vsixmanifest") -encoding ASCII;
-
-    		write-host "    Clearing the extensions cache.";
-    		RemoveIfExists($extensionCacheLocation);
-
-    		write-host "    Rebuilding the extension cache. This may take a few minutes.";
-    		Start-Process -FilePath $pathToExe -ArgumentList /setup -Wait
-    		write-host "    Finished rebuilding cache.";
-    		write-host "    XNA Game Studio 4.0 is now installed for $appName!";
     	}
     }
 
@@ -161,13 +154,13 @@ install:
     Write-Host "`r`nInstallation Complete.";
 build:
   verbosity: minimal
+after_build:
+  - 7z a breakout.zip .\breakout\breakout\bin\x86\Release\
 artifacts:
 - path: breakout.zip
-  name: breakout.zip
-before_deploy:
-- 7z a breakout.zip breakout\breakout\bin\x86\Release\
+  name: Breakout
 deploy:
 - provider: GitHub
   auth_token:
     secure: Khomm4veUl7efga49YI5mu/jxXInUXB6UY65Q+Occm7koxraiPqmkUSD2PZVy+ZQ
-  artifact: breakout.zip
+  artifact: Breakout
