@@ -60,6 +60,7 @@ namespace breakout {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             bat.LoadContent(Content, "bat");
             ball.LoadContent(Content, "ball", bat);
+           
 
             // TODO: use this.Content to load your game content here
         }
