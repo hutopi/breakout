@@ -1,2 +1,3 @@
 c:\users\thomas fossati\documents\visual studio 2013\Projects\breakout\breakout\breakoutContent\obj\x86\Debug\breakoutContent.contentprojResolveAssemblyReference.cache
 C:\Users\Thomas Fossati\Documents\GitHub\breakout\breakout\breakoutContent\obj\x86\Debug\breakoutContent.contentprojResolveAssemblyReference.cache
+C:\Users\Pierre\Documents\Projet CIR3\breakout\breakout\breakoutContent\obj\x86\Debug\breakoutContent.contentprojResolveAssemblyReference.cache

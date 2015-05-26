@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 namespace breakout {
-    class Ball : Sprite {
+    class Ball : MovingSprite {
         private int screenHeight;
         private int screenWidth;
         public Circle hitbox {
