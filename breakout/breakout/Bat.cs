@@ -46,6 +46,8 @@ namespace breakout {
             } else {
                 Speed = 0;
             }
+            Position = new Vector2(mouseState.X, Position.Y);
+            
             base.HandleInput(keyboardState, mouseState);
 
         }
