@@ -38,13 +38,13 @@ namespace breakout {
             int screenWidth = Window.ClientBounds.Width;
             int screenHeight = Window.ClientBounds.Height;
 
-            startButton = new Sprite(screenWidth,screenHeight);
-            exitButton = new Sprite(screenWidth,screenHeight);
-            resumeButton = new Sprite(screenWidth,screenHeight);
+            startButton = new ButtonSprite(screenWidth, screenHeight);
+            exitButton = new ButtonSprite(screenWidth, screenHeight);
+            resumeButton = new ButtonSprite(screenWidth, screenHeight);
 
             bat = new Bat(screenWidth, screenHeight);
             balls = new List<Ball>();
-            balls.Add(new Ball(screenWidth,screenHeight));
+            balls.Add(new Ball(screenWidth, screenHeight));
             bricks = new List<Brick>();
 
         }
@@ -60,14 +60,16 @@ namespace breakout {
 
             startButton.Initialize();
             exitButton.Initialize();
+
             resumeButton.Initialize();
-           
+
+
             bat.Initialize();
 
 
             foreach (var ball in balls) {
                 ball.Initialize();
-                
+
             }
 
 
@@ -91,6 +93,12 @@ namespace breakout {
             startButton.LoadContent(Content, "start");
             exitButton.LoadContent(Content, "exit");
             resumeButton.LoadContent(Content, "resume");
+
+            startButton.Position = new Vector2(Window.ClientBounds.Width / 2 - startButton.Texture.Width / 2, Window.ClientBounds.Height * 1 / 3 - startButton.Texture.Height / 2);
+            exitButton.Position = new Vector2(Window.ClientBounds.Width / 2 - exitButton.Texture.Width / 2, Window.ClientBounds.Height * 2 / 3 - exitButton.Texture.Height / 2);
+            resumeButton.Position = new Vector2(Window.ClientBounds.Width / 2 - resumeButton.Texture.Width / 2, Window.ClientBounds.Height / 2 - resumeButton.Texture.Height / 2);
+
+
             bat.LoadContent(Content, "bat");
             balls[0].LoadContent(Content, "ball", bat);
             scoreFont = Content.Load<SpriteFont>("Score");
@@ -131,8 +139,8 @@ namespace breakout {
                 CheckIfBallOut();
 
             }
-            if (keyboardState.IsKeyDown(Keys.Space) ) {
-                gameState = (gameState == GameState.PAUSED) ? (GameState.PLAYING):(GameState.PAUSED);
+            if (keyboardState.IsKeyDown(Keys.Space)) {
+                gameState = (gameState == GameState.PAUSED) ? (GameState.PLAYING) : (GameState.PAUSED);
             }
 
             base.Update(gameTime);
@@ -159,13 +167,23 @@ namespace breakout {
             spriteBatch.Draw(Content.Load<Texture2D>("background"),
                              new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height),
                              Color.White);
-
-            startButton.Draw(spriteBatch, gameTime);
-            exitButton.Draw(spriteBatch, gameTime);
-            resumeButton.Draw(spriteBatch, gameTime);
-            bat.Draw(spriteBatch, gameTime);
-            balls[0].Draw(spriteBatch, gameTime);
-            spriteBatch.DrawString(scoreFont, "Score : " + score.ToString(), new Vector2(10, 10), Color.Blue);
+            switch (gameState) {
+                case GameState.STARTMENU:
+                    startButton.Draw(spriteBatch, gameTime);
+                    exitButton.Draw(spriteBatch, gameTime);
+                    break;
+                case GameState.PLAYING:
+                    bat.Draw(spriteBatch, gameTime);
+                    balls[0].Draw(spriteBatch, gameTime);
+                    spriteBatch.DrawString(scoreFont, "Score : " + score.ToString(), new Vector2(10, 10), Color.Blue);
+                    break;
+                case GameState.PAUSED:
+                    resumeButton.Draw(spriteBatch, gameTime);
+                    spriteBatch.DrawString(scoreFont, "Score : " + score.ToString(), new Vector2(10, 10), Color.Blue);
+                    break;
+                default:
+                    break;
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);
