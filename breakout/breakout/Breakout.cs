@@ -70,7 +70,7 @@ namespace breakout {
                 
             }
 
-            
+
             this.AddBricks();
 
             gameState = GameState.STARTMENU;
@@ -154,14 +154,11 @@ namespace breakout {
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime) {
-            GraphicsDevice.Clear(Color.White);
-
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-
-            startButton.Draw(spriteBatch, gameTime);
-            exitButton.Draw(spriteBatch, gameTime);
-            resumeButton.Draw(spriteBatch, gameTime);
+            spriteBatch.Draw(Content.Load<Texture2D>("background"),
+                             new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height),
+                             Color.White);
             bat.Draw(spriteBatch, gameTime);
             balls[0].Draw(spriteBatch, gameTime);
             spriteBatch.DrawString(scoreFont, "Score : " + score.ToString(), new Vector2(10, 10), Color.Blue);
