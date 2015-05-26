@@ -14,6 +14,9 @@ namespace breakout
 {
     public class Sprite
     {
+        protected int screenHeight;
+        protected int screenWidth;
+ 
         private Texture2D texture;
         public Texture2D Texture
         {
@@ -26,6 +29,12 @@ namespace breakout
         {
             get { return position; }
             set { position = value; }
+        }
+
+        public Sprite(int screenWidth, int screenHeight) {
+            this.screenWidth = screenWidth;
+            this.screenHeight = screenHeight;
+            
         }
 
         public virtual void Initialize()

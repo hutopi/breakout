@@ -13,17 +13,11 @@ using Microsoft.Xna.Framework.Media;
 namespace breakout {
     class Bat : MovingSprite {
 
-        private int screenHeight;
-        private int screenWidth;
-
         public Rectangle hitbox {
             get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height); }
         }
 
-        public Bat(int screenWidth, int screenHeight ){
-            this.screenHeight = screenHeight;
-            this.screenWidth = screenWidth;
-        }
+        public Bat(int screenWidth, int screenHeight) : base(screenWidth, screenHeight) { }
 
         public override void Initialize() {
             base.Initialize();
@@ -31,7 +25,7 @@ namespace breakout {
 
         public override void LoadContent(ContentManager content, string assetName) {
             base.LoadContent(content, assetName);
-            Position = new Vector2(screenWidth / 2 - Texture.Width/2, screenHeight - 10 - Texture.Height / 2);
+            Position = new Vector2(screenWidth / 2 - Texture.Width / 2, screenHeight - 10 - Texture.Height / 2);
         }
 
         public override void HandleInput(KeyboardState keyboardState, MouseState mouseState) {
@@ -46,7 +40,7 @@ namespace breakout {
                 Speed = 0;
             }
             //Position = new Vector2(mouseState.X, Position.Y);
-            
+
             base.HandleInput(keyboardState, mouseState);
 
         }

@@ -18,16 +18,35 @@ namespace breakout {
         SpriteBatch spriteBatch;
 
         private int score;
-        private bool isPaused;
+        private GameState gameState;
 
         //sprites
         private Bat bat;
         private List<Ball> balls;
         private List<Brick> bricks;
+        private SpriteFont scoreFont;
+        private Sprite startButton;
+        private Sprite exitButton;
+        private Sprite resumeButton;
 
         public Breakout() {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 600;
+
             Content.RootDirectory = "Content";
+            int screenWidth = Window.ClientBounds.Width;
+            int screenHeight = Window.ClientBounds.Height;
+
+            startButton = new Sprite(screenWidth,screenHeight);
+            exitButton = new Sprite(screenWidth,screenHeight);
+            resumeButton = new Sprite(screenWidth,screenHeight);
+
+            bat = new Bat(screenWidth, screenHeight);
+            balls = new List<Ball>();
+            balls.Add(new Ball(screenWidth,screenHeight));
+            bricks = new List<Brick>();
+
         }
 
         /// <summary>
@@ -39,17 +58,22 @@ namespace breakout {
         protected override void Initialize() {
             // TODO: Add your initialization logic here
 
-            bat = new Bat(Window.ClientBounds.Width, Window.ClientBounds.Height);
+            startButton.Initialize();
+            exitButton.Initialize();
+            resumeButton.Initialize();
+           
             bat.Initialize();
 
-            balls = new List<Ball>();
-            balls.Add(new Ball(Window.ClientBounds.Width, Window.ClientBounds.Height));
-            balls[0].Initialize();
 
-            bricks = new List<Brick>();
+            foreach (var ball in balls) {
+                ball.Initialize();
+                
+            }
+
+            
             this.AddBricks();
 
-            isPaused = true;
+            gameState = GameState.STARTMENU;
             score = 0;
 
             base.Initialize();
@@ -63,8 +87,15 @@ namespace breakout {
         protected override void LoadContent() {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            startButton.LoadContent(Content, "start");
+            exitButton.LoadContent(Content, "exit");
+            resumeButton.LoadContent(Content, "resume");
             bat.LoadContent(Content, "bat");
             balls[0].LoadContent(Content, "ball", bat);
+            scoreFont = Content.Load<SpriteFont>("Score");
+
+
 
             // TODO: use this.Content to load your game content here
         }
@@ -92,7 +123,7 @@ namespace breakout {
             KeyboardState keyboardState = Keyboard.GetState();
             MouseState mouseState = Mouse.GetState();
 
-            if (!isPaused) {
+            if (gameState != GameState.PAUSED) {
                 // CODE HERE FOR FOREACH BRICKS
                 balls[0].Update(gameTime, bat.hitbox);
                 bat.HandleInput(keyboardState, mouseState);
@@ -100,22 +131,21 @@ namespace breakout {
                 CheckIfBallOut();
 
             }
-            if (keyboardState.IsKeyDown(Keys.Space)) {
-                isPaused = !isPaused;
+            if (keyboardState.IsKeyDown(Keys.Space) ) {
+                gameState = (gameState == GameState.PAUSED) ? (GameState.PLAYING):(GameState.PAUSED);
             }
 
             base.Update(gameTime);
         }
 
         private void CheckIfBallOut() {
-            if (balls[0].Position.Y > Window.ClientBounds.Height)
-            {
+            if (balls[0].Position.Y > Window.ClientBounds.Height) {
                 score--;
                 balls[0].Initialize();
                 bat.Position = new Vector2(Window.ClientBounds.Width / 2 - bat.Texture.Width / 2, Window.ClientBounds.Height - 10 - bat.Texture.Height / 2);
                 balls[0].Position = new Vector2(bat.Position.X + bat.Texture.Width / 2 - balls[0].Texture.Width / 2, bat.Position.Y - bat.Texture.Height - balls[0].Texture.Height / 2);
 
-                isPaused = true;
+                gameState = GameState.PAUSED;
             }
         }
 
@@ -128,15 +158,19 @@ namespace breakout {
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+
+            startButton.Draw(spriteBatch, gameTime);
+            exitButton.Draw(spriteBatch, gameTime);
+            resumeButton.Draw(spriteBatch, gameTime);
             bat.Draw(spriteBatch, gameTime);
             balls[0].Draw(spriteBatch, gameTime);
+            spriteBatch.DrawString(scoreFont, "Score : " + score.ToString(), new Vector2(10, 10), Color.Blue);
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
 
-        public void AddBricks()
-        {
+        public void AddBricks() {
             //Window.ClientBounds.Width Window.ClientBounds.Height
 
         }

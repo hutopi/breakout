@@ -12,19 +12,14 @@ using Microsoft.Xna.Framework.Media;
 
 namespace breakout {
     class Ball : MovingSprite {
-        private int screenHeight;
-        private int screenWidth;
+
         public Circle hitbox {
             //the Postions are taken from the top left of the circle and not the center so you have to to move the postion with half the texture of the sprite to a have a circle hitbox that fits correclty the circle
             get { return new Circle((int)Position.X + Texture.Width / 2, (int)Position.Y + Texture.Height / 2, (double)Texture.Width / 2); }
         }
 
 
-        public Ball(int screenWidth, int screenHeight) {
-            this.screenHeight = screenHeight;
-            this.screenWidth = screenWidth;
-
-        }
+        public Ball(int screenWidth, int screenHeight) : base (screenWidth,screenHeight) { }
         public override void Initialize() {
 
             base.Initialize();
@@ -32,7 +27,7 @@ namespace breakout {
 
             Direction = new Vector2(0, -1);
 
-            Speed = 0.3f;
+            Speed = 0.1f;
 
         }
 
@@ -52,7 +47,7 @@ namespace breakout {
                 Direction = new Vector2(Direction.X, -Direction.Y);
 
             }
-            if (Position.X <= 0 && Direction.X < 0 || Position.X > screenWidth - Texture.Height / 2 && Direction.X > 0) {
+            if (Position.X <= 0 && Direction.X < 0 || Position.X > screenWidth - Texture.Height && Direction.X > 0) {
                 Direction = new Vector2(-Direction.X, Direction.Y);
             }
 
@@ -68,8 +63,8 @@ namespace breakout {
                     double gapBetweenBatAndBall = batHitBox.X + batHitBox.Width - this.hitbox.X; //détermine l'écart X de la balle par rapport à l'extrémité droite de la raquette
                     double theta = (gapBetweenBatAndBall * (Math.PI / 2)) / (batHitBox.Width / 2); // produit en croix pour une valeur théta en radian de l'angle que l'on souhaite obtenir en fonction de l'écart gapBetweenBatAndBall
                     Console.WriteLine(theta);
-                    if (theta <= 0.1) {
-                        Direction = new Vector2((float)Math.Cos(theta), -0.1f);
+                    if (theta <= 0.2) {
+                        Direction = new Vector2((float)Math.Cos(theta), -0.2f);
                         
                     } else {
                         Direction = new Vector2((float)Math.Cos(theta), -(float)Math.Sin(theta));
@@ -82,8 +77,8 @@ namespace breakout {
 
                     double gapBetweenBatAndBall = this.hitbox.X - batHitBox.X;
                     double theta = (gapBetweenBatAndBall * (Math.PI / 2)) / (batHitBox.Width / 2);
-                    if (theta <= 0.1) {
-                        Direction = new Vector2(-(float)Math.Cos(theta), -0.1f);
+                    if (theta <= 0.2) {
+                        Direction = new Vector2(-(float)Math.Cos(theta), -0.2f);
                         Console.WriteLine("perdu");
                     } else {
                         Direction = new Vector2(-(float)Math.Cos(theta), -(float)Math.Sin(theta));

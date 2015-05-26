@@ -21,7 +21,7 @@ namespace breakout
             get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height); }
         }
 
-        public Brick(int h, int w, int r = 1, Bonus b = Bonus.NONE)
+        public Brick(int screenWidth, int screenHeight, int h, int w, int r = 1, Bonus b = Bonus.NONE) : base( screenWidth, screenHeight)
         {
             this.height = h;
             this.width = w;

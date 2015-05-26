@@ -27,6 +27,8 @@ namespace breakout {
             set { speed = value; }
 
         }
+
+        public MovingSprite(int screenWidth, int screenHeight) : base(screenWidth, screenHeight) { }
        
         public virtual void Update(GameTime gameTime) {
             this.Position += direction * speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;

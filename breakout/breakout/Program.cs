@@ -10,6 +10,7 @@ namespace breakout
         /// </summary>
         static void Main(string[] args)
         {
+
             using (Breakout game = new Breakout())
             {
                 game.Run();
