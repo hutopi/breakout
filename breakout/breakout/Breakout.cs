@@ -22,7 +22,8 @@ namespace breakout {
 
         //sprites
         private Bat bat;
-        private Ball ball;
+        private List<Ball> balls;
+        private List<Brick> bricks;
 
         public Breakout() {
             graphics = new GraphicsDeviceManager(this);
@@ -41,8 +42,12 @@ namespace breakout {
             bat = new Bat(Window.ClientBounds.Width, Window.ClientBounds.Height);
             bat.Initialize();
 
-            ball = new Ball(Window.ClientBounds.Width, Window.ClientBounds.Height);
-            ball.Initialize();
+            balls = new List<Ball>();
+            balls.Add(new Ball(Window.ClientBounds.Width, Window.ClientBounds.Height));
+            balls[0].Initialize();
+
+            bricks = new List<Brick>();
+            this.AddBricks();
 
             isPaused = true;
             score = 0;
@@ -59,7 +64,7 @@ namespace breakout {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             bat.LoadContent(Content, "bat");
-            ball.LoadContent(Content, "ball", bat);
+            balls[0].LoadContent(Content, "ball", bat);
 
             // TODO: use this.Content to load your game content here
         }
@@ -88,7 +93,8 @@ namespace breakout {
             MouseState mouseState = Mouse.GetState();
 
             if (!isPaused) {
-                ball.Update(gameTime, bat.hitbox);
+                // CODE HERE FOR FOREACH BRICKS
+                balls[0].Update(gameTime, bat.hitbox);
                 bat.HandleInput(keyboardState, mouseState);
                 bat.Update(gameTime);
                 CheckIfBallOut();
@@ -102,11 +108,12 @@ namespace breakout {
         }
 
         private void CheckIfBallOut() {
-            if (ball.Position.Y > Window.ClientBounds.Height) {
+            if (balls[0].Position.Y > Window.ClientBounds.Height)
+            {
                 score--;
-                ball.Initialize();
+                balls[0].Initialize();
                 bat.Position = new Vector2(Window.ClientBounds.Width / 2 - bat.Texture.Width / 2, Window.ClientBounds.Height - 10 - bat.Texture.Height / 2);
-                ball.Position = new Vector2(bat.Position.X + bat.Texture.Width / 2 - ball.Texture.Width / 2, bat.Position.Y - bat.Texture.Height - ball.Texture.Height / 2);
+                balls[0].Position = new Vector2(bat.Position.X + bat.Texture.Width / 2 - balls[0].Texture.Width / 2, bat.Position.Y - bat.Texture.Height - balls[0].Texture.Height / 2);
 
                 isPaused = true;
             }
@@ -122,10 +129,17 @@ namespace breakout {
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             bat.Draw(spriteBatch, gameTime);
-            ball.Draw(spriteBatch, gameTime);
+            balls[0].Draw(spriteBatch, gameTime);
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
+
+        public void AddBricks()
+        {
+            //Window.ClientBounds.Width Window.ClientBounds.Height
+
+        }
     }
+
 }

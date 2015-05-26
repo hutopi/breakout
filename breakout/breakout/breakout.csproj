@@ -74,6 +74,8 @@
   <ItemGroup>
     <Compile Include="Ball.cs" />
     <Compile Include="Bat.cs" />
+    <Compile Include="Bonus.cs" />
+    <Compile Include="Brick.cs" />
     <Compile Include="Circle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
