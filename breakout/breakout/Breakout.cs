@@ -159,6 +159,10 @@ namespace breakout {
             spriteBatch.Draw(Content.Load<Texture2D>("background"),
                              new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height),
                              Color.White);
+
+            startButton.Draw(spriteBatch, gameTime);
+            exitButton.Draw(spriteBatch, gameTime);
+            resumeButton.Draw(spriteBatch, gameTime);
             bat.Draw(spriteBatch, gameTime);
             balls[0].Draw(spriteBatch, gameTime);
             spriteBatch.DrawString(scoreFont, "Score : " + score.ToString(), new Vector2(10, 10), Color.Blue);

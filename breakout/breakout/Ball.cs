@@ -27,7 +27,7 @@ namespace breakout {
 
             Direction = new Vector2(0, -1);
 
-            Speed = 0.1f;
+            Speed = 0.3f;
 
         }
 
