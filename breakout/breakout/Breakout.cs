@@ -20,14 +20,19 @@ namespace breakout {
         private int score;
         private GameState gameState;
 
+        private KeyboardState keyboardState;
+        private KeyboardState previousKeyboardState;
+        private MouseState mouseState;
+        private MouseState previousMouseState;
+
         //sprites
         private Bat bat;
         private List<Ball> balls;
         private List<Brick> bricks;
         private SpriteFont scoreFont;
-        private Sprite startButton;
-        private Sprite exitButton;
-        private Sprite resumeButton;
+        private ButtonSprite startButton;
+        private ButtonSprite exitButton;
+        private ButtonSprite resumeButton;
 
         public Breakout() {
             graphics = new GraphicsDeviceManager(this);
@@ -38,9 +43,9 @@ namespace breakout {
             int screenWidth = Window.ClientBounds.Width;
             int screenHeight = Window.ClientBounds.Height;
 
-            startButton = new ButtonSprite(screenWidth, screenHeight);
-            exitButton = new ButtonSprite(screenWidth, screenHeight);
-            resumeButton = new ButtonSprite(screenWidth, screenHeight);
+            startButton = new ButtonSprite(screenWidth, screenHeight, "start");
+            exitButton = new ButtonSprite(screenWidth, screenHeight, "exit");
+            resumeButton = new ButtonSprite(screenWidth, screenHeight, "resume");
 
             bat = new Bat(screenWidth, screenHeight);
             balls = new List<Ball>();
@@ -127,21 +132,49 @@ namespace breakout {
                  this.Exit();*/
 
             // TODO: Add your update logic here
+            keyboardState = Keyboard.GetState();
+            mouseState = Mouse.GetState();
 
-            KeyboardState keyboardState = Keyboard.GetState();
-            MouseState mouseState = Mouse.GetState();
+            switch (gameState) {
+                case GameState.STARTMENU:
+                    this.IsMouseVisible = true;
+                    startButton.Update(mouseState, previousMouseState, ref gameState);
+                    exitButton.Update(mouseState, previousMouseState, ref gameState);
+                    break;
+                case GameState.PLAYING:
+                    this.IsMouseVisible = false;
+                    balls[0].Update(gameTime, bat.hitbox);
+                    bat.HandleInput(keyboardState, mouseState);
+                    bat.Update(gameTime);
+                    CheckIfBallOut();
+                    break;
+                case GameState.PAUSED:
+                    this.IsMouseVisible = true;
+                    resumeButton.Update(mouseState, previousMouseState, ref gameState);
+                    break;
+                case GameState.EXIT:
+                    this.Exit();
+                    break;
+                default:
+                    break;
+            }
+
+
+
 
             if (gameState != GameState.PAUSED) {
                 // CODE HERE FOR FOREACH BRICKS
-                balls[0].Update(gameTime, bat.hitbox);
-                bat.HandleInput(keyboardState, mouseState);
-                bat.Update(gameTime);
-                CheckIfBallOut();
+
+
+            } else {
 
             }
-            if (keyboardState.IsKeyDown(Keys.Space)) {
+            if (keyboardState.IsKeyUp(Keys.Space) && previousKeyboardState.IsKeyDown(Keys.Space)) {
                 gameState = (gameState == GameState.PAUSED) ? (GameState.PLAYING) : (GameState.PAUSED);
             }
+
+            previousKeyboardState = keyboardState;
+            previousMouseState = mouseState;
 
             base.Update(gameTime);
         }

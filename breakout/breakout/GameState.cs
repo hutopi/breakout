@@ -7,7 +7,8 @@ namespace breakout {
     public enum GameState {
         STARTMENU = 0,
         PLAYING = 1,
-        PAUSED = 2
+        PAUSED = 2,
+        EXIT = 3
 
     }
 }
