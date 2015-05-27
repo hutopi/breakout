@@ -18,9 +18,9 @@ namespace breakout {
 
         public ButtonSprite(int screenWidth, int screenHeight) : base(screenWidth, screenHeight) { }
 
-        public override void Update(MouseState mousestate) {
+        public void Update(MouseState mousestate) {
             
-            if(hitbox.Intersects(new Rectangle(mousestate.X,mousestate.Y,10,10)){
+            if(hitbox.Intersects(new Rectangle(mousestate.X,mousestate.Y,10,10))){
                 //something
             }
 
