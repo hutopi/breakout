@@ -44,6 +44,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="background.jpg">
+      <Name>background</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Content Include="brick.png">
       <Name>brick</Name>
       <Importer>TextureImporter</Importer>

@@ -124,10 +124,11 @@ namespace breakout {
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime) {
-            GraphicsDevice.Clear(Color.White);
-
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            spriteBatch.Draw(Content.Load<Texture2D>("background"),
+                             new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height),
+                             Color.White);
             bat.Draw(spriteBatch, gameTime);
             balls[0].Draw(spriteBatch, gameTime);
             spriteBatch.End();
