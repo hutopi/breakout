@@ -144,7 +144,7 @@ namespace breakout {
                     break;
                 case GameState.PLAYING:
                     this.IsMouseVisible = false;
-                    balls[0].Update(gameTime, bat.hitbox);
+                    balls[0].Update(gameTime, bat.hitbox, gameLevel);
                     bat.HandleInput(keyboardState, mouseState);
                     bat.Update(gameTime);
                     CheckIfBallOut();

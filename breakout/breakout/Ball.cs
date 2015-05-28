@@ -39,7 +39,7 @@ namespace breakout {
             //Position = new Vector2(100, 100);
         }
 
-        public void Update(GameTime gameTime, Rectangle batHitBox) {
+        public void Update(GameTime gameTime, Rectangle batHitBox, GameLevel gameLevel) {
 
             //bouncing on the walls
             if ((Position.Y <= 0 && Direction.Y < 0)) {
@@ -97,6 +97,15 @@ namespace breakout {
 
 
 
+            }
+
+            // boucing on the bricks
+            foreach (Brick b in gameLevel.BricksMap)
+            {
+                if (this.hitbox.IntersectsRec(b.hitbox))
+                {
+                    //BOUNCING HERE @TODO
+                }
             }
 
 
