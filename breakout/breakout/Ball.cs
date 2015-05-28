@@ -39,7 +39,7 @@ namespace breakout {
             //Position = new Vector2(100, 100);
         }
 
-        public void Update(GameTime gameTime, Rectangle batHitBox) {
+        public void Update(GameTime gameTime, Rectangle batHitBox, GameLevel gameLevel) {
 
             //bouncing on the walls
             if ((Position.Y <= 0 && Direction.Y < 0)) {
@@ -62,14 +62,12 @@ namespace breakout {
 
                     double gapBetweenBatAndBall = batHitBox.X + batHitBox.Width - this.hitbox.X; //détermine l'écart X de la balle par rapport à l'extrémité droite de la raquette
                     double theta = (gapBetweenBatAndBall * (Math.PI / 2)) / (batHitBox.Width / 2); // produit en croix pour une valeur théta en radian de l'angle que l'on souhaite obtenir en fonction de l'écart gapBetweenBatAndBall
-                    Console.WriteLine(theta);
                     if (theta <= 0.2) {
                         Direction = new Vector2((float)Math.Cos(theta), -0.2f);
                         
                     } else {
                         Direction = new Vector2((float)Math.Cos(theta), -(float)Math.Sin(theta));
                     }
-
 
                     Console.WriteLine(Direction);
                 }
@@ -79,7 +77,6 @@ namespace breakout {
                     double theta = (gapBetweenBatAndBall * (Math.PI / 2)) / (batHitBox.Width / 2);
                     if (theta <= 0.2) {
                         Direction = new Vector2(-(float)Math.Cos(theta), -0.2f);
-                        Console.WriteLine("perdu");
                     } else {
                         Direction = new Vector2(-(float)Math.Cos(theta), -(float)Math.Sin(theta));
                     }
@@ -97,6 +94,16 @@ namespace breakout {
 
 
 
+            }
+
+            // boucing on the bricks
+            foreach (Brick b in gameLevel.BricksMap)
+            {
+                if (this.hitbox.IntersectsRec(b.hitbox) && b.resistance > 0)
+                {
+                    //BOUNCING HERE @TODO
+                    b.Touched(gameLevel.brickTexture);
+                }
             }
 
 

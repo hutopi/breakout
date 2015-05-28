@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace breakout
 {
@@ -21,10 +22,11 @@ namespace breakout
             get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height); }
         }
 
-        public Brick(int screenWidth, int screenHeight, int h, int w, int r = 1, Bonus b = Bonus.NONE) : base( screenWidth, screenHeight)
+        public Brick(int screenWidth, int screenHeight, Vector2 position, int h, int w, int r = 1, Bonus b = Bonus.NONE) : base( screenWidth, screenHeight)
         {
             this.height = h;
             this.width = w;
+            this.Position = position;
             this.resistance = r;
             this.bonus = b;
         }
@@ -34,15 +36,40 @@ namespace breakout
             base.Initialize();
         }
 
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+            spriteBatch.Draw(this.Texture, this.Position, Color.White);
+        }
+
         public override void LoadContent(ContentManager content, string assetName)
         {
+            assetName += this.resistance;
             base.LoadContent(content, assetName);
+        }
+
+        public void Touched(BrickTexture textures)
+        {
+            resistance--;
+            switch (resistance)
+            {
+                case 0:
+                    this.Texture = textures.zero;
+                    break;
+                case 1:
+                    this.Texture = textures.one;
+                    break;
+                case 2:
+                    this.Texture = textures.two;
+                    break;
+                case 3:
+                    this.Texture = textures.three;
+                    break;
+            }
         }
 
         public override void Update()
         {
             base.Update();
-
         }
     }
 }

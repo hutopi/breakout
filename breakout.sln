@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "breakout", "breakout\breakout\breakout.csproj", "{2D264484-D16D-47C4-BC44-702B529DE0C6}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "breakoutContent", "breakout\breakoutContent\breakoutContent.contentproj", "{C2FA7003-5E20-42B4-A33D-92903F1531A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "breakoutContent", "breakout\breakoutContent\breakoutContent.contentproj", "{C2FA7003-5E20-42B4-A33D-92903F1531A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
