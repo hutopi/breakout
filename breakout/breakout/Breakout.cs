@@ -20,6 +20,7 @@ namespace breakout {
         private int score;
         private int lives;
         private GameState gameState;
+        private GameLevel gameLevel;
 
         private KeyboardState keyboardState;
         private KeyboardState previousKeyboardState;
@@ -29,7 +30,6 @@ namespace breakout {
         //sprites
         private Bat bat;
         private List<Ball> balls;
-        private List<Brick> bricks;
         private SpriteFont scoreFont;
         private SpriteFont livesFont;
         private ButtonSprite startButton;
@@ -52,8 +52,8 @@ namespace breakout {
             bat = new Bat(screenWidth, screenHeight);
             balls = new List<Ball>();
             balls.Add(new Ball(screenWidth, screenHeight));
-            bricks = new List<Brick>();
 
+            gameLevel = new GameLevel(screenWidth, screenHeight, 1);
         }
 
         /// <summary>
@@ -79,15 +79,13 @@ namespace breakout {
 
             }
 
-
-            this.AddBricks();
+            gameLevel.Initialize();
 
             gameState = GameState.STARTMENU;
             score = 0;
             lives = 3;
 
             base.Initialize();
-
         }
 
         /// <summary>
@@ -106,13 +104,17 @@ namespace breakout {
             exitButton.Position = new Vector2(Window.ClientBounds.Width / 2 - exitButton.Texture.Width / 2, Window.ClientBounds.Height * 2 / 3 - exitButton.Texture.Height / 2);
             resumeButton.Position = new Vector2(Window.ClientBounds.Width / 2 - resumeButton.Texture.Width / 2, Window.ClientBounds.Height / 2 - resumeButton.Texture.Height / 2);
 
-
             bat.LoadContent(Content, "bat");
             balls[0].LoadContent(Content, "ball", bat);
             scoreFont = Content.Load<SpriteFont>("Score");
             livesFont = Content.Load<SpriteFont>("Lives");
 
+            gameLevel.brickTexture = new BrickTexture(this.buildTextures());
 
+            foreach (Brick b in gameLevel.BricksMap)
+            {
+                b.LoadContent(Content, "brick");
+            }
 
             // TODO: use this.Content to load your game content here
         }
@@ -147,7 +149,7 @@ namespace breakout {
                     break;
                 case GameState.PLAYING:
                     this.IsMouseVisible = false;
-                    balls[0].Update(gameTime, bat.hitbox);
+                    balls[0].Update(gameTime, bat.hitbox, gameLevel);
                     bat.HandleInput(keyboardState, mouseState);
                     bat.Update(gameTime);
                     CheckIfBallOut();
@@ -162,9 +164,6 @@ namespace breakout {
                 default:
                     break;
             }
-
-
-
 
             if (gameState != GameState.PAUSED) {
                 // CODE HERE FOR FOREACH BRICKS
@@ -214,6 +213,10 @@ namespace breakout {
                     balls[0].Draw(spriteBatch, gameTime);
                     spriteBatch.DrawString(scoreFont, "Score : " + score.ToString(), new Vector2(10, 10), Color.Blue);
                     spriteBatch.DrawString(livesFont, "Lives : " + lives.ToString(), new Vector2(120, 10), Color.Yellow);
+                    foreach (Brick b in gameLevel.BricksMap)
+                    {
+                        b.Draw(spriteBatch, gameTime);
+                    }
                     break;
                 case GameState.PAUSED:
                     resumeButton.Draw(spriteBatch, gameTime);
@@ -228,9 +231,15 @@ namespace breakout {
             base.Draw(gameTime);
         }
 
-        public void AddBricks() {
-            //Window.ClientBounds.Width Window.ClientBounds.Height
-
+        public Texture2D[] buildTextures()
+        {
+            Texture2D[] textures = new Texture2D[5];
+            textures[0] = Content.Load<Texture2D>("brick");
+            textures[1] = Content.Load<Texture2D>("brick1");
+            textures[2] = Content.Load<Texture2D>("brick2");
+            textures[3] = Content.Load<Texture2D>("brick3");
+            textures[4] = Content.Load<Texture2D>("brick4");
+            return textures;
         }
     }
 
