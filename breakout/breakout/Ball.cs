@@ -19,7 +19,7 @@ namespace breakout {
         }
 
 
-        public Ball(int screenWidth, int screenHeight) : base (screenWidth,screenHeight) { }
+        public Ball(int screenWidth, int screenHeight) : base(screenWidth, screenHeight) { }
         public override void Initialize() {
 
             base.Initialize();
@@ -64,7 +64,7 @@ namespace breakout {
                     double theta = (gapBetweenBatAndBall * (Math.PI / 2)) / (batHitBox.Width / 2); // produit en croix pour une valeur théta en radian de l'angle que l'on souhaite obtenir en fonction de l'écart gapBetweenBatAndBall
                     if (theta <= 0.2) {
                         Direction = new Vector2((float)Math.Cos(theta), -0.2f);
-                        
+
                     } else {
                         Direction = new Vector2((float)Math.Cos(theta), -(float)Math.Sin(theta));
                     }
@@ -80,7 +80,7 @@ namespace breakout {
                     } else {
                         Direction = new Vector2(-(float)Math.Cos(theta), -(float)Math.Sin(theta));
                     }
-                    
+
 
 
                     Console.WriteLine(Direction);
@@ -89,20 +89,28 @@ namespace breakout {
                     Direction = new Vector2(0, -1);
                     Console.WriteLine(Direction);
                 }
-                //Do we speed up the ball each time it hits the bat ?
-                //Speed += 0.05f;
 
 
 
             }
 
             // boucing on the bricks
-            foreach (Brick b in gameLevel.BricksMap)
-            {
-                if (this.hitbox.IntersectsRec(b.hitbox) && b.resistance > 0)
-                {
+            foreach (Brick b in gameLevel.BricksMap) {
+                if (this.hitbox.IntersectsRec(b.hitbox) && b.resistance > 0) {
                     //BOUNCING HERE @TODO
                     b.Touched(gameLevel.brickTexture);
+
+                    if (hitbox.Y - hitbox.Radius <= b.hitbox.Bottom || hitbox.Y - hitbox.Radius >= b.hitbox.Top) {
+                        Direction = new Vector2(Direction.X, -Direction.Y);
+                        Console.WriteLine(Direction);
+                        Console.WriteLine("coucou");
+                        break;
+                    } 
+                    if (hitbox.X + hitbox.Radius <= b.hitbox.Right || hitbox.X + hitbox.Radius >= b.hitbox.Left) {
+                        Console.WriteLine("coucou2");
+                        Direction = new Vector2(-Direction.X, Direction.Y);
+                        break;
+                    }
                 }
             }
 
