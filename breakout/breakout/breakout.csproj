@@ -84,6 +84,7 @@
     <Compile Include="Brick.cs" />
     <Compile Include="ButtonSprite.cs" />
     <Compile Include="Circle.cs" />
+    <Compile Include="GameLevel.cs" />
     <Compile Include="GamePropertiesForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -19,6 +19,7 @@ namespace breakout {
 
         private int score;
         private GameState gameState;
+        private GameLevel gameLevel;
 
         private KeyboardState keyboardState;
         private KeyboardState previousKeyboardState;
@@ -28,7 +29,6 @@ namespace breakout {
         //sprites
         private Bat bat;
         private List<Ball> balls;
-        private List<Brick> bricks;
         private SpriteFont scoreFont;
         private ButtonSprite startButton;
         private ButtonSprite exitButton;
@@ -50,8 +50,8 @@ namespace breakout {
             bat = new Bat(screenWidth, screenHeight);
             balls = new List<Ball>();
             balls.Add(new Ball(screenWidth, screenHeight));
-            bricks = new List<Brick>();
 
+            gameLevel = new GameLevel(screenWidth, screenHeight, 1);
         }
 
         /// <summary>
@@ -77,14 +77,12 @@ namespace breakout {
 
             }
 
-
-            this.AddBricks();
+            gameLevel.Initialize();
 
             gameState = GameState.STARTMENU;
             score = 0;
 
             base.Initialize();
-
         }
 
         /// <summary>
@@ -108,7 +106,10 @@ namespace breakout {
             balls[0].LoadContent(Content, "ball", bat);
             scoreFont = Content.Load<SpriteFont>("Score");
 
-
+            foreach (Brick b in gameLevel.BricksMap)
+            {
+                b.LoadContent(Content, "brick");
+            }
 
             // TODO: use this.Content to load your game content here
         }
@@ -209,6 +210,10 @@ namespace breakout {
                     bat.Draw(spriteBatch, gameTime);
                     balls[0].Draw(spriteBatch, gameTime);
                     spriteBatch.DrawString(scoreFont, "Score : " + score.ToString(), new Vector2(10, 10), Color.Blue);
+                    foreach (Brick b in gameLevel.BricksMap)
+                    {
+                        b.Draw(spriteBatch, gameTime);
+                    }
                     break;
                 case GameState.PAUSED:
                     resumeButton.Draw(spriteBatch, gameTime);
@@ -220,11 +225,6 @@ namespace breakout {
             spriteBatch.End();
 
             base.Draw(gameTime);
-        }
-
-        public void AddBricks() {
-            //Window.ClientBounds.Width Window.ClientBounds.Height
-
         }
     }
 
