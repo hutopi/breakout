@@ -34,6 +34,8 @@ namespace breakout {
         private ButtonSprite startButton;
         private ButtonSprite exitButton;
         private ButtonSprite resumeButton;
+        private ButtonSprite restartButton;
+        private ButtonSprite nextLevelButton;
 
         public Breakout() {
             graphics = new GraphicsDeviceManager(this);
@@ -44,9 +46,11 @@ namespace breakout {
             int screenWidth = Window.ClientBounds.Width;
             int screenHeight = Window.ClientBounds.Height;
 
-            startButton = new ButtonSprite(screenWidth, screenHeight, "start");
-            exitButton = new ButtonSprite(screenWidth, screenHeight, "exit");
-            resumeButton = new ButtonSprite(screenWidth, screenHeight, "resume");
+            startButton = new ButtonSprite(screenWidth, screenHeight, "Start");
+            exitButton = new ButtonSprite(screenWidth, screenHeight, "Exit");
+            resumeButton = new ButtonSprite(screenWidth, screenHeight, "Resume");
+            restartButton = new ButtonSprite(screenWidth, screenHeight, "Restart");
+            nextLevelButton = new ButtonSprite(screenWidth, screenHeight, "Next level");
 
             bat = new Bat(screenWidth, screenHeight);
             balls = new List<Ball>();
@@ -66,8 +70,9 @@ namespace breakout {
 
             startButton.Initialize();
             exitButton.Initialize();
-
             resumeButton.Initialize();
+            restartButton.Initialize();
+            nextLevelButton.Initialize();
 
 
             bat.Initialize();
@@ -97,10 +102,15 @@ namespace breakout {
             startButton.LoadContent(Content, "start");
             exitButton.LoadContent(Content, "exit");
             resumeButton.LoadContent(Content, "resume");
+            restartButton.LoadContent(Content, "restart");
+            nextLevelButton.LoadContent(Content, "next");
 
             startButton.Position = new Vector2(Window.ClientBounds.Width / 2 - startButton.Texture.Width / 2, Window.ClientBounds.Height * 1 / 3 - startButton.Texture.Height / 2);
             exitButton.Position = new Vector2(Window.ClientBounds.Width / 2 - exitButton.Texture.Width / 2, Window.ClientBounds.Height * 2 / 3 - exitButton.Texture.Height / 2);
             resumeButton.Position = new Vector2(Window.ClientBounds.Width / 2 - resumeButton.Texture.Width / 2, Window.ClientBounds.Height / 2 - resumeButton.Texture.Height / 2);
+
+            restartButton.Position = new Vector2(Window.ClientBounds.Width / 2 - startButton.Texture.Width / 2, Window.ClientBounds.Height * 1 / 3 - startButton.Texture.Height / 2);
+            nextLevelButton.Position = new Vector2(Window.ClientBounds.Width / 2 - startButton.Texture.Width / 2, Window.ClientBounds.Height * 1 / 3 - startButton.Texture.Height / 2);
 
             bat.LoadContent(Content, "bat");
             balls[0].LoadContent(Content, "ball", bat);
@@ -156,10 +166,19 @@ namespace breakout {
                     this.IsMouseVisible = true;
                     resumeButton.Update(mouseState, previousMouseState, ref gameState);
                     break;
-                case GameState.END:
+                case GameState.WIN:
                     this.IsMouseVisible = true;
-                    // en attendant une interface de fin @TODO
-                    resumeButton.Update(mouseState, previousMouseState, ref gameState);
+                    nextLevelButton.Update(mouseState, previousMouseState, ref gameState);
+                    exitButton.Update(mouseState, previousMouseState, ref gameState);
+                    break;
+                case GameState.LOOSE:
+                    this.IsMouseVisible = true;
+                    restartButton.Update(mouseState, previousMouseState, ref gameState);
+                    exitButton.Update(mouseState, previousMouseState, ref gameState);
+                    break;
+                case GameState.RESTART:
+                    break;
+                case GameState.NEXT_LEVEL:
                     break;
                 case GameState.EXIT:
                     this.Exit();
@@ -181,7 +200,12 @@ namespace breakout {
 
             if (gameLevel.Nb_bricks == 0)
             {
-                gameState = GameState.END;
+                gameState = GameState.WIN;
+            }
+
+            if (lives < 0)
+            {
+                gameState = GameState.LOOSE;
             }
 
             previousKeyboardState = keyboardState;
@@ -230,6 +254,14 @@ namespace breakout {
                     resumeButton.Draw(spriteBatch, gameTime);
                     spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.Blue);
                     spriteBatch.DrawString(livesFont, "Lives : " + lives.ToString(), new Vector2(200, 10), Color.Yellow);
+                    break;
+                case GameState.WIN:
+                    nextLevelButton.Draw(spriteBatch, gameTime);
+                    exitButton.Draw(spriteBatch, gameTime);
+                    break;
+                case GameState.LOOSE:
+                    restartButton.Draw(spriteBatch, gameTime);
+                    exitButton.Draw(spriteBatch, gameTime);
                     break;
                 default:
                     break;

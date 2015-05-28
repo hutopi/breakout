@@ -8,8 +8,10 @@ namespace breakout {
         STARTMENU = 0,
         PLAYING = 1,
         PAUSED = 2,
-        END = 3,
-        EXIT = 4
-
+        WIN = 3,
+        LOOSE = 4,
+        RESTART = 5,
+        NEXT_LEVEL = 6,
+        EXIT = 7
     }
 }

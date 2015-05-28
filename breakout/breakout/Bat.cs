@@ -32,14 +32,13 @@ namespace breakout {
 
             if (keyboardState.IsKeyDown(Keys.Left)) {
                 Direction = -Vector2.UnitX;
-                Speed = 0.3f;
+                Speed = 0.4f;
             } else if (keyboardState.IsKeyDown(Keys.Right)) {
                 Direction = Vector2.UnitX;
-                Speed = 0.3f;
+                Speed = 0.4f;
             } else {
                 Speed = 0;
             }
-            //Position = new Vector2(mouseState.X, Position.Y);
 
             base.HandleInput(keyboardState, mouseState);
 

@@ -41,6 +41,12 @@ namespace breakout {
                         case "resume":
                             gameState = GameState.PLAYING;
                             break;
+                        case "restart":
+                            gameState = GameState.RESTART;
+                            break;
+                        case "next":
+                            gameState = GameState.NEXT_LEVEL;
+                            break;
                         default:
                             break;
                     }
