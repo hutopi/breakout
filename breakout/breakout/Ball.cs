@@ -64,7 +64,7 @@ namespace breakout {
                     double theta = (gapBetweenBatAndBall * (Math.PI / 2)) / (batHitBox.Width / 2); // produit en croix pour une valeur théta en radian de l'angle que l'on souhaite obtenir en fonction de l'écart gapBetweenBatAndBall
                     if (theta <= 0.2) {
                         Direction = new Vector2((float)Math.Cos(theta), -0.2f);
-                        
+
                     } else {
                         Direction = new Vector2((float)Math.Cos(theta), -(float)Math.Sin(theta));
                     }
@@ -80,7 +80,7 @@ namespace breakout {
                     } else {
                         Direction = new Vector2(-(float)Math.Cos(theta), -(float)Math.Sin(theta));
                     }
-                    
+
 
 
                     Console.WriteLine(Direction);
@@ -98,24 +98,34 @@ namespace breakout {
             foreach (Brick b in gameLevel.BricksMap) {
                 if (this.hitbox.IntersectsRec(b.hitbox) && b.resistance > 0) {
                     //BOUNCING HERE @TODO
-                    b.Touched(gameLevel.brickTexture);
-
-                    if (hitbox.Y - hitbox.Radius <= b.hitbox.Bottom || hitbox.Y - hitbox.Radius >= b.hitbox.Top) {
-                        Direction = new Vector2(Direction.X, -Direction.Y);
-                        Console.WriteLine(Direction);
-                        Console.WriteLine("coucou");
-                        break;
-                    } 
-                    if (hitbox.X + hitbox.Radius <= b.hitbox.Right || hitbox.X + hitbox.Radius >= b.hitbox.Left) {
-                        Console.WriteLine("coucou2");
-                        Direction = new Vector2(-Direction.X, Direction.Y);
-                        break;
-                    }
                     int scoreIncrement = b.Touched(gameLevel.brickTexture);
                     gameLevel.Score += scoreIncrement;
-                    if (scoreIncrement == 100)
-                    {
+                    if (scoreIncrement == 100) {
                         gameLevel.Nb_bricks--;
+                    }
+
+
+                    double wy = (hitbox.Radius * 2 + b.hitbox.Width) * (hitbox.Y - b.hitbox.Y);
+                    double hx = (hitbox.Radius * 2 + b.hitbox.Height) * (hitbox.X - b.hitbox.X);
+                    
+                    //somme de Minkowski
+                    if (wy > hx) {
+                        if (wy > -hx) {
+                            /* top */
+                            Direction = new Vector2(Direction.X, -Direction.Y);
+                        } else {
+                            /* left */
+                            Direction = new Vector2(-Direction.X, Direction.Y);
+                        }
+                    } else {
+                        if (wy > -hx) {
+                            /* right */
+                            Direction = new Vector2(-Direction.X, Direction.Y);
+                        } else {
+                            /* bottom */
+                            Direction = new Vector2(Direction.X, -Direction.Y);
+                        }
+                        
                     }
                 }
             }
