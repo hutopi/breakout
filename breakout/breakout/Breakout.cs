@@ -46,11 +46,11 @@ namespace breakout {
             int screenWidth = Window.ClientBounds.Width;
             int screenHeight = Window.ClientBounds.Height;
 
-            startButton = new ButtonSprite(screenWidth, screenHeight, "Start");
-            exitButton = new ButtonSprite(screenWidth, screenHeight, "Exit");
-            resumeButton = new ButtonSprite(screenWidth, screenHeight, "Resume");
-            restartButton = new ButtonSprite(screenWidth, screenHeight, "Restart");
-            nextLevelButton = new ButtonSprite(screenWidth, screenHeight, "Next level");
+            startButton = new ButtonSprite(screenWidth, screenHeight, "start");
+            exitButton = new ButtonSprite(screenWidth, screenHeight, "exit");
+            resumeButton = new ButtonSprite(screenWidth, screenHeight, "resume");
+            restartButton = new ButtonSprite(screenWidth, screenHeight, "restart");
+            nextLevelButton = new ButtonSprite(screenWidth, screenHeight, "next");
 
             bat = new Bat(screenWidth, screenHeight);
             balls = new List<Ball>();
