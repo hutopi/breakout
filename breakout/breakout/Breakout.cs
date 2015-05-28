@@ -18,6 +18,7 @@ namespace breakout {
         SpriteBatch spriteBatch;
 
         private int score;
+        private int lives;
         private GameState gameState;
 
         private KeyboardState keyboardState;
@@ -30,6 +31,7 @@ namespace breakout {
         private List<Ball> balls;
         private List<Brick> bricks;
         private SpriteFont scoreFont;
+        private SpriteFont livesFont;
         private ButtonSprite startButton;
         private ButtonSprite exitButton;
         private ButtonSprite resumeButton;
@@ -82,6 +84,7 @@ namespace breakout {
 
             gameState = GameState.STARTMENU;
             score = 0;
+            lives = 3;
 
             base.Initialize();
 
@@ -107,6 +110,7 @@ namespace breakout {
             bat.LoadContent(Content, "bat");
             balls[0].LoadContent(Content, "ball", bat);
             scoreFont = Content.Load<SpriteFont>("Score");
+            livesFont = Content.Load<SpriteFont>("Lives");
 
 
 
@@ -181,7 +185,7 @@ namespace breakout {
 
         private void CheckIfBallOut() {
             if (balls[0].Position.Y > Window.ClientBounds.Height) {
-                score--;
+                lives--;
                 balls[0].Initialize();
                 bat.Position = new Vector2(Window.ClientBounds.Width / 2 - bat.Texture.Width / 2, Window.ClientBounds.Height - 10 - bat.Texture.Height / 2);
                 balls[0].Position = new Vector2(bat.Position.X + bat.Texture.Width / 2 - balls[0].Texture.Width / 2, bat.Position.Y - bat.Texture.Height - balls[0].Texture.Height / 2);
@@ -209,10 +213,12 @@ namespace breakout {
                     bat.Draw(spriteBatch, gameTime);
                     balls[0].Draw(spriteBatch, gameTime);
                     spriteBatch.DrawString(scoreFont, "Score : " + score.ToString(), new Vector2(10, 10), Color.Blue);
+                    spriteBatch.DrawString(livesFont, "Lives : " + lives.ToString(), new Vector2(120, 10), Color.Yellow);
                     break;
                 case GameState.PAUSED:
                     resumeButton.Draw(spriteBatch, gameTime);
                     spriteBatch.DrawString(scoreFont, "Score : " + score.ToString(), new Vector2(10, 10), Color.Blue);
+                    spriteBatch.DrawString(livesFont, "Lives : " + lives.ToString(), new Vector2(120, 10), Color.Yellow);
                     break;
                 default:
                     break;
