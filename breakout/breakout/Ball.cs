@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -63,7 +64,7 @@ namespace breakout {
                     double gapBetweenBatAndBall = batHitBox.X + batHitBox.Width - this.hitbox.X; //détermine l'écart X de la balle par rapport à l'extrémité droite de la raquette
                     double theta = (gapBetweenBatAndBall * (Math.PI / 2)) / (batHitBox.Width / 2); // produit en croix pour une valeur théta en radian de l'angle que l'on souhaite obtenir en fonction de l'écart gapBetweenBatAndBall
                     if (theta <= 0.2) {
-                        Direction = new Vector2((float)Math.Cos(theta), -0.2f);
+                        Direction = new Vector2((float)Math.Cos(theta), -(float)Math.Sin(Math.PI / 6));
 
                     } else {
                         Direction = new Vector2((float)Math.Cos(theta), -(float)Math.Sin(theta));
@@ -76,7 +77,7 @@ namespace breakout {
                     double gapBetweenBatAndBall = this.hitbox.X - batHitBox.X;
                     double theta = (gapBetweenBatAndBall * (Math.PI / 2)) / (batHitBox.Width / 2);
                     if (theta <= 0.2) {
-                        Direction = new Vector2(-(float)Math.Cos(theta), -0.2f);
+                        Direction = new Vector2(-(float)Math.Cos(theta), -(float)Math.Sin(Math.PI / 6));
                     } else {
                         Direction = new Vector2(-(float)Math.Cos(theta), -(float)Math.Sin(theta));
                     }
@@ -95,44 +96,74 @@ namespace breakout {
             }
 
             // boucing on the bricks
+            /*Thread thread = new Thread(() => bouncingOnTheBricks(gameLevel));
+            thread.Start();
+            thread.I*/
+            bouncingOnTheBricks(gameLevel);
+            base.Update(gameTime);
+
+        }
+        public void bouncingOnTheBricks(GameLevel gameLevel) {
             foreach (Brick b in gameLevel.BricksMap) {
                 if (this.hitbox.IntersectsRec(b.hitbox) && b.resistance > 0) {
+
                     //BOUNCING HERE @TODO
+
                     int scoreIncrement = b.Touched(gameLevel.brickTexture);
                     gameLevel.Score += scoreIncrement;
                     if (scoreIncrement == 100) {
                         gameLevel.Nb_bricks--;
                     }
+                    Rectangle topRectangle = new Rectangle(b.hitbox.X, b.hitbox.Top, b.hitbox.Width, 0);
+                    Rectangle bottomRectangle = new Rectangle(b.hitbox.X, b.hitbox.Bottom, b.hitbox.Width, 0);
+                    Rectangle leftRectangle = new Rectangle(b.hitbox.Left, b.hitbox.Y, 0, b.hitbox.Height);
+                    Rectangle rightRectangle = new Rectangle(b.hitbox.Right, b.hitbox.Y, 0, b.hitbox.Height);
+
+                    if (hitbox.IntersectsRec(topRectangle) || hitbox.IntersectsRec(bottomRectangle)) {
+
+                        Speed = 0f; 
+                        Direction = new Vector2(Direction.X, -Direction.Y);
+                        Speed = 0.3f;
+
+                    } else if (hitbox.IntersectsRec(leftRectangle) || hitbox.IntersectsRec(rightRectangle)) {
+                        Speed = 0f;
+                        Direction = new Vector2(-Direction.X, Direction.Y);
+                        Speed = 0.3f;
+
+                    }
 
 
-                    double wy = (hitbox.Radius * 2 + b.hitbox.Width) * (hitbox.Y - b.hitbox.Y);
-                    double hx = (hitbox.Radius * 2 + b.hitbox.Height) * (hitbox.X - b.hitbox.X);
-                    
+                    /*double wy = (hitbox.Radius * 2 + b.hitbox.Width) * (hitbox.Y - b.hitbox.Y + b.hitbox.Height / 2);
+                    double hx = (hitbox.Radius * 2 + b.hitbox.Height) * (hitbox.X - b.hitbox.X + b.hitbox.Width / 2);
+
                     //somme de Minkowski
                     if (wy > hx) {
                         if (wy > -hx) {
-                            /* top */
+                            //top 
                             Direction = new Vector2(Direction.X, -Direction.Y);
+                            Console.WriteLine("top");
                         } else {
-                            /* left */
+                            //left 
                             Direction = new Vector2(-Direction.X, Direction.Y);
+                            Console.WriteLine("left");
                         }
                     } else {
                         if (wy > -hx) {
-                            /* right */
+                            //right
                             Direction = new Vector2(-Direction.X, Direction.Y);
+                            Console.WriteLine("right");
                         } else {
-                            /* bottom */
+                            //bottom 
                             Direction = new Vector2(Direction.X, -Direction.Y);
+                            Console.WriteLine("down");
                         }
-                        
+
                     }
+                    */
+
+
                 }
             }
-
-
-            base.Update(gameTime);
-
         }
     }
 }

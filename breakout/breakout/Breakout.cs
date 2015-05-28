@@ -119,8 +119,7 @@ namespace breakout {
 
             gameLevel.brickTexture = new BrickTexture(this.buildTextures());
 
-            foreach (Brick b in gameLevel.BricksMap)
-            {
+            foreach (Brick b in gameLevel.BricksMap) {
                 b.LoadContent(Content, "brick");
             }
 
@@ -187,24 +186,15 @@ namespace breakout {
                     break;
             }
 
-            if (gameState != GameState.PAUSED) {
-                // CODE HERE FOR FOREACH BRICKS
-
-
-            } else {
-
-            }
             if (keyboardState.IsKeyUp(Keys.Space) && previousKeyboardState.IsKeyDown(Keys.Space)) {
                 gameState = (gameState == GameState.PAUSED) ? (GameState.PLAYING) : (GameState.PAUSED);
             }
 
-            if (gameLevel.Nb_bricks == 0)
-            {
+            if (gameLevel.Nb_bricks == 0) {
                 gameState = GameState.WIN;
             }
 
-            if (lives < 0)
-            {
+            if (lives < 0) {
                 gameState = GameState.LOOSE;
             }
 
@@ -245,15 +235,19 @@ namespace breakout {
                     balls[0].Draw(spriteBatch, gameTime);
                     spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.Blue);
                     spriteBatch.DrawString(livesFont, "Lives : " + lives.ToString(), new Vector2(200, 10), Color.Yellow);
-                    foreach (Brick b in gameLevel.BricksMap)
-                    {
+                    foreach (Brick b in gameLevel.BricksMap) {
                         b.Draw(spriteBatch, gameTime);
                     }
                     break;
                 case GameState.PAUSED:
+                    bat.Draw(spriteBatch, gameTime);
+                    balls[0].Draw(spriteBatch, gameTime);
                     resumeButton.Draw(spriteBatch, gameTime);
                     spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.Blue);
                     spriteBatch.DrawString(livesFont, "Lives : " + lives.ToString(), new Vector2(200, 10), Color.Yellow);
+                    foreach (Brick b in gameLevel.BricksMap) {
+                        b.Draw(spriteBatch, gameTime);
+                    }
                     break;
                 case GameState.WIN:
                     nextLevelButton.Draw(spriteBatch, gameTime);
@@ -271,8 +265,7 @@ namespace breakout {
             base.Draw(gameTime);
         }
 
-        public Texture2D[] buildTextures()
-        {
+        public Texture2D[] buildTextures() {
             Texture2D[] textures = new Texture2D[5];
             textures[0] = Content.Load<Texture2D>("brick");
             textures[1] = Content.Load<Texture2D>("brick1");
