@@ -12,7 +12,7 @@ namespace breakout
     public class GameLevel
     {
         private int nb_columns = 10;
-        private int nb_lines = 4;
+        private int nb_lines = 8;
         private int screenWidth;
         private int screenHeight;
 
@@ -39,16 +39,11 @@ namespace breakout
         public void constructLevel()
         {
             Random rnd = new Random();
+            int marge = 45;
             switch (this.level)
             {
-                case 1: // test
-                    for (int i = 0; i < this.nb_lines; i++)
-                    {
-                        for (int j = 0; j < this.nb_columns; j++)
-                        {
-                            this.BricksMap[i,j] = new Brick(this.screenWidth, this.screenHeight, new Vector2(rnd.Next(0, this.screenWidth),rnd.Next(0, this.screenHeight)), 19, 45);
-                        }
-                    }
+                case 1:
+                    this.LevelOne();
                     break;
                 default:
                     break;
@@ -58,6 +53,33 @@ namespace breakout
         public void Initialize()
         {
             this.constructLevel();
+        }
+
+        public void LevelOne()
+        {
+            int x = (int)((0.25)*(double)this.screenWidth);
+            int y = 20;
+            int margin = 50;
+
+            for (int i = 0; i < 8; i++)
+            {
+                this.create(i, x + margin*i, y, 3);
+            }
+        }
+
+        public void create(int coord_x, int x, int y, int r)
+        {
+            for (int i = 1; i <= 10; i++)
+            {
+                if (coord_x == 0 || coord_x == 7 || i == 1 || i == 10)
+                {
+                    this.BricksMap[coord_x, i - 1] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y * i), 19, 45, r);
+                }
+                else
+                {
+                    this.BricksMap[coord_x, i - 1] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y * i), 19, 45);
+                }
+            }
         }
     }
 }

@@ -38,18 +38,7 @@ namespace breakout
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            switch (resistance)
-            {
-                case 1:
-                    spriteBatch.Draw(this.Texture, this.Position, Color.White);
-                    break;
-                case 2:
-                    spriteBatch.Draw(this.Texture, this.Position, Color.White);
-                    break;
-                case 3:
-                    spriteBatch.Draw(this.Texture, this.Position, Color.White);
-                    break;
-            }
+            spriteBatch.Draw(this.Texture, this.Position, Color.White);
         }
 
         public override void LoadContent(ContentManager content, string assetName)
