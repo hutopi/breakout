@@ -64,7 +64,7 @@ namespace breakout {
                     double theta = (gapBetweenBatAndBall * (Math.PI / 2)) / (batHitBox.Width / 2); // produit en croix pour une valeur théta en radian de l'angle que l'on souhaite obtenir en fonction de l'écart gapBetweenBatAndBall
                     if (theta <= 0.2) {
                         Direction = new Vector2((float)Math.Cos(theta), -0.2f);
-
+                        
                     } else {
                         Direction = new Vector2((float)Math.Cos(theta), -(float)Math.Sin(theta));
                     }
@@ -80,7 +80,7 @@ namespace breakout {
                     } else {
                         Direction = new Vector2(-(float)Math.Cos(theta), -(float)Math.Sin(theta));
                     }
-
+                    
 
 
                     Console.WriteLine(Direction);
@@ -110,6 +110,12 @@ namespace breakout {
                         Console.WriteLine("coucou2");
                         Direction = new Vector2(-Direction.X, Direction.Y);
                         break;
+                    }
+                    int scoreIncrement = b.Touched(gameLevel.brickTexture);
+                    gameLevel.Score += scoreIncrement;
+                    if (scoreIncrement == 100)
+                    {
+                        gameLevel.Nb_bricks--;
                     }
                 }
             }
