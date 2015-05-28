@@ -102,7 +102,12 @@ namespace breakout {
                 if (this.hitbox.IntersectsRec(b.hitbox) && b.resistance > 0)
                 {
                     //BOUNCING HERE @TODO
-                    b.Touched(gameLevel.brickTexture);
+                    int scoreIncrement = b.Touched(gameLevel.brickTexture);
+                    gameLevel.Score += scoreIncrement;
+                    if (scoreIncrement == 100)
+                    {
+                        gameLevel.Nb_bricks--;
+                    }
                 }
             }
 

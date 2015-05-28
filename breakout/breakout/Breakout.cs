@@ -17,7 +17,6 @@ namespace breakout {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        private int score;
         private int lives;
         private GameState gameState;
         private GameLevel gameLevel;
@@ -82,7 +81,6 @@ namespace breakout {
             gameLevel.Initialize();
 
             gameState = GameState.STARTMENU;
-            score = 0;
             lives = 3;
 
             base.Initialize();
@@ -158,6 +156,11 @@ namespace breakout {
                     this.IsMouseVisible = true;
                     resumeButton.Update(mouseState, previousMouseState, ref gameState);
                     break;
+                case GameState.END:
+                    this.IsMouseVisible = true;
+                    // en attendant une interface de fin @TODO
+                    resumeButton.Update(mouseState, previousMouseState, ref gameState);
+                    break;
                 case GameState.EXIT:
                     this.Exit();
                     break;
@@ -174,6 +177,11 @@ namespace breakout {
             }
             if (keyboardState.IsKeyUp(Keys.Space) && previousKeyboardState.IsKeyDown(Keys.Space)) {
                 gameState = (gameState == GameState.PAUSED) ? (GameState.PLAYING) : (GameState.PAUSED);
+            }
+
+            if (gameLevel.Nb_bricks == 0)
+            {
+                gameState = GameState.END;
             }
 
             previousKeyboardState = keyboardState;
@@ -211,8 +219,8 @@ namespace breakout {
                 case GameState.PLAYING:
                     bat.Draw(spriteBatch, gameTime);
                     balls[0].Draw(spriteBatch, gameTime);
-                    spriteBatch.DrawString(scoreFont, "Score : " + score.ToString(), new Vector2(10, 10), Color.Blue);
-                    spriteBatch.DrawString(livesFont, "Lives : " + lives.ToString(), new Vector2(120, 10), Color.Yellow);
+                    spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.Blue);
+                    spriteBatch.DrawString(livesFont, "Lives : " + lives.ToString(), new Vector2(200, 10), Color.Yellow);
                     foreach (Brick b in gameLevel.BricksMap)
                     {
                         b.Draw(spriteBatch, gameTime);
@@ -220,8 +228,8 @@ namespace breakout {
                     break;
                 case GameState.PAUSED:
                     resumeButton.Draw(spriteBatch, gameTime);
-                    spriteBatch.DrawString(scoreFont, "Score : " + score.ToString(), new Vector2(10, 10), Color.Blue);
-                    spriteBatch.DrawString(livesFont, "Lives : " + lives.ToString(), new Vector2(120, 10), Color.Yellow);
+                    spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.Blue);
+                    spriteBatch.DrawString(livesFont, "Lives : " + lives.ToString(), new Vector2(200, 10), Color.Yellow);
                     break;
                 default:
                     break;
