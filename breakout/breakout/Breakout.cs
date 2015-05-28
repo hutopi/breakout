@@ -101,10 +101,11 @@ namespace breakout {
             exitButton.Position = new Vector2(Window.ClientBounds.Width / 2 - exitButton.Texture.Width / 2, Window.ClientBounds.Height * 2 / 3 - exitButton.Texture.Height / 2);
             resumeButton.Position = new Vector2(Window.ClientBounds.Width / 2 - resumeButton.Texture.Width / 2, Window.ClientBounds.Height / 2 - resumeButton.Texture.Height / 2);
 
-
             bat.LoadContent(Content, "bat");
             balls[0].LoadContent(Content, "ball", bat);
             scoreFont = Content.Load<SpriteFont>("Score");
+
+            gameLevel.brickTexture = new BrickTexture(this.buildTextures());
 
             foreach (Brick b in gameLevel.BricksMap)
             {
@@ -159,9 +160,6 @@ namespace breakout {
                 default:
                     break;
             }
-
-
-
 
             if (gameState != GameState.PAUSED) {
                 // CODE HERE FOR FOREACH BRICKS
@@ -225,6 +223,17 @@ namespace breakout {
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public Texture2D[] buildTextures()
+        {
+            Texture2D[] textures = new Texture2D[5];
+            textures[0] = Content.Load<Texture2D>("brick");
+            textures[1] = Content.Load<Texture2D>("brick1");
+            textures[2] = Content.Load<Texture2D>("brick2");
+            textures[3] = Content.Load<Texture2D>("brick3");
+            textures[4] = Content.Load<Texture2D>("brick4");
+            return textures;
         }
     }
 

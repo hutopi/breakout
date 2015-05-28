@@ -47,6 +47,26 @@ namespace breakout
             base.LoadContent(content, assetName);
         }
 
+        public void Touched(BrickTexture textures)
+        {
+            resistance--;
+            switch (resistance)
+            {
+                case 0:
+                    this.Texture = textures.zero;
+                    break;
+                case 1:
+                    this.Texture = textures.one;
+                    break;
+                case 2:
+                    this.Texture = textures.two;
+                    break;
+                case 3:
+                    this.Texture = textures.three;
+                    break;
+            }
+        }
+
         public override void Update()
         {
             base.Update();

@@ -99,9 +99,10 @@ namespace breakout {
             // boucing on the bricks
             foreach (Brick b in gameLevel.BricksMap)
             {
-                if (this.hitbox.IntersectsRec(b.hitbox))
+                if (this.hitbox.IntersectsRec(b.hitbox) && b.resistance > 0)
                 {
                     //BOUNCING HERE @TODO
+                    b.Touched(gameLevel.brickTexture);
                 }
             }
 

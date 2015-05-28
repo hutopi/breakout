@@ -18,6 +18,8 @@ namespace breakout
 
         public int level { get; set; }
 
+        public BrickTexture brickTexture { get; set; }
+
         private Brick[,] bricksMap;
 
         public Brick[,] BricksMap
@@ -74,6 +76,10 @@ namespace breakout
                 if (coord_x == 0 || coord_x == 7 || i == 1 || i == 10)
                 {
                     this.BricksMap[coord_x, i - 1] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y * i), 19, 45, r);
+                }
+                else if((coord_x == 3 || coord_x == 4) && (i == 5 || i == 6))
+                {
+                    this.BricksMap[coord_x, i - 1] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y * i), 19, 45, r-1);
                 }
                 else
                 {
