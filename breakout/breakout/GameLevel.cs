@@ -73,6 +73,7 @@ namespace breakout
                 default:
                     break;
             }
+            this.setBonus();
         }
 
         public void Initialize()
@@ -256,6 +257,30 @@ namespace breakout
                 for (int j = 0; j < nb_columns; j++)
                 {
                     this.BricksMap[i, j] = new Brick(this.screenWidth, this.screenHeight, new Vector2(0,0), 19, 45, 1);
+                }
+            }
+        }
+
+        public void setBonus()
+        {
+            Random rnd = new Random();
+            Random x_rnd = new Random();
+            Random y_rnd = new Random();
+            int x, y = 0;
+            int nbBonus = (int)(0.1 * (double)(this.nb_columns * this.nb_lines));
+            for (int i = 0; i < nbBonus; i++)
+            {
+                x = x_rnd.Next(0, this.nb_lines);
+                y = y_rnd.Next(0, this.nb_columns);
+
+                if (this.BricksMap[x, y].bonus == Bonus.NONE)
+                {
+                    Array values = Enum.GetValues(typeof(Bonus));
+                    this.BricksMap[x, y].bonus = (Bonus)values.GetValue(rnd.Next(1, values.Length));
+                }
+                else
+                {
+                    i--;
                 }
             }
         }
