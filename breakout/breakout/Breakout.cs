@@ -271,7 +271,7 @@ namespace breakout {
                     bat.Draw(spriteBatch, gameTime);
                     balls[0].Draw(spriteBatch, gameTime);
                     spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.Blue);
-                    spriteBatch.DrawString(livesFont, "Lives : " + lives.ToString(), new Vector2(200, 10), Color.Yellow);
+                    this.getLives(ref spriteBatch, gameTime);
                     foreach (Brick b in gameLevel.BricksMap) {
                         b.Draw(spriteBatch, gameTime);
                     }
