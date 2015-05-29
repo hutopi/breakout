@@ -12,6 +12,6 @@ namespace breakout
         HIGH_SPEED,
         LOW_SIZE,
         HIGH_SIZE,
-        REDUCED,
+        BAT_REDUCED,
     }
 }
