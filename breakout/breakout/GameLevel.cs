@@ -78,8 +78,8 @@ namespace breakout
         {
             int x = (int)((0.25)*(double)this.screenWidth);
             int y = 40;
-            int margin_h = 20;
-            int margin_w = 50;
+            int margin_h = 21;
+            int margin_w = 48;
 
             for (int i = 0; i < 8; i++)
             {
