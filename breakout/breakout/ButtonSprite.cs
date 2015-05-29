@@ -33,7 +33,10 @@ namespace breakout {
                     
                     switch (name) {
                         case "start":
-                            gameState = GameState.PLAYING;
+                            gameState = GameState.READYTOSTART;
+                            break;
+                        case "ex":
+                            gameState = GameState.RESTART;
                             break;
                         case "exit":
                             gameState = GameState.EXIT;
@@ -42,7 +45,9 @@ namespace breakout {
                             gameState = GameState.PLAYING;
                             break;
                         case "restart":
+                            Console.WriteLine(gameState);
                             gameState = GameState.RESTART;
+                            Console.WriteLine(gameState);
                             break;
                         case "next":
                             gameState = GameState.NEXT_LEVEL;

@@ -156,7 +156,7 @@ namespace breakout {
                     break;
                 case GameState.PLAYING:
                     this.IsMouseVisible = false;
-                    balls[0].Update(gameTime, bat.hitbox, gameLevel);
+                    balls[0].Update(gameTime, bat.hitbox, gameLevel, true);
                     bat.HandleInput(keyboardState, mouseState);
                     bat.Update(gameTime);
                     CheckIfBallOut();
@@ -176,6 +176,15 @@ namespace breakout {
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
                     break;
                 case GameState.RESTART:
+                    lives = 3;
+                    gameLevel.Score = 0;
+                    gameState = GameState.READYTOSTART;
+                    break;
+                case GameState.READYTOSTART:
+                    this.IsMouseVisible = false;
+                    balls[0].Update(gameTime, bat.hitbox, gameLevel, false);
+                    bat.HandleInput(keyboardState, mouseState);
+                    bat.Update(gameTime);
                     break;
                 case GameState.NEXT_LEVEL:
                     break;
@@ -186,7 +195,12 @@ namespace breakout {
                     break;
             }
 
-            if (keyboardState.IsKeyUp(Keys.Space) && previousKeyboardState.IsKeyDown(Keys.Space)) {
+            
+            if (gameState == GameState.READYTOSTART && keyboardState.IsKeyUp(Keys.Enter) && previousKeyboardState.IsKeyDown(Keys.Enter)) {
+                gameState = GameState.PLAYING;
+            }
+            if (keyboardState.IsKeyUp(Keys.Space) && previousKeyboardState.IsKeyDown(Keys.Space) ) {
+
                 gameState = (gameState == GameState.PAUSED) ? (GameState.PLAYING) : (GameState.PAUSED);
             }
 
@@ -194,24 +208,26 @@ namespace breakout {
                 gameState = GameState.WIN;
             }
 
-            if (lives < 0) {
+            if (lives < 0 && gameState != GameState.RESTART && gameState != GameState.EXIT) {
                 gameState = GameState.LOOSE;
             }
 
             previousKeyboardState = keyboardState;
             previousMouseState = mouseState;
 
+           
+
             base.Update(gameTime);
         }
 
         private void CheckIfBallOut() {
-            if (balls[0].Position.Y > Window.ClientBounds.Height) {
+            if (balls[0].Position.Y > bat.Position.Y - 2) {
                 lives--;
                 balls[0].Initialize();
                 bat.Position = new Vector2(Window.ClientBounds.Width / 2 - bat.Texture.Width / 2, Window.ClientBounds.Height - 10 - bat.Texture.Height / 2);
                 balls[0].Position = new Vector2(bat.Position.X + bat.Texture.Width / 2 - balls[0].Texture.Width / 2, bat.Position.Y - bat.Texture.Height - balls[0].Texture.Height / 2);
 
-                gameState = GameState.PAUSED;
+                gameState = GameState.READYTOSTART;
             }
         }
 
@@ -231,6 +247,15 @@ namespace breakout {
                     exitButton.Draw(spriteBatch, gameTime);
                     break;
                 case GameState.PLAYING:
+                    bat.Draw(spriteBatch, gameTime);
+                    balls[0].Draw(spriteBatch, gameTime);
+                    spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.Blue);
+                    spriteBatch.DrawString(livesFont, "Lives : " + lives.ToString(), new Vector2(200, 10), Color.Yellow);
+                    foreach (Brick b in gameLevel.BricksMap) {
+                        b.Draw(spriteBatch, gameTime);
+                    }
+                    break;
+                case GameState.READYTOSTART:
                     bat.Draw(spriteBatch, gameTime);
                     balls[0].Draw(spriteBatch, gameTime);
                     spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.Blue);
