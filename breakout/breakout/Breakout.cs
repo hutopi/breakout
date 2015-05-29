@@ -184,7 +184,14 @@ namespace breakout {
                     break;
                 case GameState.WIN:
                     this.IsMouseVisible = true;
-                    nextLevelButton.Update(mouseState, previousMouseState, ref gameState);
+                    if (gameLevel.Level < 3)
+                    {
+                        nextLevelButton.Update(mouseState, previousMouseState, ref gameState);
+                    }
+                    else
+                    {
+                        // Bravo, vous avez terminé le jeu ! @TODO
+                    }
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
                     break;
                 case GameState.LOOSE:
@@ -204,6 +211,13 @@ namespace breakout {
                     bat.Update(gameTime);
                     break;
                 case GameState.NEXT_LEVEL:
+                    lives = 3;
+                    gameLevel.Update();
+                    foreach (Brick b in gameLevel.BricksMap)
+                    {
+                        b.LoadContent(Content, "brick");
+                    }
+                    gameState = GameState.READYTOSTART;
                     break;
                 case GameState.EXIT:
                     this.Exit();
@@ -293,7 +307,14 @@ namespace breakout {
                     }
                     break;
                 case GameState.WIN:
-                    nextLevelButton.Draw(spriteBatch, gameTime);
+                    if (gameLevel.Level < 3)
+                    {
+                        nextLevelButton.Draw(spriteBatch, gameTime);
+                    }
+                    else
+                    {
+                        // Affiche du SpriteFont : Vous avez terminé le jeu ! @TODO
+                    }
                     exitButton.Draw(spriteBatch, gameTime);
                     break;
                 case GameState.LOOSE:

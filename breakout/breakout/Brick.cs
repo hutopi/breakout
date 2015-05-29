@@ -49,6 +49,11 @@ namespace breakout
 
         public int Touched(BrickTexture textures)
         {
+            if (resistance == 4)
+            {
+                return 0;
+            }
+
             resistance--;
             int newScore = 0;
             switch (resistance)
