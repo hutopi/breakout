@@ -18,6 +18,10 @@ namespace breakout {
             //the Postions are taken from the top left of the circle and not the center so you have to to move the postion with half the texture of the sprite to a have a circle hitbox that fits correclty the circle
             get { return new Circle((int)Position.X + Texture.Width / 2, (int)Position.Y + Texture.Height / 2, (double)Texture.Width / 2); }
         }
+        public Rectangle hitboxRec {
+            get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height); }
+
+        }
 
 
         public Ball(int screenWidth, int screenHeight) : base(screenWidth, screenHeight) { }
@@ -37,7 +41,6 @@ namespace breakout {
 
             base.LoadContent(content, assetName);
             Position = new Vector2(bat.Position.X + bat.Texture.Width / 2 - Texture.Width / 2, bat.Position.Y - bat.Texture.Height - Texture.Height / 2);
-            //Position = new Vector2(100, 100);
         }
 
         public void Update(GameTime gameTime, Rectangle batHitBox, GameLevel gameLevel, bool isGameStarted) {
@@ -104,14 +107,15 @@ namespace breakout {
                 base.Update(gameTime);
 
             } else {
-                Position = new Vector2(batHitBox.X + batHitBox.Width / 2 - this.Texture.Width/2, batHitBox.Y - this.Texture.Height);
-                
+                Position = new Vector2(batHitBox.X + batHitBox.Width / 2 - this.Texture.Width / 2, batHitBox.Y - this.Texture.Height);
+
             }
         }
 
         public void bouncingOnTheBricks(GameLevel gameLevel) {
+            Vector2 lastBrickPoistion = Vector2.Zero;
             foreach (Brick b in gameLevel.BricksMap) {
-                if (this.hitbox.IntersectsRec(b.hitbox) && b.resistance > 0) {
+                if (this.hitboxRec.Intersects(b.hitbox) && b.resistance > 0 && lastBrickPoistion.X != b.Position.X && lastBrickPoistion.Y != b.Position.Y) {
 
                     int scoreIncrement = b.Touched(gameLevel.brickTexture);
                     gameLevel.Score += scoreIncrement;
@@ -123,19 +127,29 @@ namespace breakout {
                     Rectangle leftRectangle = new Rectangle(b.hitbox.Left, b.hitbox.Y, 0, b.hitbox.Height);
                     Rectangle rightRectangle = new Rectangle(b.hitbox.Right, b.hitbox.Y, 0, b.hitbox.Height);
 
-                    if (hitbox.IntersectsRec(topRectangle) || hitbox.IntersectsRec(bottomRectangle)) {
-
-                        Speed = 0f;
-                        Direction = new Vector2(Direction.X, -Direction.Y);
-                        Speed = 0.3f;
-
-                    } else if (hitbox.IntersectsRec(leftRectangle) || hitbox.IntersectsRec(rightRectangle)) {
-                        Speed = 0f;
+                    if ((hitboxRec.Intersects(topRectangle) && hitboxRec.Intersects(bottomRectangle)) && (hitboxRec.Intersects(leftRectangle) || hitboxRec.Intersects(rightRectangle))) {
                         Direction = new Vector2(-Direction.X, Direction.Y);
-                        Speed = 0.3f;
+                        Console.WriteLine("top + bottom + right || left : " + Direction);
+                    } else if ((hitboxRec.Intersects(leftRectangle) && hitboxRec.Intersects(rightRectangle)) && (hitboxRec.Intersects(bottomRectangle) || hitboxRec.Intersects(topRectangle))) {
+                        
+                        Direction = new Vector2(Direction.X, -Direction.Y);
+                        Console.WriteLine("right + left + bottom || top : " + Direction);
+                    } else if ((hitboxRec.Intersects(topRectangle) && hitboxRec.Intersects(rightRectangle)) || (hitboxRec.Intersects(topRectangle) && hitboxRec.Intersects(leftRectangle)) || (hitboxRec.Intersects(bottomRectangle) && hitboxRec.Intersects(rightRectangle)) || (hitboxRec.Intersects(bottomRectangle) && hitboxRec.Intersects(leftRectangle))) {
+                        Direction = new Vector2(-Direction.X, -Direction.Y);
+                        Console.WriteLine("un coin " + Direction);
+                    } else if (hitboxRec.Intersects(topRectangle) || hitboxRec.Intersects(bottomRectangle)) {
+
+                        Direction = new Vector2(Direction.X, -Direction.Y);
+                        Console.WriteLine("top || bottom : " + Direction);
+
+                    } else if (hitboxRec.Intersects(leftRectangle) || hitboxRec.Intersects(rightRectangle)) {
+                        Direction = new Vector2(-Direction.X, Direction.Y);
+                        Console.WriteLine("right || left : " + Direction);
+
+
 
                     }
-
+                    lastBrickPoistion = b.Position;
 
                     /*double wy = (hitbox.Radius * 2 + b.hitbox.Width) * (hitbox.Y - b.hitbox.Y + b.hitbox.Height / 2);
                     double hx = (hitbox.Radius * 2 + b.hitbox.Height) * (hitbox.X - b.hitbox.X + b.hitbox.Width / 2);

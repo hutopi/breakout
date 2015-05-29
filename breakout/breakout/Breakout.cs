@@ -27,9 +27,11 @@ namespace breakout {
         private MouseState previousMouseState;
 
         //sprites
+        private Arrow arrow;
         private Bat bat;
         private List<Ball> balls;
         private SpriteFont scoreFont;
+        private SpriteFont helpControlFont;
         private Sprite[] livesSprites;
         private ButtonSprite startButton;
         private ButtonSprite exitButton;
@@ -51,6 +53,7 @@ namespace breakout {
             resumeButton = new ButtonSprite(screenWidth, screenHeight, "resume");
             restartButton = new ButtonSprite(screenWidth, screenHeight, "restart");
             nextLevelButton = new ButtonSprite(screenWidth, screenHeight, "next");
+            arrow = new Arrow(screenWidth, screenHeight);
 
             bat = new Bat(screenWidth, screenHeight);
             balls = new List<Ball>();
@@ -123,6 +126,7 @@ namespace breakout {
             bat.LoadContent(Content, "bat");
             balls[0].LoadContent(Content, "ball", bat);
             scoreFont = Content.Load<SpriteFont>("Score");
+            helpControlFont = Content.Load<SpriteFont>("helpControls");
             livesSprites[0].LoadContent(Content, "lives0");
             livesSprites[1].LoadContent(Content, "lives1");
             livesSprites[2].LoadContent(Content, "lives2");
@@ -165,6 +169,7 @@ namespace breakout {
                     this.IsMouseVisible = true;
                     startButton.Update(mouseState, previousMouseState, ref gameState);
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
+                    arrow.HandleInput(keyboardState, mouseState);
                     break;
                 case GameState.PLAYING:
                     this.IsMouseVisible = false;
@@ -211,12 +216,12 @@ namespace breakout {
             if (gameState == GameState.READYTOSTART && keyboardState.IsKeyUp(Keys.Enter) && previousKeyboardState.IsKeyDown(Keys.Enter)) {
                 gameState = GameState.PLAYING;
             }
-            if (keyboardState.IsKeyUp(Keys.Space) && previousKeyboardState.IsKeyDown(Keys.Space) ) {
+            if (keyboardState.IsKeyUp(Keys.Space) && previousKeyboardState.IsKeyDown(Keys.Space) && gameState != GameState.STARTMENU ) {
 
                 gameState = (gameState == GameState.PAUSED) ? (GameState.PLAYING) : (GameState.PAUSED);
             }
 
-            if (gameLevel.Nb_bricks == 0) {
+            if (gameLevel.Nb_bricks == 0 && gameState != GameState.NEXT_LEVEL && gameState != GameState.EXIT) {
                 gameState = GameState.WIN;
             }
 
@@ -271,6 +276,7 @@ namespace breakout {
                     bat.Draw(spriteBatch, gameTime);
                     balls[0].Draw(spriteBatch, gameTime);
                     spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.Blue);
+                    spriteBatch.DrawString(helpControlFont, "Press Enter to launch the ball and Space to pause the game", new Vector2(200,10),Color.White);
                     this.getLives(ref spriteBatch, gameTime);
                     foreach (Brick b in gameLevel.BricksMap) {
                         b.Draw(spriteBatch, gameTime);
