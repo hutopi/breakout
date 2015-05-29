@@ -80,9 +80,12 @@ namespace breakout
             this.constructLevel();
         }
 
-        public void Update()
+        public void Update(bool restart)
         {
-            this.Level++;
+            if (!restart)
+            {
+                this.Level++;
+            }
             this.nb_bricks = this.nb_lines * this.nb_columns;
             this.Initialize();
         }

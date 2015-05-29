@@ -200,9 +200,7 @@ namespace breakout {
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
                     break;
                 case GameState.RESTART:
-                    lives = 3;
-                    gameLevel.Score = 0;
-                    gameState = GameState.READYTOSTART;
+                    this.Update(true);
                     break;
                 case GameState.READYTOSTART:
                     this.IsMouseVisible = false;
@@ -211,13 +209,7 @@ namespace breakout {
                     bat.Update(gameTime);
                     break;
                 case GameState.NEXT_LEVEL:
-                    lives = 3;
-                    gameLevel.Update();
-                    foreach (Brick b in gameLevel.BricksMap)
-                    {
-                        b.LoadContent(Content, "brick");
-                    }
-                    gameState = GameState.READYTOSTART;
+                    this.Update(false);
                     break;
                 case GameState.EXIT:
                     this.Exit();
@@ -249,6 +241,18 @@ namespace breakout {
            
 
             base.Update(gameTime);
+        }
+
+        private void Update(bool restart)
+        {
+            lives = 3;
+            gameLevel.Score = 0;
+            gameLevel.Update(restart);
+            foreach (Brick b in gameLevel.BricksMap)
+            {
+                b.LoadContent(Content, "brick");
+            }
+            gameState = GameState.READYTOSTART;
         }
 
         private void CheckIfBallOut() {
