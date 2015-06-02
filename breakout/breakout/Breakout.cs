@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using breakout.Textures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -133,7 +134,8 @@ namespace breakout {
             livesSprites[3].LoadContent(Content, "lives3");
             livesSprites[4].LoadContent(Content, "lives4");
 
-            gameLevel.brickTexture = new BrickTexture(this.buildTextures());
+            gameLevel.BrickTexture = new BrickTexture(this.buildBrickTextures());
+            gameLevel.BatTexture = this.buildBatTextures();
 
             foreach (Brick b in gameLevel.BricksMap) {
                 b.LoadContent(Content, "brick");
@@ -268,6 +270,7 @@ namespace breakout {
             if (balls[0].Position.Y > bat.Position.Y - 2) {
                 gameLevel.Lives--;
                 balls[0].Initialize();
+                bat.Texture = gameLevel.BatTexture.Regular;
                 bat.Position = new Vector2(Window.ClientBounds.Width / 2 - bat.Texture.Width / 2, Window.ClientBounds.Height - 10 - bat.Texture.Height / 2);
                 balls[0].Position = new Vector2(bat.Position.X + bat.Texture.Width / 2 - balls[0].Texture.Width / 2, bat.Position.Y - bat.Texture.Height - balls[0].Texture.Height / 2);
 
@@ -363,7 +366,7 @@ namespace breakout {
             base.Draw(gameTime);
         }
 
-        public Texture2D[] buildTextures() {
+        public Texture2D[] buildBrickTextures() {
             Texture2D[] textures = new Texture2D[5];
             textures[0] = Content.Load<Texture2D>("brick");
             textures[1] = Content.Load<Texture2D>("brick1");
@@ -371,6 +374,14 @@ namespace breakout {
             textures[3] = Content.Load<Texture2D>("brick3");
             textures[4] = Content.Load<Texture2D>("brick4");
             return textures;
+        }
+
+        public BatTextures buildBatTextures() {
+            Texture2D reduced = Content.Load<Texture2D>("reduced_bat");
+            Texture2D regular = Content.Load<Texture2D>("bat");
+            Texture2D extended = Content.Load<Texture2D>("extended_bat");
+            return new BatTextures(reduced, regular, extended);
+
         }
 
         public void getLives(ref SpriteBatch spriteBatch, GameTime gameTime)

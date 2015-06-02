@@ -124,7 +124,7 @@ namespace breakout {
                     }
 
                     Rectangle[] sideRectangles = buildSideRectangles(b);
-                    int scoreIncrement = b.Touched(gameLevel.brickTexture);
+                    int scoreIncrement = b.Touched(gameLevel.BrickTexture);
                     gameLevel.Score += scoreIncrement;
                     if (scoreIncrement == 100) {
                         gameLevel.Nb_bricks--;

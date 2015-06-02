@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using breakout.Textures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -67,7 +68,22 @@ namespace breakout
             set { score = value; }
         }
 
-        public BrickTexture brickTexture { get; set; }
+        private BrickTexture brickTexture;
+
+        public BrickTexture BrickTexture
+        {
+            get { return brickTexture; }
+            set { brickTexture = value; }
+        }
+
+        private BatTextures batTexture;
+
+        public BatTextures BatTexture
+        {
+            get { return batTexture; }
+            set { batTexture = value; }
+        }
+
 
         private Brick[,] bricksMap;
 

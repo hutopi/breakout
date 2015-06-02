@@ -28,8 +28,8 @@ namespace breakout.Textures
 
         public Texture2D Extended
         {
-            get { return regular; }
-            set { regular = value; }
+            get { return extended; }
+            set { extended = value; }
         }
 
 

@@ -65,13 +65,15 @@ namespace breakout
                             if (b.Resistance != 0 && b.Resistance != 4)
                             {
                                 b.Resistance = 3;
-                                b.UpdateTexture(gameLevel.brickTexture);
+                                b.UpdateTexture(gameLevel.BrickTexture);
                             }
                         }
                         break;
                     case BonusType.BAT_REDUCED:
-                        //Accès à la bat
-                        Console.WriteLine("Got IT");
+                        gameLevel.Bat.Texture = gameLevel.BatTexture.Reduced;
+                        break;
+                    case BonusType.BAT_EXTENDED:
+                        gameLevel.Bat.Texture = gameLevel.BatTexture.Extended;
                         break;
                     case BonusType.DOWN_LIFE:
                         if (gameLevel.Lives > 0)
@@ -85,7 +87,7 @@ namespace breakout
                             if (b.Resistance != 0 && b.Resistance != 4)
                             {
                                 b.Resistance = 1;
-                                b.UpdateTexture(gameLevel.brickTexture);
+                                b.UpdateTexture(gameLevel.BrickTexture);
                             }
                         }
                         break;
