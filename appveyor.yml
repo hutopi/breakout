@@ -4,6 +4,8 @@ os: Windows Server 2012 R2
 configuration: Release
 init:
 - ps: Install-WindowsFeature Desktop-Experience
+- ps: Restart-Computer -Force
+- ps: Start-Sleep -s 10
 install:
 - ps: >-
     Function RemoveIfExists($path) {
