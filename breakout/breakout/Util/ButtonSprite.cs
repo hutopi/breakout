@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 namespace breakout {
-    class ButtonSprite : Sprite {
+    public class ButtonSprite : Sprite {
 
         private String name;
         private String Name {

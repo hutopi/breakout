@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 namespace breakout {
-    class Ball : MovingSprite {
+    public class Ball : MovingSprite {
 
         public Circle hitbox {
             //the Postions are taken from the top left of the circle and not the center so you have to to move the postion with half the texture of the sprite to a have a circle hitbox that fits correclty the circle
@@ -103,7 +103,7 @@ namespace breakout {
                 /*Thread thread = new Thread(() => bouncingOnTheBricks(gameLevel));
                 thread.Start();
                 thread.I*/
-                bouncingOnTheBricks(gameLevel);
+                bouncingOnTheBricks(gameTime, batHitBox, gameLevel);
                 base.Update(gameTime);
 
             } else {
@@ -112,10 +112,16 @@ namespace breakout {
             }
         }
 
-        public void bouncingOnTheBricks(GameLevel gameLevel) {
+        public void bouncingOnTheBricks(GameTime gameTime, Rectangle batHitBox, GameLevel gameLevel)
+        {
             Brick lastBrick = null;
             foreach (Brick b in gameLevel.BricksMap) {
-                if (this.hitbox.IntersectsRec(b.hitbox) && b.resistance > 0) {
+                if (this.hitbox.IntersectsRec(b.hitbox) && b.Resistance > 0) {
+
+                    if (b.Bonus.Type != BonusType.NONE && b.Bonus.Activated == false)
+                    {
+                        b.Bonus.Activated = true;
+                    }
 
                     Rectangle[] sideRectangles = buildSideRectangles(b);
                     int scoreIncrement = b.Touched(gameLevel.brickTexture);

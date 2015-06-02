@@ -13,22 +13,22 @@ namespace breakout
         public int height { get; set; }
         public int width { get; set; }
 
-        public Bonus bonus { get; set; }
+        public Bonus Bonus { get; set; }
 
-        public int resistance { get; set; }
+        public int Resistance { get; set; }
 
         public Rectangle hitbox
         {
             get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height); }
         }
 
-        public Brick(int screenWidth, int screenHeight, Vector2 position, int h, int w, int r = 1, Bonus b = Bonus.NONE) : base( screenWidth, screenHeight)
+        public Brick(int screenWidth, int screenHeight, Vector2 position, int h, int w, int r = 1, BonusType b = BonusType.NONE) : base( screenWidth, screenHeight)
         {
             this.height = h;
             this.width = w;
             this.Position = position;
-            this.resistance = r;
-            this.bonus = b;
+            this.Resistance = r;
+            this.Bonus = new Bonus(screenWidth, screenHeight, b);
         }
 
         public override void Initialize()
@@ -43,39 +43,46 @@ namespace breakout
 
         public override void LoadContent(ContentManager content, string assetName)
         {
-            assetName += this.resistance;
+            assetName += this.Resistance;
             base.LoadContent(content, assetName);
         }
 
         public int Touched(BrickTexture textures)
         {
-            if (resistance == 4)
+            if (Resistance >= 4)
             {
                 return 0;
             }
+            else
+            {
+                Resistance--;
+                return this.UpdateTexture(textures);
+            }
+        }
 
-            resistance--;
+        public int UpdateTexture(BrickTexture textures)
+        {
             int newScore = 0;
-            switch (resistance)
+
+            switch (Resistance)
             {
                 case 0:
-                    this.Texture = textures.zero;
+                    this.Texture = textures.Zero;
                     newScore = 100;
                     break;
                 case 1:
-                    this.Texture = textures.one;
+                    this.Texture = textures.One;
                     newScore = 50;
                     break;
                 case 2:
-                    this.Texture = textures.two;
+                    this.Texture = textures.Two;
                     newScore = 25;
                     break;
                 case 3:
-                    this.Texture = textures.three;
+                    this.Texture = textures.Three;
                     newScore = 10;
                     break;
             }
-
             return newScore;
         }
 

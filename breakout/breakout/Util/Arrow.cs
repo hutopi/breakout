@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 namespace breakout {
-    class Arrow : Sprite {
+    public class Arrow : Sprite {
 
         private LinkedList<ButtonSprite> buttonSprites;
         /*public <ButtonSprite> ButtonSprites {

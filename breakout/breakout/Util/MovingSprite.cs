@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace breakout {
     public class MovingSprite : Sprite {
-        
+
         private Vector2 direction;
         public Vector2 Direction {
             get { return direction; }

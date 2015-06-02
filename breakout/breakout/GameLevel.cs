@@ -16,6 +16,14 @@ namespace breakout
         private int screenWidth;
         private int screenHeight;
 
+        private int lives;
+
+        public int Lives
+        {
+            get { return lives; }
+            set { lives = value; }
+        }
+
         private int nb_bricks;
 
         public int Nb_bricks
@@ -23,6 +31,31 @@ namespace breakout
             get { return nb_bricks; }
             set { nb_bricks = value; }
         }
+
+        private int nbBonus;
+
+        public int NbBonus
+        {
+            get { return nbBonus; }
+            set { nbBonus = value; }
+        }
+
+        private Bat bat;
+
+        public Bat Bat
+        {
+            get { return bat; }
+            set { bat = value; }
+        }
+
+        private List<Ball> balls;
+
+        public List<Ball> Balls
+        {
+            get { return balls; }
+            set { balls = value; }
+        }
+        
 
         public int Level { get; set; }
 
@@ -46,18 +79,22 @@ namespace breakout
 
         public GameLevel() { }
 
-        public GameLevel(int screenWidth, int screenHeight, int level)
+        public GameLevel(int screenWidth, int screenHeight, int level, List<Ball> balls, Bat bat)
         {
             this.screenWidth = screenWidth;
             this.screenHeight = (int)(0.6*(double)screenHeight);
             this.Level = level;
+            this.Balls = balls;
+            this.Bat = bat;
             this.BricksMap = new Brick[this.nb_lines, this.nb_columns];
             this.nb_bricks = this.nb_lines*this.nb_columns;
+            this.nbBonus = (int)(0.1 * (double)(this.nb_columns * this.nb_lines));
         }
 
         public void constructLevel()
         {
             this.Score = 0;
+            this.Lives = 3;
             switch (this.Level)
             {
                 case 1:
@@ -88,7 +125,32 @@ namespace breakout
                 this.Level++;
             }
             this.nb_bricks = this.nb_lines * this.nb_columns;
+            this.nbBonus = (int)(0.1 * (double)(this.nb_columns * this.nb_lines));
             this.Initialize();
+        }
+
+        public void InitializeBonus()
+        {
+            int index = 0;
+            foreach (Brick brick in this.BricksMap)
+            {
+                if (brick.Bonus.Type != BonusType.NONE)
+                {
+                    brick.Bonus.Initialize();
+                    brick.Bonus.Position = new Vector2(brick.Position.X, brick.Position.Y);
+                    brick.Bonus.Speed = 0.3f;
+
+                    if (brick.Bonus.Type == BonusType.LOW_RESISTANCE || brick.Bonus.Type == BonusType.LOW_SPEED || brick.Bonus.Type == BonusType.UP_LIFE || brick.Bonus.Type == BonusType.BAT_EXTENDED)
+                    {
+                        brick.Bonus.Name = "bonus";
+                    }
+                    else
+                    {
+                        brick.Bonus.Name = "malus";
+                    }
+                    index++;
+                }
+            }
         }
 
         public void LevelOne()
@@ -267,16 +329,16 @@ namespace breakout
             Random x_rnd = new Random();
             Random y_rnd = new Random();
             int x, y = 0;
-            int nbBonus = (int)(0.1 * (double)(this.nb_columns * this.nb_lines));
-            for (int i = 0; i < nbBonus; i++)
+
+            for (int i = 0; i < this.nbBonus; i++)
             {
                 x = x_rnd.Next(0, this.nb_lines);
                 y = y_rnd.Next(0, this.nb_columns);
 
-                if (this.BricksMap[x, y].bonus == Bonus.NONE)
+                if (this.BricksMap[x, y].Bonus.Type == BonusType.NONE)
                 {
-                    Array values = Enum.GetValues(typeof(Bonus));
-                    this.BricksMap[x, y].bonus = (Bonus)values.GetValue(rnd.Next(1, values.Length));
+                    Array values = Enum.GetValues(typeof(BonusType));
+                    this.BricksMap[x, y].Bonus.Type = (BonusType)values.GetValue(rnd.Next(1, values.Length));
                 }
                 else
                 {
