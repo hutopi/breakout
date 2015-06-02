@@ -2,6 +2,8 @@ version: 1.0.{build}
 skip_tags: true
 os: Windows Server 2012 R2
 configuration: Release
+init:
+- ps: Install-WindowsFeature Desktop-Experience
 install:
 - ps: >-
     Function RemoveIfExists($path) {
@@ -46,12 +48,6 @@ install:
     $currentLocation = (Get-Location).ToString();
 
     $wc = New-Object System.Net.WebClient
-
-
-    $wc.DownloadFile("http://download.microsoft.com/download/D/F/9/DF92CB69-ABB8-4C81-9621-78A8E57531A3/Windows6.3-KB2835517-x64.msu", $currentLocation + "\media.msu");
-
-    Start-Process -FilePath wusa.exe ($currentLocation + "\media.msu");
-
 
     Write-Host "`r`n";
 
