@@ -13,12 +13,9 @@ using Microsoft.Xna.Framework.Media;
 namespace breakout {
     public class ButtonSprite : Sprite {
 
-        private String name;
-        private String Name {
-            get { return name; }
-            set { name = value; }
-        }
-        public Rectangle hitbox {
+        private String name { get; set;}
+
+        public Rectangle Hitbox {
             get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height); }
         }
 
@@ -28,7 +25,7 @@ namespace breakout {
 
         public void Update(MouseState mousestate, MouseState previousMouseState, ref GameState gameState) {
             
-            if(hitbox.Intersects(new Rectangle(mousestate.X,mousestate.Y,10,10))){
+            if(Hitbox.Intersects(new Rectangle(mousestate.X,mousestate.Y,10,10))){
                 if (previousMouseState.LeftButton == ButtonState.Pressed && mousestate.LeftButton == ButtonState.Released) {
                     
                     switch (name) {

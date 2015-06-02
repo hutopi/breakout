@@ -9,7 +9,6 @@ namespace breakout
     public class Bonus : MovingSprite
     {
         private string name;
-
         public string Name
         {
             get { return name; }
@@ -17,7 +16,6 @@ namespace breakout
         }
 
         private BonusType type;
-
         public BonusType Type
         {
             get { return type; }
@@ -25,14 +23,13 @@ namespace breakout
         }
 
         private bool activated = false;
-
         public bool Activated
         {
             get { return activated; }
             set { activated = value; }
         }
 
-        public Rectangle hitbox
+        public Rectangle Hitbox
         {
             get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height); }
         }
@@ -49,14 +46,14 @@ namespace breakout
         public void Update(GameTime gameTime, Rectangle batHitBox, GameLevel gameLevel, Brick brick)
         {
             Direction = new Vector2(0, 1);
-            if (this.hitbox.Intersects(batHitBox))
+            if (this.Hitbox.Intersects(batHitBox))
             {
                 switch (this.Type)
                 {
                     case BonusType.HIGH_SPEED:
                         foreach (Ball b in gameLevel.Balls)
                         {
-                            b.Speed *= 2;
+                            b.Speed *= 1.5f;
                         }
                         break;
                     case BonusType.HIGH_RESISTANCE:
@@ -94,7 +91,7 @@ namespace breakout
                     case BonusType.LOW_SPEED:
                         foreach (Ball b in gameLevel.Balls)
                         {
-                            b.Speed /= 2;
+                            b.Speed /= 1.5f;
                         }
                         break;
                     case BonusType.UP_LIFE:

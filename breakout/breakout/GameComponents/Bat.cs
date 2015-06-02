@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Media;
 namespace breakout {
     public class Bat : MovingSprite {
 
-        public Rectangle hitbox {
+        public Rectangle Hitbox {
             get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height); }
         }
 

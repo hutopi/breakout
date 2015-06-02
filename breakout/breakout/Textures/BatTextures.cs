@@ -9,7 +9,6 @@ namespace breakout.Textures
     public class BatTextures
     {
         private Texture2D reduced;
-
         public Texture2D Reduced
         {
             get { return reduced; }
@@ -17,7 +16,6 @@ namespace breakout.Textures
         }
 
         private Texture2D regular;
-
         public Texture2D Regular
         {
             get { return regular; }
@@ -25,7 +23,6 @@ namespace breakout.Textures
         }
 
         private Texture2D extended;
-
         public Texture2D Extended
         {
             get { return extended; }

@@ -9,7 +9,6 @@ namespace breakout
     public class BrickTexture
     {
         private Texture2D zero;
-
         public Texture2D Zero
         {
             get { return zero; }
@@ -17,7 +16,6 @@ namespace breakout
         }
 
         private Texture2D one;
-
         public Texture2D One
         {
             get { return one; }
@@ -25,7 +23,6 @@ namespace breakout
         }
 
         private Texture2D two;
-
         public Texture2D Two
         {
             get { return two; }
@@ -33,7 +30,6 @@ namespace breakout
         }
 
         private Texture2D three;
-
         public Texture2D Three
         {
             get { return three; }
@@ -41,7 +37,6 @@ namespace breakout
         }
 
         private Texture2D four;
-
         public Texture2D Four
         {
             get { return four; }

@@ -18,11 +18,13 @@ namespace breakout {
             get { return x; }
             set { x = value; }
         }
+
         private int y;
         public int Y {
             get { return y; }
             set { y = value; }
         }
+
         private double radius;
         public double Radius {
             get { return radius; }
@@ -34,6 +36,7 @@ namespace breakout {
             this.y = y;
             this.radius = radius;
         }
+
         public bool IntersectsRec(Rectangle rectangle) {
 
 

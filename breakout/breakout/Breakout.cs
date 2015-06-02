@@ -178,11 +178,11 @@ namespace breakout {
                     break;
                 case GameState.PLAYING:
                     this.IsMouseVisible = false;
-                    balls[0].Update(gameTime, bat.hitbox, gameLevel, true);
+                    balls[0].Update(gameTime, bat.Hitbox, gameLevel, true);
                     foreach(Brick b in gameLevel.BricksMap){
                         if (b.Bonus.Activated == true)
                         {
-                            b.Bonus.Update(gameTime, bat.hitbox, gameLevel, b);
+                            b.Bonus.Update(gameTime, bat.Hitbox, gameLevel, b);
                         }
                     }
                     bat.HandleInput(keyboardState, mouseState);
@@ -215,7 +215,7 @@ namespace breakout {
                     break;
                 case GameState.READYTOSTART:
                     this.IsMouseVisible = false;
-                    balls[0].Update(gameTime, bat.hitbox, gameLevel, false);
+                    balls[0].Update(gameTime, bat.Hitbox, gameLevel, false);
                     bat.HandleInput(keyboardState, mouseState);
                     bat.Update(gameTime);
                     break;

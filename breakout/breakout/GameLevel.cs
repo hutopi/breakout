@@ -12,13 +12,12 @@ namespace breakout
 {
     public class GameLevel
     {
-        private int nb_columns = 10;
-        private int nb_lines = 8;
+        private int columns = 10;
+        private int lines = 8;
         private int screenWidth;
         private int screenHeight;
 
         private int lives;
-
         public int Lives
         {
             get { return lives; }
@@ -26,7 +25,6 @@ namespace breakout
         }
 
         private int nb_bricks;
-
         public int Nb_bricks
         {
             get { return nb_bricks; }
@@ -34,7 +32,6 @@ namespace breakout
         }
 
         private int nbBonus;
-
         public int NbBonus
         {
             get { return nbBonus; }
@@ -42,7 +39,6 @@ namespace breakout
         }
 
         private Bat bat;
-
         public Bat Bat
         {
             get { return bat; }
@@ -50,7 +46,6 @@ namespace breakout
         }
 
         private List<Ball> balls;
-
         public List<Ball> Balls
         {
             get { return balls; }
@@ -61,7 +56,6 @@ namespace breakout
         public int Level { get; set; }
 
         private int score = 0;
-
         public int Score
         {
             get { return score; }
@@ -69,7 +63,6 @@ namespace breakout
         }
 
         private BrickTexture brickTexture;
-
         public BrickTexture BrickTexture
         {
             get { return brickTexture; }
@@ -77,7 +70,6 @@ namespace breakout
         }
 
         private BatTextures batTexture;
-
         public BatTextures BatTexture
         {
             get { return batTexture; }
@@ -86,7 +78,6 @@ namespace breakout
 
 
         private Brick[,] bricksMap;
-
         public Brick[,] BricksMap
         {
             get { return bricksMap; }
@@ -102,9 +93,9 @@ namespace breakout
             this.Level = level;
             this.Balls = balls;
             this.Bat = bat;
-            this.BricksMap = new Brick[this.nb_lines, this.nb_columns];
-            this.nb_bricks = this.nb_lines*this.nb_columns;
-            this.nbBonus = (int)(0.1 * (double)(this.nb_columns * this.nb_lines));
+            this.BricksMap = new Brick[this.lines, this.columns];
+            this.nb_bricks = this.lines*this.columns;
+            this.nbBonus = (int)(0.1 * (double)(this.columns * this.lines));
         }
 
         public void constructLevel()
@@ -126,7 +117,7 @@ namespace breakout
                 default:
                     break;
             }
-            this.setBonus();
+            this.SetBonus();
         }
 
         public void Initialize()
@@ -140,8 +131,8 @@ namespace breakout
             {
                 this.Level++;
             }
-            this.nb_bricks = this.nb_lines * this.nb_columns;
-            this.nbBonus = (int)(0.1 * (double)(this.nb_columns * this.nb_lines));
+            this.nb_bricks = this.lines * this.columns;
+            this.nbBonus = (int)(0.1 * (double)(this.columns * this.lines));
             this.Initialize();
         }
 
@@ -178,14 +169,14 @@ namespace breakout
             int r = 3;
 
 
-            for (int coord_x = 0; coord_x < nb_lines; coord_x++)
+            for (int coord_x = 0; coord_x < lines; coord_x++)
             {
                 if (coord_x != 0)
                 {
                     x = x + margin_w;
                 }
 
-                for (int j = 1; j <= nb_columns; j++)
+                for (int j = 1; j <= columns; j++)
                 {
                     if (j == 1)
                     {
@@ -330,16 +321,16 @@ namespace breakout
 
         public void LevelThree()
         {// @TODO
-            for (int i = 0; i < nb_lines; i++)
+            for (int i = 0; i < lines; i++)
             {
-                for (int j = 0; j < nb_columns; j++)
+                for (int j = 0; j < columns; j++)
                 {
                     this.BricksMap[i, j] = new Brick(this.screenWidth, this.screenHeight, new Vector2(0,0), 19, 45, 1);
                 }
             }
         }
 
-        public void setBonus()
+        public void SetBonus()
         {
             Random rnd = new Random();
             Random x_rnd = new Random();
@@ -348,8 +339,8 @@ namespace breakout
 
             for (int i = 0; i < this.nbBonus; i++)
             {
-                x = x_rnd.Next(0, this.nb_lines);
-                y = y_rnd.Next(0, this.nb_columns);
+                x = x_rnd.Next(0, this.lines);
+                y = y_rnd.Next(0, this.columns);
 
                 if (this.BricksMap[x, y].Bonus.Type == BonusType.NONE)
                 {

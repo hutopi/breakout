@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Media;
 namespace breakout {
     public class Ball : MovingSprite {
 
-        public Circle hitbox {
+        public Circle Hitbox {
             //the Postions are taken from the top left of the circle and not the center so you have to to move the postion with half the texture of the sprite to a have a circle hitbox that fits correclty the circle
             get { return new Circle((int)Position.X + Texture.Width / 2, (int)Position.Y + Texture.Height / 2, (double)Texture.Width / 2); }
         }
@@ -62,10 +62,11 @@ namespace breakout {
                 // puis grace aux cours de trigo, je donne une direction à la balle plus moins verticale en fonction de son rapprochement avec le centre de la raquette
                 // du coup si vous tapez pile au milieu, la balle repart verticalement, ensuite plus vous tapez en vous éloignant du milieu plus la composante horizontale X du vecteur de la direction sera importante
                 // c'est pas parfait mais ça permet de faire plus de mouvements que de simplement inverser la direction Y et donc de ne pas subir les mouvements de la balles dues au rebons sur les autres composants du jeu.
-                if ((Direction.Y > 0 && this.hitbox.IntersectsRec(batHitBox))) {
-                    if (this.hitbox.X <= batHitBox.X + batHitBox.Width && this.hitbox.X > batHitBox.X + batHitBox.Width / 2) {
+                if ((Direction.Y > 0 && this.Hitbox.IntersectsRec(batHitBox))) {
+                    if (this.Hitbox.X <= batHitBox.X + batHitBox.Width && this.Hitbox.X > batHitBox.X + batHitBox.Width / 2)
+                    {
 
-                        double gapBetweenBatAndBall = batHitBox.X + batHitBox.Width - this.hitbox.X; //détermine l'écart X de la balle par rapport à l'extrémité droite de la raquette
+                        double gapBetweenBatAndBall = batHitBox.X + batHitBox.Width - this.Hitbox.X; //détermine l'écart X de la balle par rapport à l'extrémité droite de la raquette
                         double theta = (gapBetweenBatAndBall * (Math.PI / 2)) / (batHitBox.Width / 2); // produit en croix pour une valeur théta en radian de l'angle que l'on souhaite obtenir en fonction de l'écart gapBetweenBatAndBall
                         if (theta <= 0.2) {
                             Direction = new Vector2((float)Math.Cos(theta), -(float)Math.Sin(Math.PI / 6));
@@ -76,9 +77,10 @@ namespace breakout {
 
                         Console.WriteLine(Direction);
                     }
-                    if (this.hitbox.X < batHitBox.X + batHitBox.Width / 2 && this.hitbox.X >= batHitBox.X) {
+                    if (this.Hitbox.X < batHitBox.X + batHitBox.Width / 2 && this.Hitbox.X >= batHitBox.X)
+                    {
 
-                        double gapBetweenBatAndBall = this.hitbox.X - batHitBox.X;
+                        double gapBetweenBatAndBall = this.Hitbox.X - batHitBox.X;
                         double theta = (gapBetweenBatAndBall * (Math.PI / 2)) / (batHitBox.Width / 2);
                         if (theta <= 0.2) {
                             Direction = new Vector2(-(float)Math.Cos(theta), -(float)Math.Sin(Math.PI / 6));
@@ -90,7 +92,8 @@ namespace breakout {
 
                         Console.WriteLine(Direction);
                     }
-                    if (this.hitbox.X == batHitBox.X + batHitBox.Width / 2) {
+                    if (this.Hitbox.X == batHitBox.X + batHitBox.Width / 2)
+                    {
                         Direction = new Vector2(0, -1);
                         Console.WriteLine(Direction);
                     }
@@ -116,7 +119,8 @@ namespace breakout {
         {
             Brick lastBrick = null;
             foreach (Brick b in gameLevel.BricksMap) {
-                if (this.hitbox.IntersectsRec(b.hitbox) && b.Resistance > 0) {
+                if (this.Hitbox.IntersectsRec(b.Hitbox) && b.Resistance > 0)
+                {
 
                     if (b.Bonus.Type != BonusType.NONE && b.Bonus.Activated == false)
                     {
@@ -134,19 +138,26 @@ namespace breakout {
                     if (lastBrick != null) {
                         Rectangle[] sideRectanglesLast = buildSideRectangles(lastBrick);
 
-                        if ((hitbox.IntersectsRec(sideRectangles[0]) && hitbox.IntersectsRec(sideRectangles[3])) && (hitbox.IntersectsRec(sideRectanglesLast[0]) && hitbox.IntersectsRec(sideRectanglesLast[2]))) {
+                        if ((Hitbox.IntersectsRec(sideRectangles[0]) && Hitbox.IntersectsRec(sideRectangles[3])) && (Hitbox.IntersectsRec(sideRectanglesLast[0]) && Hitbox.IntersectsRec(sideRectanglesLast[2])))
+                        {
                             Direction = new Vector2(Direction.X, -Direction.Y);
                             Console.WriteLine("coin haut droit A + coin haut gauche B :" + Direction);
                             break;
-                        } else if ((hitbox.IntersectsRec(sideRectangles[1]) && hitbox.IntersectsRec(sideRectangles[3])) && (hitbox.IntersectsRec(sideRectanglesLast[1]) && hitbox.IntersectsRec(sideRectanglesLast[2]))) {
+                        }
+                        else if ((Hitbox.IntersectsRec(sideRectangles[1]) && Hitbox.IntersectsRec(sideRectangles[3])) && (Hitbox.IntersectsRec(sideRectanglesLast[1]) && Hitbox.IntersectsRec(sideRectanglesLast[2])))
+                        {
                             Direction = new Vector2(Direction.X, -Direction.Y);
                             Console.WriteLine("coin bas droit A + coin bas gauche B :" + Direction);
                             break;
-                        } else if ((hitbox.IntersectsRec(sideRectangles[0]) && hitbox.IntersectsRec(sideRectangles[3])) && (hitbox.IntersectsRec(sideRectanglesLast[1]) && hitbox.IntersectsRec(sideRectanglesLast[3]))) {
+                        }
+                        else if ((Hitbox.IntersectsRec(sideRectangles[0]) && Hitbox.IntersectsRec(sideRectangles[3])) && (Hitbox.IntersectsRec(sideRectanglesLast[1]) && Hitbox.IntersectsRec(sideRectanglesLast[3])))
+                        {
                             Direction = new Vector2(-Direction.X, -Direction.Y);
                             Console.WriteLine("coin haut droit A + coin bas droit B :" + Direction);
                             break;
-                        } else if ((hitbox.IntersectsRec(sideRectangles[0]) && hitbox.IntersectsRec(sideRectangles[2])) && (hitbox.IntersectsRec(sideRectanglesLast[1]) && hitbox.IntersectsRec(sideRectanglesLast[3]))) {
+                        }
+                        else if ((Hitbox.IntersectsRec(sideRectangles[0]) && Hitbox.IntersectsRec(sideRectangles[2])) && (Hitbox.IntersectsRec(sideRectanglesLast[1]) && Hitbox.IntersectsRec(sideRectanglesLast[3])))
+                        {
                             Direction = new Vector2(-Direction.X, Direction.Y);
                             Console.WriteLine("coin haut gauche A + coin bas gauche B :" + Direction);
                             break;
@@ -157,12 +168,16 @@ namespace breakout {
                         Direction = new Vector2(-Direction.X, -Direction.Y);
                         Console.WriteLine("un coin " + Direction);
                         break;
-                    } else if (hitbox.IntersectsRec(sideRectangles[0]) || hitbox.IntersectsRec(sideRectangles[1])) {
+                    }
+                    else if (Hitbox.IntersectsRec(sideRectangles[0]) || Hitbox.IntersectsRec(sideRectangles[1]))
+                    {
 
                         Direction = new Vector2(Direction.X, -Direction.Y);
                         Console.WriteLine("top || bottom : " + Direction);
                         break;
-                    } else if (hitbox.IntersectsRec(sideRectangles[2]) || hitbox.IntersectsRec(sideRectangles[3])) {
+                    }
+                    else if (Hitbox.IntersectsRec(sideRectangles[2]) || Hitbox.IntersectsRec(sideRectangles[3]))
+                    {
                         Direction = new Vector2(-Direction.X, Direction.Y);
                         Console.WriteLine("right || left : " + Direction);
                         break;
@@ -181,17 +196,17 @@ namespace breakout {
 
         public Rectangle[] buildSideRectangles(Brick b) {
             Rectangle[] sideRectangles = new Rectangle[4];
-            sideRectangles[0] = new Rectangle(b.hitbox.X, b.hitbox.Top, b.hitbox.Width, 0); //TOP
-            sideRectangles[1] = new Rectangle(b.hitbox.X, b.hitbox.Bottom, b.hitbox.Width, 0); //Bottom
-            sideRectangles[2] = new Rectangle(b.hitbox.Left, b.hitbox.Y, 0, b.hitbox.Height); //Left
-            sideRectangles[3] = new Rectangle(b.hitbox.Right, b.hitbox.Y, 0, b.hitbox.Height); //Right
+            sideRectangles[0] = new Rectangle(b.Hitbox.X, b.Hitbox.Top, b.Hitbox.Width, 0); //TOP
+            sideRectangles[1] = new Rectangle(b.Hitbox.X, b.Hitbox.Bottom, b.Hitbox.Width, 0); //Bottom
+            sideRectangles[2] = new Rectangle(b.Hitbox.Left, b.Hitbox.Y, 0, b.Hitbox.Height); //Left
+            sideRectangles[3] = new Rectangle(b.Hitbox.Right, b.Hitbox.Y, 0, b.Hitbox.Height); //Right
 
 
             return sideRectangles;
         }
 
         public bool singleCornerHit(Rectangle[] sideRectangles) {
-            return ((hitbox.IntersectsRec(sideRectangles[0]) && hitbox.IntersectsRec(sideRectangles[3])) || (hitbox.IntersectsRec(sideRectangles[0]) && hitbox.IntersectsRec(sideRectangles[2])) || (hitbox.IntersectsRec(sideRectangles[1]) && hitbox.IntersectsRec(sideRectangles[3])) || (hitbox.IntersectsRec(sideRectangles[1]) && hitbox.IntersectsRec(sideRectangles[2])));
+            return ((Hitbox.IntersectsRec(sideRectangles[0]) && Hitbox.IntersectsRec(sideRectangles[3])) || (Hitbox.IntersectsRec(sideRectangles[0]) && Hitbox.IntersectsRec(sideRectangles[2])) || (Hitbox.IntersectsRec(sideRectangles[1]) && Hitbox.IntersectsRec(sideRectangles[3])) || (Hitbox.IntersectsRec(sideRectangles[1]) && Hitbox.IntersectsRec(sideRectangles[2])));
         }
 
     }

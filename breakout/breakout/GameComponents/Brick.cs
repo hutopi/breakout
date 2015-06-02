@@ -10,22 +10,22 @@ namespace breakout
 {
     public class Brick : Sprite
     {
-        public int height { get; set; }
-        public int width { get; set; }
+        public int Height { get; set; }
+        public int Width { get; set; }
 
         public Bonus Bonus { get; set; }
 
         public int Resistance { get; set; }
 
-        public Rectangle hitbox
+        public Rectangle Hitbox
         {
             get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height); }
         }
 
         public Brick(int screenWidth, int screenHeight, Vector2 position, int h, int w, int r = 1, BonusType b = BonusType.NONE) : base( screenWidth, screenHeight)
         {
-            this.height = h;
-            this.width = w;
+            this.Height = h;
+            this.Width = w;
             this.Position = position;
             this.Resistance = r;
             this.Bonus = new Bonus(screenWidth, screenHeight, b);
