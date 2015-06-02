@@ -125,14 +125,16 @@ namespace breakout {
             nextLevelButton.Position = new Vector2(Window.ClientBounds.Width / 2 - startButton.Texture.Width / 2, Window.ClientBounds.Height * 1 / 3 - startButton.Texture.Height / 2);
 
             bat.LoadContent(Content, "bat");
-            balls[0].LoadContent(Content, "ball", bat);
+            foreach (Ball b in balls)
+            {
+                b.LoadContent(Content, "ball", bat);
+            }
             scoreFont = Content.Load<SpriteFont>("Score");
             helpControlFont = Content.Load<SpriteFont>("helpControls");
-            livesSprites[0].LoadContent(Content, "lives0");
-            livesSprites[1].LoadContent(Content, "lives1");
-            livesSprites[2].LoadContent(Content, "lives2");
-            livesSprites[3].LoadContent(Content, "lives3");
-            livesSprites[4].LoadContent(Content, "lives4");
+            for (int i = 0; i < 5; i++)
+            {
+                livesSprites[i].LoadContent(Content, "lives" + i);
+            }
 
             gameLevel.BrickTexture = new BrickTexture(this.buildBrickTextures());
             gameLevel.BatTexture = this.buildBatTextures();
@@ -178,7 +180,10 @@ namespace breakout {
                     break;
                 case GameState.PLAYING:
                     this.IsMouseVisible = false;
-                    balls[0].Update(gameTime, bat.Hitbox, gameLevel, true);
+                    foreach (Ball b in balls)
+                    {
+                        b.Update(gameTime, bat.Hitbox, gameLevel, true);
+                    }
                     foreach(Brick b in gameLevel.BricksMap){
                         if (b.Bonus.Activated == true)
                         {
@@ -215,7 +220,10 @@ namespace breakout {
                     break;
                 case GameState.READYTOSTART:
                     this.IsMouseVisible = false;
-                    balls[0].Update(gameTime, bat.Hitbox, gameLevel, false);
+                    foreach (Ball b in balls)
+                    {
+                        b.Update(gameTime, bat.Hitbox, gameLevel, false);
+                    }
                     bat.HandleInput(keyboardState, mouseState);
                     bat.Update(gameTime);
                     break;
@@ -267,8 +275,23 @@ namespace breakout {
         }
 
         private void CheckIfBallOut() {
-            if (balls[0].Position.Y > bat.Position.Y - 2) {
+            int numberOfBalls = balls.Count;
+            foreach (Ball b in balls)
+            {
+                if (b.Position.Y > bat.Position.Y - 2)
+                {
+                    numberOfBalls--;
+                }
+            }
+
+            if (numberOfBalls == 0)
+            {
                 gameLevel.Lives--;
+                if (balls.Count > 1)
+                {
+                    balls.RemoveRange(1, balls.Count - 1);
+                }
+
                 balls[0].Initialize();
                 bat.Texture = gameLevel.BatTexture.Regular;
                 bat.Position = new Vector2(Window.ClientBounds.Width / 2 - bat.Texture.Width / 2, Window.ClientBounds.Height - 10 - bat.Texture.Height / 2);
@@ -295,7 +318,16 @@ namespace breakout {
                     break;
                 case GameState.PLAYING:
                     bat.Draw(spriteBatch, gameTime);
-                    balls[0].Draw(spriteBatch, gameTime);
+                    foreach (Ball b in balls)
+                    {
+                        b.Draw(spriteBatch, gameTime);
+                    }
+
+                    foreach (Brick b in gameLevel.BricksMap)
+                    {
+                        b.Draw(spriteBatch, gameTime);
+                    }
+
                     foreach (Brick b in gameLevel.BricksMap)
                     {
                         if (b.Bonus.Activated == true)
@@ -305,13 +337,19 @@ namespace breakout {
                     }
                     spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.Blue);
                     this.getLives(ref spriteBatch, gameTime);
-                    foreach (Brick b in gameLevel.BricksMap) {
-                        b.Draw(spriteBatch, gameTime);
-                    }
                     break;
                 case GameState.READYTOSTART:
                     bat.Draw(spriteBatch, gameTime);
-                    balls[0].Draw(spriteBatch, gameTime);
+                    foreach (Ball b in balls)
+                    {
+                        b.Draw(spriteBatch, gameTime);
+                    }
+
+                    foreach (Brick b in gameLevel.BricksMap)
+                    {
+                        b.Draw(spriteBatch, gameTime);
+                    }
+
                     foreach (Brick b in gameLevel.BricksMap)
                     {
                         if (b.Bonus.Activated == true)
@@ -322,13 +360,19 @@ namespace breakout {
                     spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.Blue);
                     spriteBatch.DrawString(helpControlFont, "Press Enter to launch the ball and Space to pause the game", new Vector2(200,10),Color.White);
                     this.getLives(ref spriteBatch, gameTime);
-                    foreach (Brick b in gameLevel.BricksMap) {
-                        b.Draw(spriteBatch, gameTime);
-                    }
                     break;
                 case GameState.PAUSED:
                     bat.Draw(spriteBatch, gameTime);
-                    balls[0].Draw(spriteBatch, gameTime);
+                    foreach (Ball b in balls)
+                    {
+                        b.Draw(spriteBatch, gameTime);
+                    }
+
+                    foreach (Brick b in gameLevel.BricksMap)
+                    {
+                        b.Draw(spriteBatch, gameTime);
+                    }
+
                     foreach (Brick b in gameLevel.BricksMap)
                     {
                         if (b.Bonus.Activated == true)
@@ -339,9 +383,6 @@ namespace breakout {
                     resumeButton.Draw(spriteBatch, gameTime);
                     spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.Blue);
                     this.getLives(ref spriteBatch, gameTime);
-                    foreach (Brick b in gameLevel.BricksMap) {
-                        b.Draw(spriteBatch, gameTime);
-                    }
                     break;
                 case GameState.WIN:
                     if (gameLevel.Level < 3)
