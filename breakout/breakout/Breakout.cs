@@ -17,6 +17,7 @@ namespace breakout {
     public class Breakout : Microsoft.Xna.Framework.Game {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        private Texture2D logo;
 
         private GameState gameState;
         private GameLevel gameLevel;
@@ -111,14 +112,15 @@ namespace breakout {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            this.logo = Content.Load<Texture2D>("logo");
             startButton.LoadContent(Content, "start");
             exitButton.LoadContent(Content, "exit");
             resumeButton.LoadContent(Content, "resume");
             restartButton.LoadContent(Content, "restart");
             nextLevelButton.LoadContent(Content, "next");
 
-            startButton.Position = new Vector2(Window.ClientBounds.Width / 2 - startButton.Texture.Width / 2, Window.ClientBounds.Height * 1 / 3 - startButton.Texture.Height / 2);
-            exitButton.Position = new Vector2(Window.ClientBounds.Width / 2 - exitButton.Texture.Width / 2, Window.ClientBounds.Height * 2 / 3 - exitButton.Texture.Height / 2);
+            startButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height/2);
+            exitButton.Position = new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2);
             resumeButton.Position = new Vector2(Window.ClientBounds.Width / 2 - resumeButton.Texture.Width / 2, Window.ClientBounds.Height / 2 - resumeButton.Texture.Height / 2);
 
             restartButton.Position = new Vector2(Window.ClientBounds.Width / 2 - startButton.Texture.Width / 2, Window.ClientBounds.Height * 1 / 3 - startButton.Texture.Height / 2);
@@ -308,11 +310,12 @@ namespace breakout {
         protected override void Draw(GameTime gameTime) {
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            spriteBatch.Draw(Content.Load<Texture2D>("background"),
+            spriteBatch.Draw(Content.Load<Texture2D>("background2"),
                              new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height),
                              Color.White);
             switch (gameState) {
                 case GameState.STARTMENU:
+                    spriteBatch.Draw(this.logo, new Vector2(Window.ClientBounds.Width/2 - 200, 80), Color.White);
                     startButton.Draw(spriteBatch, gameTime);
                     exitButton.Draw(spriteBatch, gameTime);
                     break;
