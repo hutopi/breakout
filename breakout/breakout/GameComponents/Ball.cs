@@ -23,6 +23,7 @@ namespace breakout {
 
         }*/
 
+        SoundManager sm = new SoundManager();
 
         public Ball(int screenWidth, int screenHeight) : base(screenWidth, screenHeight) { }
         public override void Initialize() {
@@ -41,6 +42,7 @@ namespace breakout {
 
             base.LoadContent(content, assetName);
             Position = new Vector2(bat.Position.X + bat.Texture.Width / 2 - Texture.Width / 2, bat.Position.Y - bat.Texture.Height - Texture.Height / 2);
+            sm.LoadContent(content);
         }
 
         public void Update(GameTime gameTime, Rectangle batHitBox, GameLevel gameLevel, bool isGameStarted) {
@@ -48,11 +50,12 @@ namespace breakout {
             if (isGameStarted) {
                 //bouncing on the walls
                 if ((Position.Y <= 0 && Direction.Y < 0)) {
-
+                    this.sm.bump.Play();
                     Direction = new Vector2(Direction.X, -Direction.Y);
 
                 }
                 if (Position.X <= 0 && Direction.X < 0 || Position.X > screenWidth - Texture.Height && Direction.X > 0) {
+                    this.sm.bump.Play();
                     Direction = new Vector2(-Direction.X, Direction.Y);
                 }
 
@@ -63,6 +66,7 @@ namespace breakout {
                 // du coup si vous tapez pile au milieu, la balle repart verticalement, ensuite plus vous tapez en vous éloignant du milieu plus la composante horizontale X du vecteur de la direction sera importante
                 // c'est pas parfait mais ça permet de faire plus de mouvements que de simplement inverser la direction Y et donc de ne pas subir les mouvements de la balles dues au rebons sur les autres composants du jeu.
                 if ((Direction.Y > 0 && this.Hitbox.IntersectsRec(batHitBox))) {
+                    this.sm.bump.Play();
                     if (this.Hitbox.X <= batHitBox.X + batHitBox.Width && this.Hitbox.X > batHitBox.X + batHitBox.Width / 2)
                     {
 
@@ -121,7 +125,7 @@ namespace breakout {
             foreach (Brick b in gameLevel.BricksMap) {
                 if (this.Hitbox.IntersectsRec(b.Hitbox) && b.Resistance > 0)
                 {
-
+                    this.sm.bumpBrick.Play();
                     if (b.Bonus.Type != BonusType.NONE && b.Bonus.Activated == false)
                     {
                         b.Bonus.Activated = true;

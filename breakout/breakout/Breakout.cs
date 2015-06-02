@@ -18,6 +18,10 @@ namespace breakout {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Texture2D logo;
+        private SoundEffect bump;
+        private SoundEffect pause;
+        private Song soundbox;
+        private bool songStart;
 
         private GameState gameState;
         private GameLevel gameLevel;
@@ -148,6 +152,10 @@ namespace breakout {
                     b.Bonus.LoadContent(Content, b.Bonus.Name);
                 }
             }
+
+            this.bump = Content.Load<SoundEffect>("bump");
+            this.pause = Content.Load<SoundEffect>("pause");
+            this.soundbox = Content.Load<Song>("sound");
             // TODO: use this.Content to load your game content here
         }
 
@@ -181,6 +189,11 @@ namespace breakout {
                     arrow.HandleInput(keyboardState, mouseState);
                     break;
                 case GameState.PLAYING:
+                    if (!songStart)
+                    {
+                        MediaPlayer.Play(this.soundbox);
+                        songStart = true;
+                    }
                     this.IsMouseVisible = false;
                     foreach (Ball b in balls)
                     {
@@ -197,6 +210,7 @@ namespace breakout {
                     CheckIfBallOut();
                     break;
                 case GameState.PAUSED:
+                  //  this.pause.Play();
                     this.IsMouseVisible = true;
                     resumeButton.Update(mouseState, previousMouseState, ref gameState);
                     break;
