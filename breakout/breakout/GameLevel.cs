@@ -104,7 +104,6 @@ namespace breakout
         {
             this.Score = 0;
             this.Lives = 3;
-            this.Level = 3;
             switch (this.Level)
             {
                 case 1:
