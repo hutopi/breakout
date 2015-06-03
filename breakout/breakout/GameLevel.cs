@@ -104,6 +104,7 @@ namespace breakout
         {
             this.Score = 0;
             this.Lives = 3;
+            this.Level = 3;
             switch (this.Level)
             {
                 case 1:
@@ -120,7 +121,7 @@ namespace breakout
                     this.Background = "background_3";
                     break;
                 case 4:
-                    //todo
+                    this.LevelFour();
                     this.Background = "background_4";
                     break;
                 default:
@@ -330,14 +331,171 @@ namespace breakout
         }
 
         public void LevelThree()
-        {// @TODO
-            for (int i = 0; i < lines; i++)
-            {
-                for (int j = 0; j < columns; j++)
+        {
+            int x = (int)((0.35) * (double)this.screenWidth);
+            int y = 50;
+            int margin_h = 21;
+            int margin_w = 48;
+            int count = 0;
+
+            for(int i = 0; i < 2; i++){
+                for (int j = 0; j < 10; j++)
                 {
-                    this.BricksMap[i, j] = new Brick(this.screenWidth, this.screenHeight, new Vector2(0, 0), 19, 45, 1);
+                    if (i == 1 && j == 0)
+                    {
+                        this.BricksMap[i, 0] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y + 10 * margin_h), 19, 45, 3);
+                        break;
+                    }
+                    if (j == 1)
+                    {
+                        this.BricksMap[i, j] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y + j * margin_h), 19, 45, 1);
+                    }
+                    else
+                    {
+                        this.BricksMap[i, j] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y + j * margin_h), 19, 45, 3);
+                    }
                 }
             }
+
+            y += margin_h;
+            for (int i = 1; i < 8; i++)
+            {
+                this.BricksMap[1, i] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+margin_w, y + i*margin_h), 19, 45, 2);
+            }
+
+            y -= margin_h;
+            int multiplicator = 0;
+
+            for (int i = 1; i < 3; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    if (i == 1 && j >= 8)
+                    {
+                        if (j == 9)
+                        {
+                            this.BricksMap[i, j] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2 * margin_w, y + multiplicator * margin_h), 19, 45, 1);
+                        }
+                        else
+                        {
+                            this.BricksMap[i, j] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2 * margin_w, y + multiplicator * margin_h), 19, 45, 3);
+                        }
+                        
+                        multiplicator++;
+                    }
+                    else if (i == 2)
+                    {
+                        if (j == 5)
+                        {
+                            this.BricksMap[i, j] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2 * margin_w, y + multiplicator * margin_h), 19, 45, 1);
+                        }
+                        else
+                        {
+                            this.BricksMap[i, j] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2 * margin_w, y + multiplicator * margin_h), 19, 45, 3);
+                        }
+                        
+                        multiplicator++;
+                    }
+                }
+            }
+
+            this.BricksMap[2, 9] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+3*margin_w, y), 19, 45, 3);
+
+            for (int i = 0; i < 10; i++)
+            {
+                if (i == 0 || i == 6)
+                {
+                    this.BricksMap[3, i] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 3 * margin_w, y + (i + 1) * margin_h), 19, 45, 1);
+                }
+                else
+                {
+                    this.BricksMap[3, i] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 3 * margin_w, y + (i + 1) * margin_h), 19, 45, 3);
+                }
+            }
+
+            y += margin_h;
+            for (int i = 0; i < 9; i++)
+            {
+                if ((i <= 3 && i > 0) || (i >= 6 && i < 8))
+                {
+                    this.BricksMap[4, i] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 4 * margin_w, y + i * margin_h), 19, 45, 1);
+                }
+                else
+                {
+                    this.BricksMap[4, i] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 4 * margin_w, y + i * margin_h), 19, 45, 3);
+                }
+            }
+
+            y += margin_h;
+            this.BricksMap[4, 9] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 5 * margin_w, y), 19, 45, 3);
+
+            for (int i = 0; i < 6; i++)
+            {
+                if (i <= 1)
+                {
+                    this.BricksMap[5, i] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 5 * margin_w, y + (i + 1) * margin_h), 19, 45, 1);
+                }
+                else
+                {
+                    this.BricksMap[5, i] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 5 * margin_w, y + (i + 1) * margin_h), 19, 45, 3);
+                }
+                
+            }
+
+            y += 2 * margin_h;
+            for (int i = 6; i < 9; i++)
+            {
+                this.BricksMap[5, i] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+6*margin_w, y+(i-6)*margin_h), 19, 45, 3);
+            }
+
+            x -= (int)(2.5 * margin_w);
+            y += margin_h;
+
+            this.BricksMap[5, 9] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 3*margin_w, y), 19, 45, 1);
+
+            y -= margin_h; 
+
+            for (int i = 0; i < 8; i++)
+            {
+                if(i <= 2){
+                    this.BricksMap[6, i] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 2 * margin_w, y + i * margin_h), 19, 45, 1);
+                }
+                else
+                {
+                    if (i == 3)
+                    {
+                        y -= margin_h;
+                    }
+
+                    this.BricksMap[6, i] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - margin_w, y + (i-3) * margin_h), 19, 45, 1);
+                }
+                
+            }
+
+            y -= margin_h;
+
+            this.BricksMap[6, 8] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y), 19, 45, 1);
+            this.BricksMap[6, 9] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y+margin_h), 19, 45, 1);
+
+            for (int i = 0; i < 5; i++)
+            {
+                this.BricksMap[7, i] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y+(i+2)*margin_h), 19, 45, 1);
+            }
+
+
+            x += (int)(1.5*margin_w);
+            y += margin_h;
+
+            for (int i = 5; i < 10; i++)
+            {
+                this.BricksMap[7, i] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y+(i-5)*margin_h), 19, 45, 4);
+            }
+
+        }
+
+        public void LevelFour()
+        {
+
         }
 
         public void SetBonus()

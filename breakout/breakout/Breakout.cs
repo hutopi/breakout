@@ -43,7 +43,7 @@ namespace breakout {
         private ButtonSprite resumeButton;
         private ButtonSprite restartButton;
         private ButtonSprite nextLevelButton;
-        private ButtonSprite soundButton;
+        private SoundTextures soundTextures;
 
         public Breakout() {
             graphics = new GraphicsDeviceManager(this);
@@ -59,7 +59,7 @@ namespace breakout {
             resumeButton = new ButtonSprite(screenWidth, screenHeight, "resume");
             restartButton = new ButtonSprite(screenWidth, screenHeight, "restart");
             nextLevelButton = new ButtonSprite(screenWidth, screenHeight, "next");
-            soundButton = new ButtonSprite(screenWidth, screenHeight, "soundIcon");
+            soundTextures = new SoundTextures();
             arrow = new Arrow(screenWidth, screenHeight);
 
             bat = new Bat(screenWidth, screenHeight);
@@ -89,9 +89,6 @@ namespace breakout {
             resumeButton.Initialize();
             restartButton.Initialize();
             nextLevelButton.Initialize();
-            soundButton.Initialize();
-
-
             bat.Initialize();
 
             foreach (var ball in balls) {
@@ -126,15 +123,13 @@ namespace breakout {
             resumeButton.LoadContent(Content, "resume");
             restartButton.LoadContent(Content, "restart");
             nextLevelButton.LoadContent(Content, "next");
-            soundButton.LoadContent(Content, "soundIcon");
+            soundTextures.LoadContent(Content.Load<Texture2D>("soundOn"), Content.Load<Texture2D>("soundOff"));
 
             startButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height/2);
             exitButton.Position = new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2);
             resumeButton.Position = new Vector2(Window.ClientBounds.Width / 2 - resumeButton.Texture.Width / 2, Window.ClientBounds.Height / 2 - resumeButton.Texture.Height / 2);
             restartButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height / 2);
             nextLevelButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height / 2);
-
-            soundButton.Position = new Vector2(10, 40);
 
             bat.LoadContent(Content, "bat");
             foreach (Ball b in balls)
@@ -310,9 +305,6 @@ namespace breakout {
 
             previousKeyboardState = keyboardState;
             previousMouseState = mouseState;
-
-           
-
             base.Update(gameTime);
         }
 
@@ -465,11 +457,10 @@ namespace breakout {
 
         public Texture2D[] buildBrickTextures() {
             Texture2D[] textures = new Texture2D[5];
-            textures[0] = Content.Load<Texture2D>("brick");
-            textures[1] = Content.Load<Texture2D>("brick1");
-            textures[2] = Content.Load<Texture2D>("brick2");
-            textures[3] = Content.Load<Texture2D>("brick3");
-            textures[4] = Content.Load<Texture2D>("brick4");
+            for (int i = 0; i < 5; i++)
+            {
+                textures[i] = Content.Load<Texture2D>("brick" + i);
+            }
             return textures;
         }
 
