@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using breakout.Textures;
+using breakout.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -18,8 +19,7 @@ namespace breakout {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Texture2D logo;
-        private SoundEffect bump;
-        private SoundEffect pause;
+        private Sounds sounds;
         private Song soundbox;
         private bool songStart;
 
@@ -43,6 +43,7 @@ namespace breakout {
         private ButtonSprite resumeButton;
         private ButtonSprite restartButton;
         private ButtonSprite nextLevelButton;
+        private ButtonSprite soundButton;
 
         public Breakout() {
             graphics = new GraphicsDeviceManager(this);
@@ -58,6 +59,7 @@ namespace breakout {
             resumeButton = new ButtonSprite(screenWidth, screenHeight, "resume");
             restartButton = new ButtonSprite(screenWidth, screenHeight, "restart");
             nextLevelButton = new ButtonSprite(screenWidth, screenHeight, "next");
+            soundButton = new ButtonSprite(screenWidth, screenHeight, "soundIcon");
             arrow = new Arrow(screenWidth, screenHeight);
 
             bat = new Bat(screenWidth, screenHeight);
@@ -70,6 +72,7 @@ namespace breakout {
             }
 
             gameLevel = new GameLevel(screenWidth, screenHeight, 1, balls, bat);
+            sounds = new Sounds();
         }
 
         /// <summary>
@@ -86,6 +89,7 @@ namespace breakout {
             resumeButton.Initialize();
             restartButton.Initialize();
             nextLevelButton.Initialize();
+            soundButton.Initialize();
 
 
             bat.Initialize();
@@ -122,19 +126,22 @@ namespace breakout {
             resumeButton.LoadContent(Content, "resume");
             restartButton.LoadContent(Content, "restart");
             nextLevelButton.LoadContent(Content, "next");
+            soundButton.LoadContent(Content, "soundIcon");
 
             startButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height/2);
             exitButton.Position = new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2);
             resumeButton.Position = new Vector2(Window.ClientBounds.Width / 2 - resumeButton.Texture.Width / 2, Window.ClientBounds.Height / 2 - resumeButton.Texture.Height / 2);
+            restartButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height / 2);
+            nextLevelButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height / 2);
 
-            restartButton.Position = new Vector2(Window.ClientBounds.Width / 2 - startButton.Texture.Width / 2, Window.ClientBounds.Height * 1 / 3 - startButton.Texture.Height / 2);
-            nextLevelButton.Position = new Vector2(Window.ClientBounds.Width / 2 - startButton.Texture.Width / 2, Window.ClientBounds.Height * 1 / 3 - startButton.Texture.Height / 2);
+            soundButton.Position = new Vector2(10, 40);
 
             bat.LoadContent(Content, "bat");
             foreach (Ball b in balls)
             {
                 b.LoadContent(Content, "ball", bat);
             }
+
             scoreFont = Content.Load<SpriteFont>("Score");
             helpControlFont = Content.Load<SpriteFont>("helpControls");
             for (int i = 0; i < 5; i++)
@@ -153,8 +160,10 @@ namespace breakout {
                 }
             }
 
-            this.bump = Content.Load<SoundEffect>("bump");
-            this.pause = Content.Load<SoundEffect>("pause");
+            sounds.LoadContent(Content.Load<SoundEffect>("bump"),
+                               Content.Load<SoundEffect>("pause"),
+                               Content.Load<SoundEffect>("win"),
+                               Content.Load<SoundEffect>("loose"));
             this.soundbox = Content.Load<Song>("sound");
             // TODO: use this.Content to load your game content here
         }
@@ -191,7 +200,14 @@ namespace breakout {
                 case GameState.PLAYING:
                     if (!songStart)
                     {
-                        MediaPlayer.Play(this.soundbox);
+                        if (MediaPlayer.State == MediaState.Paused)
+                        {
+                            MediaPlayer.Resume();
+                        }
+                        else
+                        {
+                            MediaPlayer.Play(this.soundbox);
+                        }
                         songStart = true;
                     }
                     this.IsMouseVisible = false;
@@ -210,11 +226,22 @@ namespace breakout {
                     CheckIfBallOut();
                     break;
                 case GameState.PAUSED:
-                  //  this.pause.Play();
+                    if (songStart)
+                    {
+                        MediaPlayer.Pause();
+                        this.sounds.Pause.Play();
+                        songStart = false;
+                    }
                     this.IsMouseVisible = true;
                     resumeButton.Update(mouseState, previousMouseState, ref gameState);
                     break;
                 case GameState.WIN:
+                    if (songStart)
+                    {
+                        MediaPlayer.Stop();
+                        songStart = false;
+                        this.sounds.Win.Play();
+                    }
                     this.IsMouseVisible = true;
                     if (gameLevel.Level < 3)
                     {
@@ -227,11 +254,22 @@ namespace breakout {
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
                     break;
                 case GameState.LOOSE:
+                    if (songStart)
+                    {
+                        MediaPlayer.Stop();
+                        songStart = false;
+                        this.sounds.Loose.Play();
+                    }
                     this.IsMouseVisible = true;
                     restartButton.Update(mouseState, previousMouseState, ref gameState);
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
                     break;
                 case GameState.RESTART:
+                    if (songStart)
+                    {
+                        MediaPlayer.Stop();
+                        songStart = false;
+                    }
                     this.UpdateLevel(true);
                     break;
                 case GameState.READYTOSTART:
@@ -324,7 +362,7 @@ namespace breakout {
         protected override void Draw(GameTime gameTime) {
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            spriteBatch.Draw(Content.Load<Texture2D>("background2"),
+            spriteBatch.Draw(Content.Load<Texture2D>(gameLevel.Background),
                              new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height),
                              Color.White);
             switch (gameState) {
@@ -335,6 +373,7 @@ namespace breakout {
                     break;
                 case GameState.PLAYING:
                     bat.Draw(spriteBatch, gameTime);
+                 //   soundButton.Draw(spriteBatch, gameTime);
                     foreach (Ball b in balls)
                     {
                         b.Draw(spriteBatch, gameTime);

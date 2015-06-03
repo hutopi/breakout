@@ -17,6 +17,8 @@ namespace breakout
         private int screenWidth;
         private int screenHeight;
 
+        public string Background { get; set; }
+
         private int lives;
         public int Lives
         {
@@ -51,7 +53,7 @@ namespace breakout
             get { return balls; }
             set { balls = value; }
         }
-        
+
 
         public int Level { get; set; }
 
@@ -89,12 +91,12 @@ namespace breakout
         public GameLevel(int screenWidth, int screenHeight, int level, List<Ball> balls, Bat bat)
         {
             this.screenWidth = screenWidth;
-            this.screenHeight = (int)(0.6*(double)screenHeight);
+            this.screenHeight = (int)(0.6 * (double)screenHeight);
             this.Level = level;
             this.Balls = balls;
             this.Bat = bat;
             this.BricksMap = new Brick[this.lines, this.columns];
-            this.nb_bricks = this.lines*this.columns;
+            this.nb_bricks = this.lines * this.columns;
             this.nbBonus = (int)(0.1 * (double)(this.columns * this.lines));
         }
 
@@ -106,15 +108,23 @@ namespace breakout
             {
                 case 1:
                     this.LevelOne();
+                    this.Background = "background_1";
                     break;
                 case 2:
                     this.LevelTwo();
                     this.nb_bricks -= 8;
+                    this.Background = "background_2";
                     break;
                 case 3:
                     this.LevelThree();
+                    this.Background = "background_3";
+                    break;
+                case 4:
+                    //todo
+                    this.Background = "background_4";
                     break;
                 default:
+                    this.Background = "background_1";
                     break;
             }
             this.SetBonus();
@@ -162,7 +172,7 @@ namespace breakout
 
         public void LevelOne()
         {
-            int x = (int)((0.25)*(double)this.screenWidth);
+            int x = (int)((0.25) * (double)this.screenWidth);
             int y = 40;
             int margin_h = 21;
             int margin_w = 48;
@@ -222,33 +232,33 @@ namespace breakout
             this.BricksMap[0, 4] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y + 1 * margin_h), 19, 45, 3);
             this.BricksMap[0, 8] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y + 2 * margin_h), 19, 45, 3);
 
-            this.BricksMap[0, 5] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+1*margin_w, y+margin_h), 19, 45, 2);
-            this.BricksMap[0, 6] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+2*margin_w, y+margin_h), 19, 45, 2);
-            this.BricksMap[0, 7] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+3*margin_w, y+margin_h), 19, 45, 3);
+            this.BricksMap[0, 5] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 1 * margin_w, y + margin_h), 19, 45, 2);
+            this.BricksMap[0, 6] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2 * margin_w, y + margin_h), 19, 45, 2);
+            this.BricksMap[0, 7] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 3 * margin_w, y + margin_h), 19, 45, 3);
 
-            this.BricksMap[0, 9] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+1*margin_w, y + 2 * margin_h), 19, 45, 2);
-            this.BricksMap[1, 0] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+2*margin_w, y + 2 * margin_h), 19, 45, 2);
-            this.BricksMap[1, 1] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+3*margin_w, y + 2 * margin_h), 19, 45, 3);
+            this.BricksMap[0, 9] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 1 * margin_w, y + 2 * margin_h), 19, 45, 2);
+            this.BricksMap[1, 0] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2 * margin_w, y + 2 * margin_h), 19, 45, 2);
+            this.BricksMap[1, 1] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 3 * margin_w, y + 2 * margin_h), 19, 45, 3);
 
-            this.BricksMap[1, 2] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y+3*margin_h), 19, 45, 3);
+            this.BricksMap[1, 2] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y + 3 * margin_h), 19, 45, 3);
 
-            this.BricksMap[1, 3] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+1*margin_w, y+3 * margin_h), 19, 45, 3);
-            this.BricksMap[1, 4] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+2*margin_w, y+3 * margin_h), 19, 45, 3);
-            this.BricksMap[1, 5] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+3*margin_w, y+3 * margin_h), 19, 45, 3);
+            this.BricksMap[1, 3] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 1 * margin_w, y + 3 * margin_h), 19, 45, 3);
+            this.BricksMap[1, 4] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2 * margin_w, y + 3 * margin_h), 19, 45, 3);
+            this.BricksMap[1, 5] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 3 * margin_w, y + 3 * margin_h), 19, 45, 3);
 
-            this.BricksMap[1, 6] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y+4*margin_h), 19, 45, 4);
+            this.BricksMap[1, 6] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y + 4 * margin_h), 19, 45, 4);
 
-            this.BricksMap[1, 7] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 1*margin_w, y + 4 * margin_h), 19, 45, 4);
-            this.BricksMap[1, 8] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2*margin_w, y + 4 * margin_h), 19, 45, 4);
-            this.BricksMap[1, 9] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 3*margin_w, y + 4 * margin_h), 19, 45, 4);
+            this.BricksMap[1, 7] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 1 * margin_w, y + 4 * margin_h), 19, 45, 4);
+            this.BricksMap[1, 8] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2 * margin_w, y + 4 * margin_h), 19, 45, 4);
+            this.BricksMap[1, 9] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 3 * margin_w, y + 4 * margin_h), 19, 45, 4);
 
             // Oreille gauche: 4
-            this.BricksMap[7, 6] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 2*margin_w, y + 4 * margin_h), 19, 45, 2);
-            this.BricksMap[7, 7] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 4*margin_w, y + 4 * margin_h), 19, 45, 2);
-            this.BricksMap[7, 8] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 3*margin_w, y + 3 * margin_h), 19, 45, 2);
-            this.BricksMap[7, 9] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 3*margin_w, y + 5 * margin_h), 19, 45, 2);
+            this.BricksMap[7, 6] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 2 * margin_w, y + 4 * margin_h), 19, 45, 2);
+            this.BricksMap[7, 7] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 4 * margin_w, y + 4 * margin_h), 19, 45, 2);
+            this.BricksMap[7, 8] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 3 * margin_w, y + 3 * margin_h), 19, 45, 2);
+            this.BricksMap[7, 9] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 3 * margin_w, y + 5 * margin_h), 19, 45, 2);
 
-            x = (int)((0.75) * (double)this.screenWidth) - (4*margin_w);
+            x = (int)((0.75) * (double)this.screenWidth) - (4 * margin_w);
             // oeil droit
             this.BricksMap[2, 0] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y), 19, 45, 3);
             this.BricksMap[2, 1] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + margin_w, y), 19, 45, 3);
@@ -261,62 +271,62 @@ namespace breakout
             this.BricksMap[2, 8] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y + 2 * margin_h), 19, 45, 3);
             this.BricksMap[2, 9] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + margin_w, y + 2 * margin_h), 19, 45, 2);
 
-            this.BricksMap[3, 0] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2*margin_w, y + 2 * margin_h), 19, 45, 2);
-            this.BricksMap[3, 1] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 3*margin_w, y + 2 * margin_h), 19, 45, 3);
+            this.BricksMap[3, 0] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2 * margin_w, y + 2 * margin_h), 19, 45, 2);
+            this.BricksMap[3, 1] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 3 * margin_w, y + 2 * margin_h), 19, 45, 3);
             this.BricksMap[3, 2] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y + 3 * margin_h), 19, 45, 3);
             this.BricksMap[3, 3] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + margin_w, y + 3 * margin_h), 19, 45, 3);
-            this.BricksMap[3, 4] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2*margin_w, y + 3 * margin_h), 19, 45, 3);
-            this.BricksMap[3, 5] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 3*margin_w, y + 3 * margin_h), 19, 45, 3);
+            this.BricksMap[3, 4] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2 * margin_w, y + 3 * margin_h), 19, 45, 3);
+            this.BricksMap[3, 5] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 3 * margin_w, y + 3 * margin_h), 19, 45, 3);
             this.BricksMap[3, 6] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y + 4 * margin_h), 19, 45, 4);
             this.BricksMap[3, 7] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + margin_w, y + 4 * margin_h), 19, 45, 4);
-            this.BricksMap[3, 8] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2*margin_w, y + 4 * margin_h), 19, 45, 4);
-            this.BricksMap[3, 9] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 3*margin_w, y + 4 * margin_h), 19, 45, 4);
+            this.BricksMap[3, 8] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2 * margin_w, y + 4 * margin_h), 19, 45, 4);
+            this.BricksMap[3, 9] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 3 * margin_w, y + 4 * margin_h), 19, 45, 4);
 
             // Oreille droite: 4
-            this.BricksMap[7, 2] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+5*margin_w, y + 4 * margin_h), 19, 45, 2);
-            this.BricksMap[7, 3] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+7*margin_w, y + 4 * margin_h), 19, 45, 2);
-            this.BricksMap[7, 4] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+6*margin_w, y + 3 * margin_h), 19, 45, 2);
-            this.BricksMap[7, 5] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+6*margin_w, y + 5 * margin_h), 19, 45, 2);
+            this.BricksMap[7, 2] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 5 * margin_w, y + 4 * margin_h), 19, 45, 2);
+            this.BricksMap[7, 3] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 7 * margin_w, y + 4 * margin_h), 19, 45, 2);
+            this.BricksMap[7, 4] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 6 * margin_w, y + 3 * margin_h), 19, 45, 2);
+            this.BricksMap[7, 5] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 6 * margin_w, y + 5 * margin_h), 19, 45, 2);
             // next
 
-            x = (int)((0.5) * (double)this.screenWidth) - (int)((0.5)* margin_w);
-            y = (int)((0.5) * (double)this.screenHeight/0.6);
+            x = (int)((0.5) * (double)this.screenWidth) - (int)((0.5) * margin_w);
+            y = (int)((0.5) * (double)this.screenHeight / 0.6);
 
-            this.BricksMap[4, 0] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x,y), 19, 45, 3);
-            this.BricksMap[4, 1] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+margin_w,y-margin_h), 19, 45, 3);
-            this.BricksMap[4, 2] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x-margin_w,y-margin_h), 19, 45, 3);
-            this.BricksMap[4, 3] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2*margin_w, y - 2 * margin_h), 19, 45, 3);
-            this.BricksMap[4, 4] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x-2*margin_w,y-2*margin_h), 19, 45, 3);
-            this.BricksMap[4, 5] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+3*margin_w, y-3*margin_h), 19, 45, 3);
-            this.BricksMap[4, 6] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 3*margin_w, y - 3 * margin_h), 19, 45, 3);
-            this.BricksMap[4, 7] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 4*margin_w, y - 4 * margin_h), 19, 45, 3);
-            this.BricksMap[4, 8] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 4*margin_w, y - 4 * margin_h), 19, 45, 3);
-            this.BricksMap[4, 9] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+2*margin_w, y-margin_h), 19, 45, 3);
+            this.BricksMap[4, 0] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y), 19, 45, 3);
+            this.BricksMap[4, 1] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + margin_w, y - margin_h), 19, 45, 3);
+            this.BricksMap[4, 2] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - margin_w, y - margin_h), 19, 45, 3);
+            this.BricksMap[4, 3] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2 * margin_w, y - 2 * margin_h), 19, 45, 3);
+            this.BricksMap[4, 4] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 2 * margin_w, y - 2 * margin_h), 19, 45, 3);
+            this.BricksMap[4, 5] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 3 * margin_w, y - 3 * margin_h), 19, 45, 3);
+            this.BricksMap[4, 6] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 3 * margin_w, y - 3 * margin_h), 19, 45, 3);
+            this.BricksMap[4, 7] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 4 * margin_w, y - 4 * margin_h), 19, 45, 3);
+            this.BricksMap[4, 8] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 4 * margin_w, y - 4 * margin_h), 19, 45, 3);
+            this.BricksMap[4, 9] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2 * margin_w, y - margin_h), 19, 45, 3);
 
-            this.BricksMap[5, 0] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 3 * margin_w, y - 2*margin_h), 19, 45, 3);
-            this.BricksMap[5, 1] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 4 * margin_w, y - 3*margin_h), 19, 45, 3);
+            this.BricksMap[5, 0] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 3 * margin_w, y - 2 * margin_h), 19, 45, 3);
+            this.BricksMap[5, 1] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 4 * margin_w, y - 3 * margin_h), 19, 45, 3);
             this.BricksMap[5, 2] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 2 * margin_w, y - margin_h), 19, 45, 3);
-            this.BricksMap[5, 3] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 3*margin_w, y - 2 * margin_h), 19, 45, 3);
-            this.BricksMap[5, 4] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 4*margin_w, y - 3 * margin_h), 19, 45, 3);
-            this.BricksMap[5, 5] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x,y-4*margin_h), 19, 45, 3);
-            this.BricksMap[5, 6] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x-margin_w, y - 4 * margin_h), 19, 45, 3);
-            this.BricksMap[5, 7] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 2*margin_w, y - 4 * margin_h), 19, 45, 3);
-            this.BricksMap[5, 8] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 3*margin_w, y - 4 * margin_h), 19, 45, 3);
+            this.BricksMap[5, 3] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 3 * margin_w, y - 2 * margin_h), 19, 45, 3);
+            this.BricksMap[5, 4] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 4 * margin_w, y - 3 * margin_h), 19, 45, 3);
+            this.BricksMap[5, 5] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y - 4 * margin_h), 19, 45, 3);
+            this.BricksMap[5, 6] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - margin_w, y - 4 * margin_h), 19, 45, 3);
+            this.BricksMap[5, 7] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 2 * margin_w, y - 4 * margin_h), 19, 45, 3);
+            this.BricksMap[5, 8] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 3 * margin_w, y - 4 * margin_h), 19, 45, 3);
             this.BricksMap[5, 9] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + margin_w, y - 4 * margin_h), 19, 45, 3);
 
-            this.BricksMap[6, 0] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2*margin_w, y - 4 * margin_h), 19, 45, 3);
-            this.BricksMap[6, 1] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 3*margin_w, y - 4 * margin_h), 19, 45, 3);
+            this.BricksMap[6, 0] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2 * margin_w, y - 4 * margin_h), 19, 45, 3);
+            this.BricksMap[6, 1] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 3 * margin_w, y - 4 * margin_h), 19, 45, 3);
 
-            this.BricksMap[6, 2] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y-margin_h), 19, 45, 1);
-            this.BricksMap[6, 3] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y-2*margin_h), 19, 45, 1);
-            this.BricksMap[6, 4] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y-3*margin_h), 19, 45, 1);
-            this.BricksMap[6, 5] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+margin_w, y-2*margin_h), 19, 45, 1);
-            this.BricksMap[6, 6] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x+margin_w, y-3*margin_h), 19, 45, 1);
+            this.BricksMap[6, 2] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y - margin_h), 19, 45, 1);
+            this.BricksMap[6, 3] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y - 2 * margin_h), 19, 45, 1);
+            this.BricksMap[6, 4] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y - 3 * margin_h), 19, 45, 1);
+            this.BricksMap[6, 5] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + margin_w, y - 2 * margin_h), 19, 45, 1);
+            this.BricksMap[6, 6] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + margin_w, y - 3 * margin_h), 19, 45, 1);
             this.BricksMap[6, 7] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - margin_w, y - 2 * margin_h), 19, 45, 1);
             this.BricksMap[6, 8] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - margin_w, y - 3 * margin_h), 19, 45, 1);
-            this.BricksMap[6, 9] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2*margin_w, y - 3 * margin_h), 19, 45, 1);
-            this.BricksMap[7, 0] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 2*margin_w, y - 3 * margin_h), 19, 45, 1);
-            this.BricksMap[7, 1] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y-6*margin_h), 19, 45, 1);
+            this.BricksMap[6, 9] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + 2 * margin_w, y - 3 * margin_h), 19, 45, 1);
+            this.BricksMap[7, 0] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x - 2 * margin_w, y - 3 * margin_h), 19, 45, 1);
+            this.BricksMap[7, 1] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x, y - 6 * margin_h), 19, 45, 1);
         }
 
         public void LevelThree()
@@ -325,7 +335,7 @@ namespace breakout
             {
                 for (int j = 0; j < columns; j++)
                 {
-                    this.BricksMap[i, j] = new Brick(this.screenWidth, this.screenHeight, new Vector2(0,0), 19, 45, 1);
+                    this.BricksMap[i, j] = new Brick(this.screenWidth, this.screenHeight, new Vector2(0, 0), 19, 45, 1);
                 }
             }
         }

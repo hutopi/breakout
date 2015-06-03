@@ -42,9 +42,7 @@ namespace breakout {
                             gameState = GameState.PLAYING;
                             break;
                         case "restart":
-                            Console.WriteLine(gameState);
                             gameState = GameState.RESTART;
-                            Console.WriteLine(gameState);
                             break;
                         case "next":
                             gameState = GameState.NEXT_LEVEL;
