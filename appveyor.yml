@@ -3,7 +3,7 @@ skip_tags: true
 os: Windows Server 2012 R2
 configuration: Release
 init:
-- ps: Install-WindowsFeature Desktop-Experience
+- ps: Install-WindowsFeature Server-Media-Foundation
 - ps: Restart-Computer -Force
 - ps: Start-Sleep -s 10
 install:
