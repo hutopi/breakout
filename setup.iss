@@ -6,6 +6,8 @@
 #define MyAppPublisher "Hutopi"
 #define MyAppURL "https://github.com/hutopi/breakout"
 #define MyAppExeName "Super Roberto Breakout.exe"
+#define XGAGSLocation "C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0"
+#define XNARedist "xnafx40_redist.msi"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -35,6 +37,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
+Source: {#XGAGSLocation}\Redist\XNA FX Redist\{#XNARedist}; DestDir: {tmp}
 Source: ".\breakout\breakout\bin\x86\Release\Super Roberto Breakout.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\breakout\breakout\bin\x86\Release\Content\*"; DestDir: "{app}\Content"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
@@ -44,5 +47,31 @@ Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
+Filename: msiexec.exe; StatusMsg: "Installing required component: XNA Framework Redistributable 4.0 Refresh."; Parameters: "/qb /i ""{tmp}\{#XNARedist}"; Check: CheckXNAFramework
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
+[Code]
+function IsXNAFrameworkDetected: Boolean;
+var
+    key: string;
+    install: cardinal;
+    success: boolean;
+ 
+begin
+    WizardForm.StatusLabel.Caption := 'Checking for XNA Framework Redistributable 4.0 Refresh.';
+    if IsWin64 then begin
+        key := 'SOFTWARE\Wow6432Node\Microsoft\XNA\Framework\v4.0';
+    end else begin
+        key := 'SOFTWARE\Microsoft\XNA\Framework\v4.0';
+    end;
+    success := RegQueryDWordValue(HKLM, key, 'Installed', install);
+    result := success and (install = 1);
+end;
+ 
+function CheckXNAFramework: boolean;
+begin
+    if IsXNAFrameworkDetected then begin
+        WizardForm.StatusLabel.Caption := 'XNA Framework Redistributable 4.0 Refresh detected.';
+    end;
+    result := not IsXNAFrameworkDetected;
+end;
