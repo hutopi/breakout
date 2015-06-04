@@ -17,5 +17,6 @@ namespace breakout
         BAT_EXTENDED = 6,
         LOW_SPEED = 7,
         UP_LIFE = 8,  
+        MULTIPLICATE_BALL = 9,
     }
 }

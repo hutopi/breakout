@@ -18,14 +18,24 @@ namespace breakout {
             //the Postions are taken from the top left of the circle and not the center so you have to to move the postion with half the texture of the sprite to a have a circle hitbox that fits correclty the circle
             get { return new Circle((int)Position.X + Texture.Width / 2, (int)Position.Y + Texture.Height / 2, (double)Texture.Width / 2); }
         }
+
         private Vector2 lastPosition;
         private Brick lastBrick = new Brick(-1, -1, new Vector2(-1, -1), -1, -1);
         private SoundManager sm = new SoundManager();
 
-
-
-
         public Ball(int screenWidth, int screenHeight) : base(screenWidth, screenHeight) { }
+
+        public Ball(Ball ball): base(ball.screenWidth, ball.screenHeight)
+        {
+            this.Position = ball.Position;
+            this.Texture = ball.Texture;
+            this.Direction = -ball.Direction;
+            this.Speed = ball.Speed;
+            this.lastBrick = ball.lastBrick;
+            this.lastPosition = ball.lastPosition;
+            this.sm = ball.sm;
+        }
+
         public override void Initialize() {
 
             base.Initialize();
