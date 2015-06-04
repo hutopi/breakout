@@ -323,6 +323,7 @@ namespace breakout {
                             MediaPlayer.Play(this.songs.Four);
                             break;
                     }
+                    MediaPlayer.IsRepeating = true;
                 }
                 songStart = true;
             }

@@ -79,12 +79,12 @@ namespace breakout {
         }
         private void bouncingOnTheWalls(GameLevel gameLevel) {
             if ((Position.Y <= 0 && Direction.Y < 0)) {
-                this.sm.bump.Play();
+                this.sm.bump.Play(0.5f, 0.0f, 0.0f);
                 Direction = new Vector2(Direction.X, -Direction.Y);
                 gameLevel.Score -= 10;
             }
             if (Position.X <= 0 && Direction.X < 0 || Position.X > screenWidth - Texture.Height && Direction.X > 0) {
-                this.sm.bump.Play();
+                this.sm.bump.Play(0.5f, 0.0f, 0.0f);
                 Direction = new Vector2(-Direction.X, Direction.Y);
                 gameLevel.Score -= 10;
             }
@@ -94,7 +94,7 @@ namespace breakout {
                 Direction = new Vector2(((float)Hitbox.X - batHitBox.Center.X) / (batHitBox.Width / 2), -Direction.Y);
                 Direction = Vector2.Normalize(Direction);
                 Console.WriteLine(Direction);
-                this.sm.bump.Play();
+                this.sm.bump.Play(0.5f, 0.0f, 0.0f);
             }
         }
         private void bouncingOnTheBricks(GameLevel gameLevel, GameTime gameTime) {
@@ -172,7 +172,7 @@ namespace breakout {
             List<Brick> destroyedBricks = new List<Brick>();
             foreach (Brick b in gameLevel.BricksMap) {
                 if (this.Hitbox.IntersectsRec(b.Hitbox) && b.Resistance > 0) {
-                    this.sm.bumpBrick.Play();
+                    this.sm.bumpBrick.Play(0.5f, 0.0f, 0.0f);
 
                     if (b.Bonus.Type != BonusType.NONE && b.Bonus.Activated == false) {
                         b.Bonus.Activated = true;
