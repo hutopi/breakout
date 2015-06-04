@@ -9,29 +9,23 @@ var GameBrick = React.createClass({
     getDefaultProps: function() {
         return {
             line: 0,
-            column: 0
+            column: 0,
+            maxResistance: 4
         };
     },
 
     change: function() {
-        var value = React.findDOMNode(this.refs.input).value;
-        if (value !== '') {
-            this.setState({
-                empty: false,
-                resistance: parseInt(value)
-            });
+        if (this.state.resistance < this.props.maxResistance) {
+            this.setState({resistance: this.state.resistance + 1});
         }
         else {
-            this.setState({
-                empty: true,
-                resistance: 0
-            })
+            this.setState({resistance: 0});
         }
     },
 
     render: function() {
         return (
-            <input type="text" size="1" maxLength="1" onInput={this.change} ref="input" />
+            <img src={"img/brick" + this.state.resistance + ".png"} onClick={this.change} />
         );
     }
 });
