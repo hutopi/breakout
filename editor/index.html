@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Super Roberto Breakout Editor</title>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="bower_components/react/react.js"></script>
+    <script src="bower_components/react/JSXTransformer.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Super Roberto Breakout <small>Level Editor</small></h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <h4>Brick grid</h4>
+                <div id="grid"></div>
+            </div>
+        </div>
+    </div>
+    <div id="example"></div>
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/jsx" src="grid.jsx"></script>
+    <script type="text/jsx">
+      React.render(<GameGrid />, $('#grid')[0]);
+    </script>
+</body>
+</html>
