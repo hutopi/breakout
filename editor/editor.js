@@ -1,5 +1,7 @@
 function save() {
     var data = {
+        lines: grid.props.lines,
+        columns: grid.props.columns,
         bricks: grid.export(),
         background: background.export(),
         music: music.export()
