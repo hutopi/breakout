@@ -28,11 +28,33 @@
             </div>
 
             <div class="col-md-3">
-                <h4>Background</h4>
-                <input type="file" id="background" />
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Background</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="background"></div>
+                    </div>
+                </div>
                 <br />
-                <h4>Music</h4>
-                <input type="file" id="music" />
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Music</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="music"></div>
+                    </div>
+                </div>
+                <br />
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Levelfile</h3>
+                    </div>
+                    <div class="panel-body">
+                        <button id="save" type="button" class="btn btn-danger">Save</button>
+                        <button id="load" type="button" class="btn btn-primary">Load</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -40,8 +62,13 @@
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/jsx" src="grid.jsx"></script>
+    <script type="text/jsx" src="image.jsx"></script>
+    <script type="text/jsx" src="sound.jsx"></script>
+    <script type="text/javascript" src="editor.js"></script>
     <script type="text/jsx">
-      React.render(<GameGrid />, $('#grid')[0]);
+        var grid = React.render(<GameGrid />, $('#grid')[0]);
+        var background = React.render(<Image />, $('#background')[0]);
+        var music = React.render(<Sound />, $('#music')[0]);
     </script>
 </body>
 </html>

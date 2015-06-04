@@ -27,6 +27,14 @@ var GameBrick = React.createClass({
         return (
             <img src={"img/brick" + this.state.resistance + ".png"} onClick={this.change} />
         );
+    },
+
+    export: function() {
+        return {
+            resistance: this.state.resistance,
+            line: this.props.line,
+            column: this.props.column
+        }
     }
 });
 
@@ -43,7 +51,7 @@ var GameGrid = React.createClass({
         for (var line=0; line < this.props.lines; line++) {
             var row = [];
             for (var column=0; column < this.props.columns; column++) {
-                row.push(<td key={column}><GameBrick line={line} column={column} /></td>);
+                row.push(<td key={column}><GameBrick line={line} column={column} ref={'brick-' + line + '-' + column} /></td>);
             }
             rows.push(<tr key={line}>{row}</tr>);
         }
@@ -53,5 +61,18 @@ var GameGrid = React.createClass({
               {rows}
             </table>
         );
+    },
+
+    export: function() {
+        var result = [];
+        for (var line=0; line < this.props.lines; line++) {
+            for (var column=0; column < this.props.columns; column++) {
+                var brick = this.refs['brick-' + line + '-' + column].export();
+                if (brick.resistance > 0) {
+                    result.push(brick);
+                }
+            }
+        }
+        return result;
     }
 });
