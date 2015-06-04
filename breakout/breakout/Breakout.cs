@@ -20,7 +20,7 @@ namespace breakout {
         SpriteBatch spriteBatch;
         private Texture2D logo;
         private Sounds sounds;
-        private Song soundbox;
+        private Songs songs;
         private bool songStart;
 
         private GameState gameState;
@@ -70,6 +70,7 @@ namespace breakout {
             gameLevel = new GameLevel(screenWidth, screenHeight, 1, 3, 6, new List<Ball>(), new Bat(screenWidth, screenHeight));
             gameLevel.Balls.Add(new Ball(screenWidth, screenHeight));
             sounds = new Sounds();
+            songs = new Songs();
         }
 
         /// <summary>
@@ -150,7 +151,11 @@ namespace breakout {
                                Content.Load<SoundEffect>("pause"),
                                Content.Load<SoundEffect>("win"),
                                Content.Load<SoundEffect>("loose"));
-            this.soundbox = Content.Load<Song>("sound");
+
+            songs.LoadContent(Content.Load<Song>("sound"),
+                              Content.Load<Song>("underground"),
+                              Content.Load<Song>("underwater"),
+                              Content.Load<Song>("bowser"));
             // TODO: use this.Content to load your game content here
         }
 
@@ -184,18 +189,7 @@ namespace breakout {
                     arrow.HandleInput(keyboardState, mouseState);
                     break;
                 case GameState.PLAYING:
-                    if (!songStart)
-                    {
-                        if (MediaPlayer.State == MediaState.Paused)
-                        {
-                            MediaPlayer.Resume();
-                        }
-                        else
-                        {
-                            MediaPlayer.Play(this.soundbox);
-                        }
-                        songStart = true;
-                    }
+                    this.checkSong();
                     this.IsMouseVisible = false;
                     foreach (Ball b in gameLevel.Balls)
                     {
@@ -229,6 +223,7 @@ namespace breakout {
                         songStart = false;
                         this.sounds.Win.Play();
                     }
+                    this.resetBat();
                     this.IsMouseVisible = true;
                     if (gameLevel.Level < 5)
                     {
@@ -248,6 +243,7 @@ namespace breakout {
                         this.sounds.Loose.Play();
                     }
                     this.IsMouseVisible = true;
+                    this.resetBat();
                     restartButton.Update(mouseState, previousMouseState, ref gameState);
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
                     break;
@@ -261,6 +257,7 @@ namespace breakout {
                     break;
                 case GameState.READYTOSTART:
                     this.IsMouseVisible = false;
+                    this.resetBalls();
                     foreach (Ball b in gameLevel.Balls)
                     {
                         b.Update(gameTime, gameLevel.Bat.Hitbox, gameLevel, false);
@@ -301,6 +298,36 @@ namespace breakout {
             base.Update(gameTime);
         }
 
+        private void checkSong()
+        {
+            if (!songStart)
+            {
+                if (MediaPlayer.State == MediaState.Paused)
+                {
+                    MediaPlayer.Resume();
+                }
+                else
+                {
+                    switch (this.gameLevel.Level)
+                    {
+                        case 1:
+                            MediaPlayer.Play(this.songs.One);
+                            break;
+                        case 2:
+                            MediaPlayer.Play(this.songs.Two);
+                            break;
+                        case 3:
+                            MediaPlayer.Play(this.songs.Three);
+                            break;
+                        case 4:
+                            MediaPlayer.Play(this.songs.Four);
+                            break;
+                    }
+                }
+                songStart = true;
+            }
+        }
+
         private void UpdateLevel(bool restart)
         {
             gameLevel.Lives = 3;
@@ -326,18 +353,26 @@ namespace breakout {
             if (numberOfBalls == 0)
             {
                 gameLevel.Lives--;
-                if (gameLevel.Balls.Count > 1)
-                {
-                    gameLevel.Balls.RemoveRange(1, gameLevel.Balls.Count - 1);
-                }
-
-                gameLevel.Balls[0].Initialize();
-                gameLevel.Bat.Texture = gameLevel.BatTexture.Regular;
-                gameLevel.Bat.Position = new Vector2(Window.ClientBounds.Width / 2 - gameLevel.Bat.Texture.Width / 2, Window.ClientBounds.Height - 10 - gameLevel.Bat.Texture.Height / 2);
-                gameLevel.Bat.Acceleration = Vector2.Zero;
-                gameLevel.Bat.Speed = 0;
+                this.resetBat();
                 gameState = GameState.READYTOSTART;
             }
+        }
+
+        private void resetBalls()
+        {
+            if (gameLevel.Balls.Count > 1)
+            {
+                gameLevel.Balls.RemoveRange(1, gameLevel.Balls.Count - 1);
+            }
+
+            gameLevel.Balls[0].Initialize();
+           
+        }
+
+        private void resetBat()
+        {
+            gameLevel.Bat.Texture = gameLevel.BatTexture.Regular;
+            gameLevel.Bat.Position = new Vector2(Window.ClientBounds.Width / 2 - gameLevel.Bat.Texture.Width / 2, Window.ClientBounds.Height - 10 - gameLevel.Bat.Texture.Height / 2);
         }
 
         /// <summary>
