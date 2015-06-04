@@ -269,12 +269,13 @@ namespace breakout {
                     break;
                 case GameState.READYTOSTART:
                     this.IsMouseVisible = false;
+                    bat.HandleInput(keyboardState, previousKeyboardState);
+                    bat.Update(gameTime);
                     foreach (Ball b in balls)
                     {
                         b.Update(gameTime, bat.Hitbox, gameLevel, false);
                     }
-                    bat.HandleInput(keyboardState, mouseState);
-                    bat.Update(gameTime);
+                    
                     break;
                 case GameState.NEXT_LEVEL:
                     this.UpdateLevel(false);
@@ -341,8 +342,7 @@ namespace breakout {
                 balls[0].Initialize();
                 bat.Texture = gameLevel.BatTexture.Regular;
                 bat.Position = new Vector2(Window.ClientBounds.Width / 2 - bat.Texture.Width / 2, Window.ClientBounds.Height - 10 - bat.Texture.Height / 2);
-                bat.Acceleration = Vector2.Zero;
-                bat.Speed = 0;
+                
                 gameState = GameState.READYTOSTART;
             }
         }
