@@ -30,5 +30,12 @@ var Sound = React.createClass({
                 <input type="file" ref="input" onChange={this.change} />
             </div>
         );
+    },
+
+    export: function () {
+        return {
+            file: this.state.file,
+            type: this.state.type
+        }
     }
 });
