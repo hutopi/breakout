@@ -26,10 +26,19 @@ namespace breakout {
         private Brick lastBrick = new Brick(0,0,new Vector2(-1,-1),0,0);
         private SoundManager sm = new SoundManager();
 
-
-
-
         public Ball(int screenWidth, int screenHeight) : base(screenWidth, screenHeight) { }
+
+        public Ball(Ball ball): base(ball.screenWidth, ball.screenHeight)
+        {
+            this.Position = ball.Position;
+            this.Texture = ball.Texture;
+            this.Direction = -ball.Direction;
+            this.Speed = ball.Speed;
+            this.lastBrick = ball.lastBrick;
+            this.lastPosition = ball.lastPosition;
+            this.sm = ball.sm;
+        }
+
         public override void Initialize() {
 
             base.Initialize();
@@ -207,15 +216,15 @@ namespace breakout {
                         Direction = new Vector2(-Math.Abs(Direction.X), Direction.Y);
                         Console.WriteLine("coin haut gauche A + coin bas gauche B :" + Direction);
                         changed = true;
-                    }
+                }
                     else if (Hitbox.IntersectsRec(sideRectangles[0]) || Hitbox.IntersectsRec(sideRectangles[1])) {
 
-                        Direction = new Vector2(Direction.X, -Direction.Y);
-                        Console.WriteLine("top || bottom : " + Direction);
+                    Direction = new Vector2(Direction.X, -Direction.Y);
+                    Console.WriteLine("top || bottom : " + Direction);
                         changed = true;
-                    } else if (Hitbox.IntersectsRec(sideRectangles[2]) || Hitbox.IntersectsRec(sideRectangles[3])) {
-                        Direction = new Vector2(-Direction.X, Direction.Y);
-                        Console.WriteLine("right || left : " + Direction);
+                } else if (Hitbox.IntersectsRec(sideRectangles[2]) || Hitbox.IntersectsRec(sideRectangles[3])) {
+                    Direction = new Vector2(-Direction.X, Direction.Y);
+                    Console.WriteLine("right || left : " + Direction);
                         changed = true;
 
                 }
@@ -231,7 +240,7 @@ namespace breakout {
                     Console.WriteLine("coincoin");
 
                 }
-                
+
 
                 lastBrick = b;
 
