@@ -96,6 +96,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Breakout.cs" />
     <Compile Include="Util\MovingSprite.cs" />
+    <Compile Include="Util\Songs.cs" />
     <Compile Include="Util\Sounds.cs" />
     <Compile Include="Util\Sprite.cs" />
   </ItemGroup>

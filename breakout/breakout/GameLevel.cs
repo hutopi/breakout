@@ -148,7 +148,7 @@ namespace breakout
                     brick.Bonus.Position = new Vector2(brick.Position.X, brick.Position.Y);
                     brick.Bonus.Speed = 0.3f;
 
-                    if (brick.Bonus.Type == BonusType.LOW_RESISTANCE || brick.Bonus.Type == BonusType.LOW_SPEED || brick.Bonus.Type == BonusType.UP_LIFE || brick.Bonus.Type == BonusType.BAT_EXTENDED)
+                    if (brick.Bonus.Type == BonusType.LOW_RESISTANCE || brick.Bonus.Type == BonusType.LOW_SPEED || brick.Bonus.Type == BonusType.UP_LIFE || brick.Bonus.Type == BonusType.BAT_EXTENDED || brick.Bonus.Type == BonusType.MULTIPLICATE_BALL)
                     {
                         brick.Bonus.Name = "bonus";
                     }

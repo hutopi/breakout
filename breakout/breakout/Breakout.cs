@@ -20,7 +20,7 @@ namespace breakout {
         SpriteBatch spriteBatch;
         private Texture2D logo;
         private Sounds sounds;
-        private Song soundbox;
+        private Songs songs;
         private bool songStart;
 
         private GameState gameState;
@@ -33,8 +33,6 @@ namespace breakout {
 
         //sprites
         private Arrow arrow;
-        private Bat bat;
-        private List<Ball> balls;
         private SpriteFont scoreFont;
         private SpriteFont helpControlFont;
         private Sprite[] livesSprites;
@@ -62,17 +60,17 @@ namespace breakout {
             soundTextures = new SoundTextures();
             arrow = new Arrow(screenWidth, screenHeight);
 
-            bat = new Bat(screenWidth, screenHeight);
-            balls = new List<Ball>();
-            balls.Add(new Ball(screenWidth, screenHeight));
+
             livesSprites = new Sprite[5];
             for (int i = 0; i < 5; i++)
             {
                 livesSprites[i] = new Sprite(screenWidth, screenHeight);
             }
 
-            gameLevel = new GameLevel(screenWidth, screenHeight, 1, 3, 6, balls, bat);
+            gameLevel = new GameLevel(screenWidth, screenHeight, 1, 3, 6, new List<Ball>(), new Bat(screenWidth, screenHeight));
+            gameLevel.Balls.Add(new Ball(screenWidth, screenHeight));
             sounds = new Sounds();
+            songs = new Songs();
         }
 
         /// <summary>
@@ -89,9 +87,9 @@ namespace breakout {
             resumeButton.Initialize();
             restartButton.Initialize();
             nextLevelButton.Initialize();
-            bat.Initialize();
+            gameLevel.Bat.Initialize();
 
-            foreach (var ball in balls) {
+            foreach (var ball in gameLevel.Balls) {
                 ball.Initialize();
             }
 
@@ -131,10 +129,10 @@ namespace breakout {
             restartButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height / 2);
             nextLevelButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height / 2);
 
-            bat.LoadContent(Content, "bat");
-            foreach (Ball b in balls)
+            gameLevel.Bat.LoadContent(Content, "bat");
+            foreach (Ball b in gameLevel.Balls)
             {
-                b.LoadContent(Content, "ball", bat);
+                b.LoadContent(Content, "ball", gameLevel.Bat);
             }
 
             scoreFont = Content.Load<SpriteFont>("Score");
@@ -153,7 +151,11 @@ namespace breakout {
                                Content.Load<SoundEffect>("pause"),
                                Content.Load<SoundEffect>("win"),
                                Content.Load<SoundEffect>("loose"));
-            this.soundbox = Content.Load<Song>("sound");
+
+            songs.LoadContent(Content.Load<Song>("sound"),
+                              Content.Load<Song>("underground"),
+                              Content.Load<Song>("underwater"),
+                              Content.Load<Song>("bowser"));
             // TODO: use this.Content to load your game content here
         }
 
@@ -187,32 +189,21 @@ namespace breakout {
                     arrow.HandleInput(keyboardState, mouseState);
                     break;
                 case GameState.PLAYING:
-                    if (!songStart)
-                    {
-                        if (MediaPlayer.State == MediaState.Paused)
-                        {
-                            MediaPlayer.Resume();
-                        }
-                        else
-                        {
-                            MediaPlayer.Play(this.soundbox);
-                        }
-                        songStart = true;
-                    }
+                    this.checkSong();
                     this.IsMouseVisible = false;
-                    foreach (Ball b in balls)
+                    foreach (Ball b in gameLevel.Balls)
                     {
-                        b.Update(gameTime, bat.Hitbox, gameLevel, true);
+                        b.Update(gameTime, gameLevel.Bat.Hitbox, gameLevel, true);
                     }
 
                     foreach(Brick b in gameLevel.BricksMap){
                         if (b.Bonus.Activated == true)
                         {
-                            b.Bonus.Update(gameTime, bat.Hitbox, gameLevel, b);
+                            b.Bonus.Update(gameTime, gameLevel.Bat.Hitbox, gameLevel, b);
                         }
                     }
-                    bat.HandleInput(keyboardState, previousKeyboardState);
-                    bat.Update(gameTime);
+                    gameLevel.Bat.HandleInput(keyboardState, previousKeyboardState);
+                    gameLevel.Bat.Update(gameTime);
                     CheckIfBallOut();
                     break;
                 case GameState.PAUSED:
@@ -232,6 +223,7 @@ namespace breakout {
                         songStart = false;
                         this.sounds.Win.Play();
                     }
+                    this.resetBat();
                     this.IsMouseVisible = true;
                     if (gameLevel.Level < 5)
                     {
@@ -251,6 +243,7 @@ namespace breakout {
                         this.sounds.Loose.Play();
                     }
                     this.IsMouseVisible = true;
+                    this.resetBat();
                     restartButton.Update(mouseState, previousMouseState, ref gameState);
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
                     break;
@@ -264,12 +257,13 @@ namespace breakout {
                     break;
                 case GameState.READYTOSTART:
                     this.IsMouseVisible = false;
-                    foreach (Ball b in balls)
+                    this.resetBalls();
+                    foreach (Ball b in gameLevel.Balls)
                     {
-                        b.Update(gameTime, bat.Hitbox, gameLevel, false);
+                        b.Update(gameTime, gameLevel.Bat.Hitbox, gameLevel, false);
                     }
-                    bat.HandleInput(keyboardState, mouseState);
-                    bat.Update(gameTime);
+                    gameLevel.Bat.HandleInput(keyboardState, previousKeyboardState);
+                    gameLevel.Bat.Update(gameTime);
                     break;
                 case GameState.NEXT_LEVEL:
                     this.UpdateLevel(false);
@@ -304,6 +298,37 @@ namespace breakout {
             base.Update(gameTime);
         }
 
+        private void checkSong()
+        {
+            if (!songStart)
+            {
+                if (MediaPlayer.State == MediaState.Paused)
+                {
+                    MediaPlayer.Resume();
+                }
+                else
+                {
+                    switch (this.gameLevel.Level)
+                    {
+                        case 1:
+                            MediaPlayer.Play(this.songs.One);
+                            break;
+                        case 2:
+                            MediaPlayer.Play(this.songs.Two);
+                            break;
+                        case 3:
+                            MediaPlayer.Play(this.songs.Three);
+                            break;
+                        case 4:
+                            MediaPlayer.Play(this.songs.Four);
+                            break;
+                    }
+                    MediaPlayer.IsRepeating = true;
+                }
+                songStart = true;
+            }
+        }
+
         private void UpdateLevel(bool restart)
         {
             gameLevel.Lives = 3;
@@ -317,10 +342,10 @@ namespace breakout {
         }
 
         private void CheckIfBallOut() {
-            int numberOfBalls = balls.Count;
-            foreach (Ball b in balls)
+            int numberOfBalls = gameLevel.Balls.Count;
+            foreach (Ball b in gameLevel.Balls)
             {
-                if (b.Position.Y > bat.Position.Y - 2)
+                if (b.Position.Y > gameLevel.Bat.Position.Y - 2)
                 {
                     numberOfBalls--;
                 }
@@ -329,18 +354,26 @@ namespace breakout {
             if (numberOfBalls == 0)
             {
                 gameLevel.Lives--;
-                if (balls.Count > 1)
-                {
-                    balls.RemoveRange(1, balls.Count - 1);
-                }
-
-                balls[0].Initialize();
-                bat.Texture = gameLevel.BatTexture.Regular;
-                bat.Position = new Vector2(Window.ClientBounds.Width / 2 - bat.Texture.Width / 2, Window.ClientBounds.Height - 10 - bat.Texture.Height / 2);
-                bat.Acceleration = Vector2.Zero;
-                bat.Speed = 0;
+                this.resetBat();
                 gameState = GameState.READYTOSTART;
             }
+        }
+
+        private void resetBalls()
+        {
+            if (gameLevel.Balls.Count > 1)
+            {
+                gameLevel.Balls.RemoveRange(1, gameLevel.Balls.Count - 1);
+            }
+
+            gameLevel.Balls[0].Initialize();
+           
+        }
+
+        private void resetBat()
+        {
+            gameLevel.Bat.Texture = gameLevel.BatTexture.Regular;
+            gameLevel.Bat.Position = new Vector2(Window.ClientBounds.Width / 2 - gameLevel.Bat.Texture.Width / 2, Window.ClientBounds.Height - 10 - gameLevel.Bat.Texture.Height / 2);
         }
 
         /// <summary>
@@ -360,9 +393,9 @@ namespace breakout {
                     exitButton.Draw(spriteBatch, gameTime);
                     break;
                 case GameState.PLAYING:
-                    bat.Draw(spriteBatch, gameTime);
+                    gameLevel.Bat.Draw(spriteBatch, gameTime);
                  //   soundButton.Draw(spriteBatch, gameTime);
-                    foreach (Ball b in balls)
+                    foreach (Ball b in gameLevel.Balls)
                     {
                         b.Draw(spriteBatch, gameTime);
                     }
@@ -383,8 +416,8 @@ namespace breakout {
                     this.getLives(ref spriteBatch, gameTime);
                     break;
                 case GameState.READYTOSTART:
-                    bat.Draw(spriteBatch, gameTime);
-                    foreach (Ball b in balls)
+                    gameLevel.Bat.Draw(spriteBatch, gameTime);
+                    foreach (Ball b in gameLevel.Balls)
                     {
                         b.Draw(spriteBatch, gameTime);
                     }
@@ -406,8 +439,8 @@ namespace breakout {
                     this.getLives(ref spriteBatch, gameTime);
                     break;
                 case GameState.PAUSED:
-                    bat.Draw(spriteBatch, gameTime);
-                    foreach (Ball b in balls)
+                    gameLevel.Bat.Draw(spriteBatch, gameTime);
+                    foreach (Ball b in gameLevel.Balls)
                     {
                         b.Draw(spriteBatch, gameTime);
                     }

@@ -117,6 +117,14 @@ namespace breakout
                             gameLevel.Lives++;
                         }
                         break;
+                    case BonusType.MULTIPLICATE_BALL:
+                        Ball newBall = null;
+                        foreach (Ball b in gameLevel.Balls)
+                        {
+                            newBall = new Ball(b);
+                        }
+                        gameLevel.Balls.Add(newBall);
+                        break;
                 }
 
                 Type = BonusType.NONE;

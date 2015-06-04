@@ -53,6 +53,25 @@ namespace breakout {
 
             return (cornerDistance_sq <= (Math.Pow(this.radius,2.0)));
         }
+        public bool IntersectsRec(Brick b) {
+            if (b == null) {
+                return false;
+            }
+
+            int circleDistanceX = Math.Abs(this.x - (b.Hitbox.X + b.Hitbox.Width / 2));
+            int circleDistanceY = Math.Abs(this.y - (b.Hitbox.Y + b.Hitbox.Height / 2));
+
+            if (circleDistanceX > (b.Hitbox.Width / 2) + this.radius) { return false; }
+            if (circleDistanceY > (b.Hitbox.Height / 2) + this.radius) { return false; }
+
+            if (circleDistanceX <= (b.Hitbox.Width / 2)) { return true; }
+            if (circleDistanceY <= (b.Hitbox.Height / 2)) { return true; }
+
+            double cornerDistance_sq = (circleDistanceX - b.Hitbox.Width / 2) ^ 2 + (circleDistanceY - b.Hitbox.Height / 2) ^ 2;
+
+            return (cornerDistance_sq <= (Math.Pow(this.radius, 2.0)));
+        }
+        
         
     }
 }
