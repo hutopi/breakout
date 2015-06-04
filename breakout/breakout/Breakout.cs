@@ -71,7 +71,7 @@ namespace breakout {
                 livesSprites[i] = new Sprite(screenWidth, screenHeight);
             }
 
-            gameLevel = new GameLevel(screenWidth, screenHeight, 1, balls, bat);
+            gameLevel = new GameLevel(screenWidth, screenHeight, 1, 3, 6, balls, bat);
             sounds = new Sounds();
         }
 
@@ -238,7 +238,7 @@ namespace breakout {
                         this.sounds.Win.Play();
                     }
                     this.IsMouseVisible = true;
-                    if (gameLevel.Level < 3)
+                    if (gameLevel.Level < 5)
                     {
                         nextLevelButton.Update(mouseState, previousMouseState, ref gameState);
                     }
@@ -383,7 +383,7 @@ namespace breakout {
                             b.Bonus.Draw(spriteBatch, gameTime);
                         }
                     }
-                    spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.Blue);
+                    spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.White);
                     this.getLives(ref spriteBatch, gameTime);
                     break;
                 case GameState.READYTOSTART:
@@ -405,7 +405,7 @@ namespace breakout {
                             b.Bonus.Draw(spriteBatch, gameTime);
                         }
                     }
-                    spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.Blue);
+                    spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.White);
                     spriteBatch.DrawString(helpControlFont, "Press Enter to launch the ball and Space to pause the game", new Vector2(200,10),Color.White);
                     this.getLives(ref spriteBatch, gameTime);
                     break;
@@ -429,11 +429,11 @@ namespace breakout {
                         }
                     }
                     resumeButton.Draw(spriteBatch, gameTime);
-                    spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.Blue);
+                    spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.White);
                     this.getLives(ref spriteBatch, gameTime);
                     break;
                 case GameState.WIN:
-                    if (gameLevel.Level < 3)
+                    if (gameLevel.Level < 5)
                     {
                         nextLevelButton.Draw(spriteBatch, gameTime);
                     }
