@@ -79,8 +79,8 @@ namespace breakout
         }
 
 
-        private Brick[,] bricksMap;
-        public Brick[,] BricksMap
+        private List<Brick> bricksMap;
+        public List<Brick> BricksMap
         {
             get { return bricksMap; }
             set { bricksMap = value; }
@@ -97,7 +97,7 @@ namespace breakout
             this.Bat = bat;
             this.lines = lines;
             this.columns = columns;
-            this.BricksMap = new Brick[this.lines, this.columns];
+            this.BricksMap = new List<Brick>();
             this.nb_bricks = this.lines * this.columns;
             this.nbBonus = (int)(0.1 * (double)(this.columns * this.lines));
         }
@@ -167,7 +167,7 @@ namespace breakout
             this.columns = columns;
             this.nb_bricks = (this.lines * this.columns) - indestructible;
             this.nbBonus = (int)(percentBonus * (double)(this.columns * this.lines));
-            this.BricksMap = new Brick[this.lines, this.columns];
+            this.BricksMap = new List<Brick>();
         }
 
         public void LevelOne()
@@ -183,7 +183,7 @@ namespace breakout
             {
                 for (var column = 0; column < 16; column++)
                 {
-                    this.BricksMap[line, column] = new Brick(this.screenWidth, this.screenHeight, new Vector2(x + line * margin_w, y + column * margin_h), 20, 50, 1);
+                    this.BricksMap.Add(new Brick(this.screenWidth, this.screenHeight, new Vector2(x + line * margin_w, y + column * margin_h), 20, 50, 1));
                 }
             }
 
@@ -200,15 +200,14 @@ namespace breakout
 
             for (int i = 0; i < this.nbBonus; i++)
             {
-                x = x_rnd.Next(0, this.lines);
-                y = y_rnd.Next(0, this.columns);
+                x = x_rnd.Next(0, this.lines * this.columns);
 
                 Console.WriteLine("{0}, {1}", x, y);
 
-                if (this.BricksMap[x, y].Bonus.Type == BonusType.NONE && this.BricksMap[x,y].Resistance > 0)
+                if (this.BricksMap[x].Bonus.Type == BonusType.NONE && this.BricksMap[x].Resistance > 0)
                 {
                     Array values = Enum.GetValues(typeof(BonusType));
-                    this.BricksMap[x, y].Bonus.Type = (BonusType)values.GetValue(rnd.Next(1, values.Length));
+                    this.BricksMap[x].Bonus.Type = (BonusType)values.GetValue(rnd.Next(1, values.Length));
                 }
                 else
                 {
