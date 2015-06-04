@@ -42,7 +42,6 @@ namespace breakout {
             } else {
                 Speed = 0;
             }*/
-
             if (keyboardState.IsKeyDown(Keys.Left) && !previousKeyboardState.IsKeyDown(Keys.Left)) {
                 direction = -Vector2.UnitX;
                 speed = 0.2f;
