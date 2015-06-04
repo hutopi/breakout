@@ -14,7 +14,16 @@ function load() {
     var reader = new FileReader;
     reader.onloadend = function() {
         var data = JSON.parse(pako.inflate(reader.result, {to: 'string'}));
-        console.log(data);
+        grid.import(data.bricks);
+        background.setState({
+            type: data.background.type,
+            file: data.background.file
+        });
+
+        music.setState({
+            type: data.music.type,
+            file: data.music.file
+        })
     };
 
     var file = $('#toload')[0].files[0]

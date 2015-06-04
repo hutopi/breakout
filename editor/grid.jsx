@@ -74,5 +74,12 @@ var GameGrid = React.createClass({
             }
         }
         return result;
+    },
+
+    import: function(bricks) {
+        bricks.forEach(function(brick) {
+            var el = this.refs['brick-' + brick.line + '-' + brick.column];
+            el.setState({resistance: brick.resistance});
+        }.bind(this));
     }
 });
