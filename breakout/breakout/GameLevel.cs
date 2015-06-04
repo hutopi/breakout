@@ -171,18 +171,18 @@ namespace breakout
             }
         }
 
-        public void InitializeBoard(int lines, int columns, double percentBonus)
+        public void InitializeBoard(int lines, int columns, int indestructible, double percentBonus)
         {
             this.lines = lines;
             this.columns = columns;
-            this.nb_bricks = this.lines * this.columns;
+            this.nb_bricks = (this.lines * this.columns) - indestructible;
             this.nbBonus = (int)(percentBonus * (double)(this.columns * this.lines));
             this.BricksMap = new Brick[this.lines, this.columns];
         }
 
         public void LevelOne()
         {
-            this.InitializeBoard(3, 6, 0.1);
+            this.InitializeBoard(3, 6, 0, 0.1);
 
             int x = (int)((0.25) * (double)this.screenWidth);
             int y = 80;
@@ -207,7 +207,7 @@ namespace breakout
 
         public void LevelTwo()
         {
-            this.InitializeBoard(4, 8, 0.1);
+            this.InitializeBoard(4, 8, 8, 0.1);
 
             int x = (int)((0.25) * (double)this.screenWidth);
             int y = 40;
@@ -237,7 +237,7 @@ namespace breakout
 
         public void LevelThree()
         {
-            this.InitializeBoard(6, 10, 0.1);
+            this.InitializeBoard(6, 10, 20, 0.1);
 
             int x = (int)((0.35) * (double)this.screenWidth);
             int y = 50;
@@ -320,7 +320,7 @@ namespace breakout
 
         public void LevelFour()
         {
-            this.InitializeBoard(11, 10, 0.1);
+            this.InitializeBoard(11, 10, 20, 0.1);
 
             int margin_h = 21;
             int margin_w = 48;
