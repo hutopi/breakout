@@ -129,7 +129,9 @@ namespace breakout
                     this.Background = "background_1";
                     break;
             }
+           
             this.SetBonus();
+            this.InitializeBonus();
         }
 
         public void Initialize()
@@ -596,10 +598,14 @@ namespace breakout
             Random y_rnd = new Random();
             int x, y = 0;
 
+            Console.WriteLine("Nombre de bonus:" + nbBonus);
+
             for (int i = 0; i < this.nbBonus; i++)
             {
                 x = x_rnd.Next(0, this.lines);
                 y = y_rnd.Next(0, this.columns);
+
+                Console.WriteLine("{0}, {1}", x, y);
 
                 if (this.BricksMap[x, y].Bonus.Type == BonusType.NONE && this.BricksMap[x,y].Resistance > 0)
                 {

@@ -147,13 +147,7 @@ namespace breakout {
             gameLevel.BrickTexture = new BrickTexture(this.buildBrickTextures());
             gameLevel.BatTexture = this.buildBatTextures();
 
-            foreach (Brick b in gameLevel.BricksMap) {
-                b.LoadContent(Content, "brick");
-                if (b.Bonus.Type != BonusType.NONE)
-                {
-                    b.Bonus.LoadContent(Content, b.Bonus.Name);
-                }
-            }
+            this.putBricksTexture();
 
             sounds.LoadContent(Content.Load<SoundEffect>("bump"),
                                Content.Load<SoundEffect>("pause"),
@@ -210,6 +204,7 @@ namespace breakout {
                     {
                         b.Update(gameTime, bat.Hitbox, gameLevel, true);
                     }
+
                     foreach(Brick b in gameLevel.BricksMap){
                         if (b.Bonus.Activated == true)
                         {
@@ -278,6 +273,7 @@ namespace breakout {
                     break;
                 case GameState.NEXT_LEVEL:
                     this.UpdateLevel(false);
+                    this.putBricksTexture();
                     break;
                 case GameState.EXIT:
                     this.Exit();
@@ -470,6 +466,18 @@ namespace breakout {
             Texture2D extended = Content.Load<Texture2D>("extended_bat");
             return new BatTextures(reduced, regular, extended);
 
+        }
+
+        public void putBricksTexture()
+        {
+            foreach (Brick b in gameLevel.BricksMap)
+            {
+                b.LoadContent(Content, "brick");
+                if (b.Bonus.Type != BonusType.NONE)
+                {
+                    b.Bonus.LoadContent(Content, b.Bonus.Name);
+                }
+            }
         }
 
         public void getLives(ref SpriteBatch spriteBatch, GameTime gameTime)
