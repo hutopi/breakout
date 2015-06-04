@@ -341,8 +341,6 @@ namespace breakout {
                 balls[0].Initialize();
                 bat.Texture = gameLevel.BatTexture.Regular;
                 bat.Position = new Vector2(Window.ClientBounds.Width / 2 - bat.Texture.Width / 2, Window.ClientBounds.Height - 10 - bat.Texture.Height / 2);
-                balls[0].Position = new Vector2(bat.Position.X + bat.Texture.Width / 2 - balls[0].Texture.Width / 2, bat.Position.Y - bat.Texture.Height - balls[0].Texture.Height / 2);
-
                 gameState = GameState.READYTOSTART;
             }
         }
