@@ -1,0 +1,23 @@
+{
+  "name": "breakout-editor",
+  "main": "editor.js",
+  "version": "1.0",
+  "homepage": "https://github.com/hutopi/breakout",
+  "authors": [
+    "Hugo Caille <hugo.caille@isen-lille.fr>"
+  ],
+  "license": "Apache",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4",
+    "file-saver-saveas-js": "~1.20150507.2",
+    "pako": "~0.2.6",
+    "react": "~0.13.3"
+  }
+}
