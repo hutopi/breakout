@@ -216,7 +216,7 @@ namespace breakout {
                             b.Bonus.Update(gameTime, bat.Hitbox, gameLevel, b);
                         }
                     }
-                    bat.HandleInput(keyboardState, mouseState);
+                    bat.HandleInput(keyboardState, previousKeyboardState);
                     bat.Update(gameTime);
                     CheckIfBallOut();
                     break;
@@ -341,6 +341,8 @@ namespace breakout {
                 balls[0].Initialize();
                 bat.Texture = gameLevel.BatTexture.Regular;
                 bat.Position = new Vector2(Window.ClientBounds.Width / 2 - bat.Texture.Width / 2, Window.ClientBounds.Height - 10 - bat.Texture.Height / 2);
+                bat.Acceleration = Vector2.Zero;
+                bat.Speed = 0;
                 gameState = GameState.READYTOSTART;
             }
         }

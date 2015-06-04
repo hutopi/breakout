@@ -13,6 +13,9 @@ using Microsoft.Xna.Framework.Media;
 namespace breakout {
     public class Bat : MovingSprite {
 
+        private Vector2 velocity = Vector2.Zero;
+        private Vector2 acceleration = Vector2.Zero;
+        public Vector2 Acceleration { get { return acceleration; } set { acceleration = value; } }
         public Rectangle Hitbox {
             get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height); }
         }
@@ -28,9 +31,9 @@ namespace breakout {
             Position = new Vector2(screenWidth / 2 - Texture.Width / 2, screenHeight - 10 - Texture.Height / 2);
         }
 
-        public override void HandleInput(KeyboardState keyboardState, MouseState mouseState) {
+        public void HandleInput(KeyboardState keyboardState, KeyboardState previousKeyboardState) {
 
-            if (keyboardState.IsKeyDown(Keys.Left)) {
+            /*if (keyboardState.IsKeyDown(Keys.Left)) {
                 Direction = -Vector2.UnitX;
                 Speed = 0.4f;
             } else if (keyboardState.IsKeyDown(Keys.Right)) {
@@ -38,16 +41,48 @@ namespace breakout {
                 Speed = 0.4f;
             } else {
                 Speed = 0;
+            }*/
+
+            if (keyboardState.IsKeyDown(Keys.Left) && !previousKeyboardState.IsKeyDown(Keys.Left)) {
+                direction = -Vector2.UnitX;
+                speed = 0.2f;
+                acceleration = Vector2.Zero;
+                velocity = new Vector2(-speed, 0);
+            } else if (keyboardState.IsKeyDown(Keys.Right) && !previousKeyboardState.IsKeyDown(Keys.Right)) {
+                direction = Vector2.UnitX;
+                speed = 0.2f;
+                acceleration = Vector2.Zero;
+                velocity = new Vector2(+speed, 0);
+            } else if (keyboardState.IsKeyDown(Keys.Left) && previousKeyboardState.IsKeyDown(Keys.Left)) {
+                direction = -Vector2.UnitX;
+                speed = 0.2f;
+                acceleration = -(new Vector2(2f, 0)); 
+                
+            } else if (keyboardState.IsKeyDown(Keys.Right) && previousKeyboardState.IsKeyDown(Keys.Right)) {
+                direction = Vector2.UnitX;
+                speed = 0.2f;
+                acceleration = new Vector2(2f, 0); 
+            } else {
+                speed = 0;
+                acceleration = Vector2.Zero;
             }
 
-            base.HandleInput(keyboardState, mouseState);
 
         }
 
         public override void Update(GameTime gameTime) {
-            if ((Position.X <= 0 && Direction.X < 0) || (Position.X >= screenWidth - Texture.Width && Direction.X > 0))
-                Speed = 0;
-            base.Update(gameTime);
+            if ((position.X <= 0  && direction.X < 0) || (position.X >= screenWidth - Texture.Width  && direction.X > 0)) { 
+                speed = 0;
+                acceleration = Vector2.Zero;
+            }
+            if (acceleration == Vector2.Zero) {
+                base.Update(gameTime);
+
+            }else{
+                velocity = velocity + (acceleration * (float)gameTime.ElapsedGameTime.TotalSeconds);
+                this.position = position + ( velocity *(float)gameTime.ElapsedGameTime.TotalMilliseconds);
+
+            }
         }
 
     }

@@ -13,13 +13,13 @@ using Microsoft.Xna.Framework.Media;
 namespace breakout {
     public class MovingSprite : Sprite {
 
-        private Vector2 direction;
+        protected Vector2 direction;
         public Vector2 Direction {
             get { return direction; }
             set { direction = Vector2.Normalize(value); }
         }
 
-        private float speed;
+        protected float speed;
         public float Speed {
 
             get { return speed; }
@@ -31,7 +31,7 @@ namespace breakout {
         public MovingSprite(int screenWidth, int screenHeight) : base(screenWidth, screenHeight) { }
        
         public virtual void Update(GameTime gameTime) {
-            this.Position += direction * speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            this.position += direction * speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
         }
 
         public override void Initialize()
