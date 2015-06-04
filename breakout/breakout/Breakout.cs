@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using breakout.Textures;
+using breakout.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -18,6 +19,9 @@ namespace breakout {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Texture2D logo;
+        private Sounds sounds;
+        private Song soundbox;
+        private bool songStart;
 
         private GameState gameState;
         private GameLevel gameLevel;
@@ -39,6 +43,7 @@ namespace breakout {
         private ButtonSprite resumeButton;
         private ButtonSprite restartButton;
         private ButtonSprite nextLevelButton;
+        private SoundTextures soundTextures;
 
         public Breakout() {
             graphics = new GraphicsDeviceManager(this);
@@ -54,6 +59,7 @@ namespace breakout {
             resumeButton = new ButtonSprite(screenWidth, screenHeight, "resume");
             restartButton = new ButtonSprite(screenWidth, screenHeight, "restart");
             nextLevelButton = new ButtonSprite(screenWidth, screenHeight, "next");
+            soundTextures = new SoundTextures();
             arrow = new Arrow(screenWidth, screenHeight);
 
             bat = new Bat(screenWidth, screenHeight);
@@ -66,6 +72,7 @@ namespace breakout {
             }
 
             gameLevel = new GameLevel(screenWidth, screenHeight, 1, balls, bat);
+            sounds = new Sounds();
         }
 
         /// <summary>
@@ -82,8 +89,6 @@ namespace breakout {
             resumeButton.Initialize();
             restartButton.Initialize();
             nextLevelButton.Initialize();
-
-
             bat.Initialize();
 
             foreach (var ball in balls) {
@@ -118,19 +123,20 @@ namespace breakout {
             resumeButton.LoadContent(Content, "resume");
             restartButton.LoadContent(Content, "restart");
             nextLevelButton.LoadContent(Content, "next");
+            soundTextures.LoadContent(Content.Load<Texture2D>("soundOn"), Content.Load<Texture2D>("soundOff"));
 
             startButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height/2);
             exitButton.Position = new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2);
             resumeButton.Position = new Vector2(Window.ClientBounds.Width / 2 - resumeButton.Texture.Width / 2, Window.ClientBounds.Height / 2 - resumeButton.Texture.Height / 2);
-
-            restartButton.Position = new Vector2(Window.ClientBounds.Width / 2 - startButton.Texture.Width / 2, Window.ClientBounds.Height * 1 / 3 - startButton.Texture.Height / 2);
-            nextLevelButton.Position = new Vector2(Window.ClientBounds.Width / 2 - startButton.Texture.Width / 2, Window.ClientBounds.Height * 1 / 3 - startButton.Texture.Height / 2);
+            restartButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height / 2);
+            nextLevelButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height / 2);
 
             bat.LoadContent(Content, "bat");
             foreach (Ball b in balls)
             {
                 b.LoadContent(Content, "ball", bat);
             }
+
             scoreFont = Content.Load<SpriteFont>("Score");
             helpControlFont = Content.Load<SpriteFont>("helpControls");
             for (int i = 0; i < 5; i++)
@@ -148,6 +154,12 @@ namespace breakout {
                     b.Bonus.LoadContent(Content, b.Bonus.Name);
                 }
             }
+
+            sounds.LoadContent(Content.Load<SoundEffect>("bump"),
+                               Content.Load<SoundEffect>("pause"),
+                               Content.Load<SoundEffect>("win"),
+                               Content.Load<SoundEffect>("loose"));
+            this.soundbox = Content.Load<Song>("sound");
             // TODO: use this.Content to load your game content here
         }
 
@@ -181,6 +193,18 @@ namespace breakout {
                     arrow.HandleInput(keyboardState, mouseState);
                     break;
                 case GameState.PLAYING:
+                    if (!songStart)
+                    {
+                        if (MediaPlayer.State == MediaState.Paused)
+                        {
+                            MediaPlayer.Resume();
+                        }
+                        else
+                        {
+                            MediaPlayer.Play(this.soundbox);
+                        }
+                        songStart = true;
+                    }
                     this.IsMouseVisible = false;
                     foreach (Ball b in balls)
                     {
@@ -197,10 +221,22 @@ namespace breakout {
                     CheckIfBallOut();
                     break;
                 case GameState.PAUSED:
+                    if (songStart)
+                    {
+                        MediaPlayer.Pause();
+                        this.sounds.Pause.Play();
+                        songStart = false;
+                    }
                     this.IsMouseVisible = true;
                     resumeButton.Update(mouseState, previousMouseState, ref gameState);
                     break;
                 case GameState.WIN:
+                    if (songStart)
+                    {
+                        MediaPlayer.Stop();
+                        songStart = false;
+                        this.sounds.Win.Play();
+                    }
                     this.IsMouseVisible = true;
                     if (gameLevel.Level < 3)
                     {
@@ -213,11 +249,22 @@ namespace breakout {
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
                     break;
                 case GameState.LOOSE:
+                    if (songStart)
+                    {
+                        MediaPlayer.Stop();
+                        songStart = false;
+                        this.sounds.Loose.Play();
+                    }
                     this.IsMouseVisible = true;
                     restartButton.Update(mouseState, previousMouseState, ref gameState);
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
                     break;
                 case GameState.RESTART:
+                    if (songStart)
+                    {
+                        MediaPlayer.Stop();
+                        songStart = false;
+                    }
                     this.UpdateLevel(true);
                     break;
                 case GameState.READYTOSTART:
@@ -258,9 +305,6 @@ namespace breakout {
 
             previousKeyboardState = keyboardState;
             previousMouseState = mouseState;
-
-           
-
             base.Update(gameTime);
         }
 
@@ -310,7 +354,7 @@ namespace breakout {
         protected override void Draw(GameTime gameTime) {
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            spriteBatch.Draw(Content.Load<Texture2D>("background2"),
+            spriteBatch.Draw(Content.Load<Texture2D>(gameLevel.Background),
                              new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height),
                              Color.White);
             switch (gameState) {
@@ -321,6 +365,7 @@ namespace breakout {
                     break;
                 case GameState.PLAYING:
                     bat.Draw(spriteBatch, gameTime);
+                 //   soundButton.Draw(spriteBatch, gameTime);
                     foreach (Ball b in balls)
                     {
                         b.Draw(spriteBatch, gameTime);
@@ -412,11 +457,10 @@ namespace breakout {
 
         public Texture2D[] buildBrickTextures() {
             Texture2D[] textures = new Texture2D[5];
-            textures[0] = Content.Load<Texture2D>("brick");
-            textures[1] = Content.Load<Texture2D>("brick1");
-            textures[2] = Content.Load<Texture2D>("brick2");
-            textures[3] = Content.Load<Texture2D>("brick3");
-            textures[4] = Content.Load<Texture2D>("brick4");
+            for (int i = 0; i < 5; i++)
+            {
+                textures[i] = Content.Load<Texture2D>("brick" + i);
+            }
             return textures;
         }
 

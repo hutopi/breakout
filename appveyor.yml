@@ -2,6 +2,10 @@ version: 1.0.{build}
 skip_tags: true
 os: Windows Server 2012 R2
 configuration: Release
+init:
+- ps: Install-WindowsFeature Server-Media-Foundation
+- ps: Restart-Computer -Force
+- ps: Start-Sleep -s 10
 install:
 - ps: >-
     Function RemoveIfExists($path) {
@@ -43,16 +47,9 @@ install:
     }
 
 
-    If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
-        [Security.Principal.WindowsBuiltInRole] "Administrator"))
-    {
-        Write-Warning "You do not have Administrator rights to run this script!`nPlease re-run this script as an Administrator!"
-        Break
-    }
-
-
     $currentLocation = (Get-Location).ToString();
 
+    $wc = New-Object System.Net.WebClient
 
     Write-Host "`r`n";
 
@@ -63,7 +60,6 @@ install:
 
     if((Test-Path ".\XNAGS40_setup.exe") -eq $False) {
         Write-Host "  Downloading XNA 4.0 Refresh Installer to $downloadLocation. This may take several minutes.";
-        $wc = New-Object System.Net.WebClient
         $wc.DownloadFile("http://download.microsoft.com/download/E/C/6/EC68782D-872A-4D58-A8D3-87881995CDD4/XNAGS40_setup.exe", $downloadLocation)
         Write-Host "  Download Complete.";
     } else {
@@ -152,9 +148,12 @@ install:
 
 
     Write-Host "`r`nInstallation Complete.";
+
 build:
   verbosity: minimal
 after_build:
+  - choco install innosetup /y
+  - '"C:\Program Files (x86)\Inno Setup 5\ISCC.exe" setup.iss'
   - 7z a breakout.zip .\breakout\breakout\bin\x86\Release\
 artifacts:
 - path: breakout.zip
@@ -163,4 +162,6 @@ deploy:
 - provider: GitHub
   auth_token:
     secure: Khomm4veUl7efga49YI5mu/jxXInUXB6UY65Q+Occm7koxraiPqmkUSD2PZVy+ZQ
+  on:
+    APPVEYOR_REPO_BRANCH: master
   artifact: Breakout
