@@ -188,8 +188,8 @@ namespace breakout
 
             int x = (int)((0.25) * (double)this.screenWidth);
             int y = 80;
-            int margin_h = 21;
-            int margin_w = 48;
+            int margin_h = 20;
+            int margin_w = 50;
 
             for (int i = 0; i < lines; i++)
             {
@@ -213,8 +213,8 @@ namespace breakout
 
             int x = (int)((0.25) * (double)this.screenWidth);
             int y = 40;
-            int margin_h = 21;
-            int margin_w = 48;
+            int margin_h = 20;
+            int margin_w = 50;
             int r = 4;
 
             for (int i = 0; i < lines; i++)
@@ -243,8 +243,8 @@ namespace breakout
 
             int x = (int)((0.35) * (double)this.screenWidth);
             int y = 50;
-            int margin_h = 21;
-            int margin_w = 48;
+            int margin_h = 20;
+            int margin_w = 50;
 
             for (int j = 0; j < 10; j++)
             {
@@ -324,8 +324,8 @@ namespace breakout
         {
             this.InitializeBoard(11, 10, 20, 0.1);
 
-            int margin_h = 21;
-            int margin_w = 48;
+            int margin_h = 20;
+            int margin_w = 50;
             int x = (int)((0.5) * (double)this.screenWidth - 22);
             x -= (int)(5.5 * margin_w);
             int y = (int)((0.75) * (double)this.screenHeight - 42);
