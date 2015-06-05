@@ -8,14 +8,15 @@ function save() {
     }
 
     var result = JSON.stringify(data);
-    var compressed = pako.deflate(result, {level: 9});
-    saveAs(new Blob([compressed], {type: 'application/octet-stream'}), 'level.json');
+    //var compressed = pako.deflate(result, {level: 9});
+    saveAs(new Blob([result], {type: 'application/json'}), 'level.json');
 }
 
 function load() {
     var reader = new FileReader;
     reader.onloadend = function() {
-        var data = JSON.parse(pako.inflate(reader.result, {to: 'string'}));
+        //var data = JSON.parse(pako.inflate(reader.result, {to: 'string'}));
+        var data = JSON.parse(reader.result);
         grid.import(data.bricks);
         background.setState({
             type: data.background.type,

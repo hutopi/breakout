@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using breakout.Textures;
+using breakout.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -86,8 +87,6 @@ namespace breakout
             set { bricksMap = value; }
         }
 
-        public GameLevel() { }
-
         public GameLevel(int screenWidth, int screenHeight, int level, int lines, int columns, List<Ball> balls, Bat bat)
         {
             this.screenWidth = screenWidth;
@@ -118,7 +117,7 @@ namespace breakout
                     break;
             }
            
-            this.SetBonus();
+            //this.SetBonus();
             this.InitializeBonus();
         }
 
@@ -172,21 +171,23 @@ namespace breakout
 
         public void LevelOne()
         {
-            this.InitializeBoard(20, 16, 0, 0.1);
+            var level = new GameFile(@"..\..\..\..\..\levels\one.json");
+            level.Load();
+
+            this.InitializeBoard(level.Data.Lines, level.Data.Columns, 0, 0.1);
             
             int margin_h = 20;
             int margin_w = 50;
             int x = 0;
             int y = 2 * margin_h;
 
-            for (var line = 0; line < 20; line++)
+            foreach (Dictionary<string, object> brick in level.Data.Bricks)
             {
-                for (var column = 0; column < 16; column++)
-                {
-                    this.BricksMap.Add(new Brick(this.screenWidth, this.screenHeight, new Vector2(x + line * margin_w, y + column * margin_h), 20, 50, 1));
-                }
+                var line = (double) brick["line"];
+                var column = (double) brick["column"];
+                var resistance = (double) brick["resistance"];
+                this.BricksMap.Add(new Brick(this.screenWidth, this.screenHeight, new Vector2(x + (int) column * margin_w, y + (int) line * margin_h), 20, 50, (int) resistance));
             }
-
         }
 
         public void SetBonus()
@@ -200,7 +201,7 @@ namespace breakout
 
             for (int i = 0; i < this.nbBonus; i++)
             {
-                x = x_rnd.Next(0, this.lines * this.columns);
+                x = x_rnd.Next(0, this.BricksMap.Count);
 
                 Console.WriteLine("{0}, {1}", x, y);
 
