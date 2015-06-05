@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.PerformanceData;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -108,7 +109,7 @@ namespace breakout
             this.Score = 0;
             this.Lives = 3;
 
-            this.CurrentLevelData = new GameFile(@"..\..\..\..\..\levels\level1.json");
+            this.CurrentLevelData = new GameFile(@"..\..\..\..\..\levels\level4.json");
             this.CurrentLevelData.Load();
 
             this.LevelOne();
@@ -183,7 +184,8 @@ namespace breakout
 
         public void LevelOne()
         {
-            this.InitializeBoard(this.CurrentLevelData.Data.Bricks.Count, 0, 0.1);
+            int indestructibles = countIndestructibles(this.CurrentLevelData.Data.Bricks);
+            this.InitializeBoard(this.CurrentLevelData.Data.Bricks.Count, indestructibles, 0.1);
             
             int margin_h = 20;
             int margin_w = 50;
@@ -197,6 +199,19 @@ namespace breakout
                 var resistance = (double) brick["resistance"];
                 this.BricksMap.Add(new Brick(this.screenWidth, this.screenHeight, new Vector2(x + (int) column * margin_w, y + (int) line * margin_h), 20, 50, (int) resistance));
             }
+        }
+
+        public static int countIndestructibles(List<object> bricksData)
+        {
+            int result = 0;
+            foreach (Dictionary<string, object> brick in bricksData)
+            {
+                if ((double) brick["resistance"] == (double) 4)
+                {
+                    result++;
+                }
+            }
+            return result;
         }
 
         public void SetBonus()
