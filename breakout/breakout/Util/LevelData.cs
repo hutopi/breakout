@@ -5,7 +5,7 @@ using System.Text;
 
 namespace breakout.Util
 {
-    class LevelData
+    public class LevelData
     {
         public int Lines { get; set; }
         public int Columns { get; set; }

@@ -10,7 +10,7 @@ using Json;
 
 namespace breakout
 {
-    class GameFile
+    public class GameFile
     {
         private string filePath;
         public LevelData Data { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
@@ -17,8 +18,6 @@ namespace breakout
         private int lines;
         private int screenWidth;
         private int screenHeight;
-
-        public string Background { get; set; }
 
         private int lives;
         public int Lives
@@ -87,6 +86,10 @@ namespace breakout
             set { bricksMap = value; }
         }
 
+        public GameFile CurrentLevelData { get; set; }
+
+        public Texture2D Background { get; set; }
+
         public GameLevel(int screenWidth, int screenHeight, int level, int lines, int columns, List<Ball> balls, Bat bat)
         {
             this.screenWidth = screenWidth;
@@ -106,7 +109,12 @@ namespace breakout
             this.Score = 0;
             this.Lives = 3;
 
-            switch (this.Level)
+            this.CurrentLevelData = new GameFile(@"..\..\..\..\..\levels\one.json");
+            this.CurrentLevelData.Load();
+
+            this.LevelOne();
+
+            /*switch (this.Level)
             {
                 case 1:
                     this.LevelOne();
@@ -115,10 +123,17 @@ namespace breakout
                 default:
                     this.Background = "background_1";
                     break;
-            }
+            }*/
            
             //this.SetBonus();
             this.InitializeBonus();
+        }
+
+        public void CreateBackground(GraphicsDevice device)
+        {
+            byte[] bgbitmap = Convert.FromBase64String((string)this.CurrentLevelData.Data.Background["file"]);
+            var stream = new MemoryStream(bgbitmap);
+            this.Background = Texture2D.FromStream(device, stream);
         }
 
         public void Initialize()
@@ -171,17 +186,14 @@ namespace breakout
 
         public void LevelOne()
         {
-            var level = new GameFile(@"..\..\..\..\..\levels\one.json");
-            level.Load();
-
-            this.InitializeBoard(level.Data.Lines, level.Data.Columns, 0, 0.1);
+            this.InitializeBoard(this.CurrentLevelData.Data.Lines, this.CurrentLevelData.Data.Columns, 0, 0.1);
             
             int margin_h = 20;
             int margin_w = 50;
             int x = 0;
             int y = 2 * margin_h;
 
-            foreach (Dictionary<string, object> brick in level.Data.Bricks)
+            foreach (Dictionary<string, object> brick in this.CurrentLevelData.Data.Bricks)
             {
                 var line = (double) brick["line"];
                 var column = (double) brick["column"];

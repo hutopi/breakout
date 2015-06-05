@@ -105,6 +105,7 @@ namespace breakout {
             gameLevel.InitializeBonus();
 
             base.Initialize();
+            gameLevel.CreateBackground(GraphicsDevice);
         }
 
         /// <summary>
@@ -383,7 +384,7 @@ namespace breakout {
         protected override void Draw(GameTime gameTime) {
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            spriteBatch.Draw(Content.Load<Texture2D>(gameLevel.Background),
+            spriteBatch.Draw(gameLevel.Background,
                              new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height),
                              Color.White);
             switch (gameState) {
