@@ -108,7 +108,7 @@ namespace breakout
             this.Score = 0;
             this.Lives = 3;
 
-            this.CurrentLevelData = new GameFile(@"..\..\..\..\..\levels\one.json");
+            this.CurrentLevelData = new GameFile(@"..\..\..\..\..\levels\level1.json");
             this.CurrentLevelData.Load();
 
             this.LevelOne();
