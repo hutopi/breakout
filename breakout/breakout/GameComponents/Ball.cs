@@ -67,7 +67,7 @@ namespace breakout {
                 //bouncing on the bat
                 bouncingOnTheBat(batHitBox);
                 // boucing on the bricks
-                bouncingOnTheBricks2(gameLevel);
+                bouncingOnTheBricks3(gameLevel);
 
             } else {
                 Position = new Vector2(batHitBox.X + batHitBox.Width / 2 - this.Texture.Width / 2, batHitBox.Y- this.Texture.Height / 2);
@@ -247,6 +247,41 @@ namespace breakout {
 
             }
 
+        }
+
+        public void bouncingOnTheBricks3(GameLevel gameLevel) {
+            List<Brick> destroyedBricks = getDestroyedBricks(gameLevel);
+
+
+            foreach (Brick b in destroyedBricks) {
+
+                Vector2 centerVector = new Vector2(b.Hitbox.Center.X - Hitbox.X, b.Hitbox.Center.Y - Hitbox.Y);
+                if (centerVector.X > 0 && centerVector.Y == 0) {
+                    Direction = new Vector2(-Math.Abs(Direction.X), Direction.Y);
+                    Console.WriteLine("tape à droite de la balle");
+                } else if (centerVector.X > 0 && centerVector.Y > 0) {
+                    Direction = new Vector2(-Math.Abs(Direction.X), -Math.Abs(Direction.Y));
+                    Console.WriteLine("tape à droite et en bas de la balle");
+                } else if (centerVector.X == 0 && centerVector.Y > 0) {
+                    Direction = new Vector2(Direction.X, -Math.Abs(Direction.Y));
+                    Console.WriteLine("tape en bas de la balle");
+                } else if (centerVector.X < 0 && centerVector.Y > 0) {
+                    Direction = new Vector2(-Math.Abs(Direction.X), -Math.Abs(Direction.Y));
+                    Console.WriteLine("tape à gauche et en bas de la balle");
+                } else if (centerVector.X < 0 && centerVector.Y == 0) {
+                    Direction = new Vector2(-Math.Abs(Direction.X), Direction.Y);
+                    Console.WriteLine("tape à gauche de la balle");
+                } else if (centerVector.X < 0 && centerVector.Y < 0) {
+                    Direction = new Vector2(-Math.Abs(Direction.X), -Math.Abs(Direction.Y));
+                    Console.WriteLine("tape à gauche et en haut de la balle");
+                } else if (centerVector.X == 0 && centerVector.Y < 0) {
+                    Direction = new Vector2(-Math.Abs(Direction.X), Direction.Y);
+                    Console.WriteLine("tape en haut de la balle");
+                } else if (centerVector.X > 0 && centerVector.Y < 0) {
+                    Direction = new Vector2(-Math.Abs(Direction.X),-Math.Abs(Direction.Y));
+                    Console.WriteLine("tape à droite et en haut de la balle");
+                }
+            }
         }
 
         public Rectangle[] buildSideAndCornerRectangles(Brick b) {
