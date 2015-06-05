@@ -101,7 +101,6 @@ namespace breakout
             this.columns = columns;
             this.BricksMap = new List<Brick>();
             this.nb_bricks = this.lines * this.columns;
-            this.nbBonus = (int)(0.1 * (double)(this.columns * this.lines));
         }
 
         public void constructLevel()
@@ -125,7 +124,7 @@ namespace breakout
                     break;
             }*/
            
-            //this.SetBonus();
+            this.SetBonus();
             this.InitializeBonus();
         }
 
@@ -175,18 +174,16 @@ namespace breakout
             }
         }
 
-        public void InitializeBoard(int lines, int columns, int indestructible, double percentBonus)
+        public void InitializeBoard(int bricks, int indestructible, double percentBonus)
         {
-            this.lines = lines;
-            this.columns = columns;
-            this.nb_bricks = (this.lines * this.columns) - indestructible;
-            this.nbBonus = (int)(percentBonus * (double)(this.columns * this.lines));
+            this.nb_bricks = bricks - indestructible;
+            this.nbBonus = (int)(percentBonus * (double)(bricks));
             this.BricksMap = new List<Brick>();
         }
 
         public void LevelOne()
         {
-            this.InitializeBoard(this.CurrentLevelData.Data.Lines, this.CurrentLevelData.Data.Columns, 0, 0.1);
+            this.InitializeBoard(this.CurrentLevelData.Data.Bricks.Count, 0, 0.1);
             
             int margin_h = 20;
             int margin_w = 50;
@@ -215,15 +212,17 @@ namespace breakout
             {
                 x = x_rnd.Next(0, this.BricksMap.Count);
 
-                Console.WriteLine("{0}, {1}", x, y);
+                
 
                 if (this.BricksMap[x].Bonus.Type == BonusType.NONE && this.BricksMap[x].Resistance > 0)
                 {
+                    Console.WriteLine("{0}, {1}", x, y);
                     Array values = Enum.GetValues(typeof(BonusType));
                     this.BricksMap[x].Bonus.Type = (BonusType)values.GetValue(rnd.Next(1, values.Length));
                 }
                 else
                 {
+                    Console.WriteLine("i--");
                     i--;
                 }
             }
