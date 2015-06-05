@@ -23,13 +23,13 @@ namespace breakout {
 
         }
         private Vector2 lastPosition;
-        private Brick lastBrick = new Brick(0,0,new Vector2(-1,-1),0,0);
+        private Brick lastBrick = new Brick(0, 0, new Vector2(-1, -1), 0, 0);
         private SoundManager sm = new SoundManager();
 
         public Ball(int screenWidth, int screenHeight) : base(screenWidth, screenHeight) { }
 
-        public Ball(Ball ball): base(ball.screenWidth, ball.screenHeight)
-        {
+        public Ball(Ball ball)
+            : base(ball.screenWidth, ball.screenHeight) {
             this.Position = ball.Position;
             this.Texture = ball.Texture;
             this.Direction = -ball.Direction;
@@ -70,7 +70,7 @@ namespace breakout {
                 bouncingOnTheBricks3(gameLevel);
 
             } else {
-                Position = new Vector2(batHitBox.X + batHitBox.Width / 2 - this.Texture.Width / 2, batHitBox.Y- this.Texture.Height / 2);
+                Position = new Vector2(batHitBox.X + batHitBox.Width / 2 - this.Texture.Width / 2, batHitBox.Y - this.Texture.Height / 2);
 
             }
 
@@ -82,11 +82,15 @@ namespace breakout {
                 this.sm.bump.Play(0.5f, 0.0f, 0.0f);
                 Direction = new Vector2(Direction.X, -Direction.Y);
                 gameLevel.Score -= 10;
+                Console.WriteLine(Direction);
+
             }
             if (Position.X <= 0 && Direction.X < 0 || Position.X > screenWidth - Texture.Height && Direction.X > 0) {
                 this.sm.bump.Play(0.5f, 0.0f, 0.0f);
                 Direction = new Vector2(-Direction.X, Direction.Y);
                 gameLevel.Score -= 10;
+                Console.WriteLine(Direction);
+
             }
         }
         private void bouncingOnTheBat(Rectangle batHitBox) {
@@ -97,7 +101,7 @@ namespace breakout {
                 this.sm.bump.Play(0.5f, 0.0f, 0.0f);
             }
         }
-        private void bouncingOnTheBricks(GameLevel gameLevel, GameTime gameTime) {
+        private void bouncingOnTheBricks(GameLevel gameLevel) {
             Vector2 centerTopBall = new Vector2((float)HitBoxRec.Width, 0);
             Vector2 centerLeftBall = new Vector2(0, (float)HitBoxRec.Width);
             Vector2 centerRightBall = new Vector2((float)HitBoxRec.Width, (float)HitBoxRec.Width);
@@ -124,9 +128,7 @@ namespace breakout {
                     newDirection = new Vector2((Math.Abs(Direction.X)), Direction.Y);
                     Console.WriteLine("right");
                     changed = true;
-                }
-
-                else if (Direction.Y > 0 && LineIntersects(lastPosition + centerBottomBall, position + centerBottomBall, topLeftCorner, topRightCorner)) {
+                } else if (Direction.Y > 0 && LineIntersects(lastPosition + centerBottomBall, position + centerBottomBall, topLeftCorner, topRightCorner)) {
                     newDirection = new Vector2(Direction.X, -(Math.Abs(Direction.Y)));
                     Console.WriteLine("top");
                     changed = true;
@@ -216,26 +218,25 @@ namespace breakout {
                         Direction = new Vector2(-Math.Abs(Direction.X), Direction.Y);
                         Console.WriteLine("coin haut gauche A + coin bas gauche B :" + Direction);
                         changed = true;
-                }
-                    else if (Hitbox.IntersectsRec(sideRectangles[0]) || Hitbox.IntersectsRec(sideRectangles[1])) {
+                    } else if (Hitbox.IntersectsRec(sideRectangles[0]) || Hitbox.IntersectsRec(sideRectangles[1])) {
 
-                    Direction = new Vector2(Direction.X, -Direction.Y);
-                    Console.WriteLine("top || bottom : " + Direction);
+                        Direction = new Vector2(Direction.X, -Direction.Y);
+                        Console.WriteLine("top || bottom : " + Direction);
                         changed = true;
-                } else if (Hitbox.IntersectsRec(sideRectangles[2]) || Hitbox.IntersectsRec(sideRectangles[3])) {
-                    Direction = new Vector2(-Direction.X, Direction.Y);
-                    Console.WriteLine("right || left : " + Direction);
+                    } else if (Hitbox.IntersectsRec(sideRectangles[2]) || Hitbox.IntersectsRec(sideRectangles[3])) {
+                        Direction = new Vector2(-Direction.X, Direction.Y);
+                        Console.WriteLine("right || left : " + Direction);
                         changed = true;
 
-                }
+                    }
 
-                /*if (singleCornerHit(sideRectangles)) {
-                    Direction = new Vector2(-Direction.X, -Direction.Y);
-                    Console.WriteLine("un coin " + Direction);
-                    break;
-                } else*/ 
+                    /*if (singleCornerHit(sideRectangles)) {
+                        Direction = new Vector2(-Direction.X, -Direction.Y);
+                        Console.WriteLine("un coin " + Direction);
+                        break;
+                    } else*/
                 }
-                if(!changed){
+                if (!changed) {
                     Direction = new Vector2(-Direction.X, -Direction.Y);
                     Console.WriteLine("coincoin");
 
@@ -255,32 +256,57 @@ namespace breakout {
 
             foreach (Brick b in destroyedBricks) {
 
-                Vector2 centerVector = new Vector2(b.Hitbox.Center.X - Hitbox.X, b.Hitbox.Center.Y - Hitbox.Y);
-                if (centerVector.X > 0 && centerVector.Y == 0) {
+                Rectangle topBall = new Rectangle(Hitbox.X, (int)(Hitbox.Y - Hitbox.Radius), 2, 1);
+                Rectangle bottomBall = new Rectangle(Hitbox.X, (int)(Hitbox.Y + Hitbox.Radius), 2, 1);
+                Rectangle leftBall = new Rectangle((int)(Hitbox.X - Hitbox.Radius), Hitbox.Y, 1, 2);
+                Rectangle rightBall = new Rectangle((int)(Hitbox.X + Hitbox.Radius), Hitbox.Y, 1, 2);
+                Vector2 centerVector = new Vector2(b.Hitbox.Center.X - this.position.X, b.Hitbox.Center.Y - this.position.X);
+
+
+                Console.WriteLine("Vecteur center : " + centerVector);
+                if (bottomBall.Intersects(b.Hitbox)) {
+                    Direction = new Vector2(Direction.X, -Math.Abs(Direction.Y));
+                    Console.WriteLine("tape en bas de la balle");
+                    Console.WriteLine(Direction);
+                    Console.WriteLine("");
+                } else if (leftBall.Intersects(b.Hitbox)) {
+                    Direction = new Vector2(Math.Abs(Direction.X), Direction.Y);
+                    Console.WriteLine("tape à gauche de la balle");
+                    Console.WriteLine(Direction);
+                    Console.WriteLine("");
+                } else if (topBall.Intersects(b.Hitbox)) {
+                    Direction = new Vector2(Direction.X, Math.Abs(Direction.Y));
+                    Console.WriteLine("tape en haut de la balle");
+                    Console.WriteLine(Direction);
+                    Console.WriteLine("");
+                } else if (rightBall.Intersects(b.Hitbox)) {
                     Direction = new Vector2(-Math.Abs(Direction.X), Direction.Y);
                     Console.WriteLine("tape à droite de la balle");
+                    Console.WriteLine(Direction);
+                    Console.WriteLine("");
+
                 } else if (centerVector.X > 0 && centerVector.Y > 0) {
                     Direction = new Vector2(-Math.Abs(Direction.X), -Math.Abs(Direction.Y));
                     Console.WriteLine("tape à droite et en bas de la balle");
-                } else if (centerVector.X == 0 && centerVector.Y > 0) {
-                    Direction = new Vector2(Direction.X, -Math.Abs(Direction.Y));
-                    Console.WriteLine("tape en bas de la balle");
+                    Console.WriteLine(Direction);
+                    Console.WriteLine("");
                 } else if (centerVector.X < 0 && centerVector.Y > 0) {
-                    Direction = new Vector2(-Math.Abs(Direction.X), -Math.Abs(Direction.Y));
+                    Direction = new Vector2(Math.Abs(Direction.X), -Math.Abs(Direction.Y));
                     Console.WriteLine("tape à gauche et en bas de la balle");
-                } else if (centerVector.X < 0 && centerVector.Y == 0) {
-                    Direction = new Vector2(-Math.Abs(Direction.X), Direction.Y);
-                    Console.WriteLine("tape à gauche de la balle");
+                    Console.WriteLine(Direction);
+                    Console.WriteLine("");
                 } else if (centerVector.X < 0 && centerVector.Y < 0) {
-                    Direction = new Vector2(-Math.Abs(Direction.X), -Math.Abs(Direction.Y));
+                    Direction = new Vector2(Math.Abs(Direction.X), Math.Abs(Direction.Y));
                     Console.WriteLine("tape à gauche et en haut de la balle");
-                } else if (centerVector.X == 0 && centerVector.Y < 0) {
-                    Direction = new Vector2(-Math.Abs(Direction.X), Direction.Y);
-                    Console.WriteLine("tape en haut de la balle");
+                    Console.WriteLine(Direction);
+                    Console.WriteLine("");
                 } else if (centerVector.X > 0 && centerVector.Y < 0) {
-                    Direction = new Vector2(-Math.Abs(Direction.X),-Math.Abs(Direction.Y));
+                    Direction = new Vector2(-Math.Abs(Direction.X), Math.Abs(Direction.Y));
                     Console.WriteLine("tape à droite et en haut de la balle");
+                    Console.WriteLine(Direction);
+                    Console.WriteLine("");
                 }
+                break;
             }
         }
 
