@@ -149,6 +149,8 @@ install:
 
     Write-Host "`r`nInstallation Complete.";
 
+before_build:
+  - nuget restore
 build:
   verbosity: minimal
 after_build:
