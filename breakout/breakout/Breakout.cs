@@ -106,6 +106,7 @@ namespace breakout {
 
             base.Initialize();
             gameLevel.CreateBackground(GraphicsDevice);
+            gameLevel.CreateSong();
         }
 
         /// <summary>
@@ -309,21 +310,7 @@ namespace breakout {
                 }
                 else
                 {
-                    switch (this.gameLevel.Level)
-                    {
-                        case 1:
-                            MediaPlayer.Play(this.songs.One);
-                            break;
-                        case 2:
-                            MediaPlayer.Play(this.songs.Two);
-                            break;
-                        case 3:
-                            MediaPlayer.Play(this.songs.Three);
-                            break;
-                        case 4:
-                            MediaPlayer.Play(this.songs.Four);
-                            break;
-                    }
+                    MediaPlayer.Play(this.gameLevel.Song);
                     MediaPlayer.IsRepeating = true;
                 }
                 songStart = true;

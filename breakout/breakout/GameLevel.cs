@@ -10,6 +10,7 @@ using breakout.Textures;
 using breakout.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 
 namespace breakout
 {
@@ -90,6 +91,7 @@ namespace breakout
         public GameFile CurrentLevelData { get; set; }
 
         public Texture2D Background { get; set; }
+        public Song Song { get; set; }
 
         public GameLevel(int screenWidth, int screenHeight, int level, int lines, int columns, List<Ball> balls, Bat bat)
         {
@@ -134,6 +136,14 @@ namespace breakout
             byte[] bgbitmap = Convert.FromBase64String((string)this.CurrentLevelData.Data.Background["file"]);
             var stream = new MemoryStream(bgbitmap);
             this.Background = Texture2D.FromStream(device, stream);
+        }
+
+        public void CreateSong()
+        {
+            byte[] songBytes = Convert.FromBase64String((string)this.CurrentLevelData.Data.Music["file"]);
+            string mime = (string) this.CurrentLevelData.Data.Music["type"];
+            File.WriteAllBytes("level.mp3", songBytes);
+            this.Song = Song.FromUri("level", new Uri(Directory.GetCurrentDirectory() + @"\level.mp3"));
         }
 
         public void Initialize()
