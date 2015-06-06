@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 namespace breakout {
-    public class Arrow : Sprite {
+    public class MenuArrow : Sprite {
 
         private LinkedList<ButtonSprite> buttonSprites;
         /*public <ButtonSprite> ButtonSprites {
@@ -21,7 +21,7 @@ namespace breakout {
                 Position = new Vector2(buttonSprites.First., 10) ; }
         }*/
 
-        public Arrow(int screenWidth, int screenHeight) : base(screenWidth, screenHeight) { }
+        public MenuArrow(int screenWidth, int screenHeight) : base(screenWidth, screenHeight) { }
 
         public override void HandleInput(KeyboardState keyboardState, MouseState mouseState) {
 
