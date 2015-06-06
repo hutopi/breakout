@@ -109,11 +109,11 @@ namespace breakout {
 
             Vector2 newDirection = new Vector2(Direction.X, Direction.Y);
 
-            List<Brick> destroyedBricks = getDestroyedBricks(gameLevel);
+            List<Brick> touchedBricks = getTouchedBricks(gameLevel);
 
 
 
-            foreach (Brick b in destroyedBricks) {
+            foreach (Brick b in touchedBricks) {
                 bool changed = false;
                 Vector2 topLeftCorner = new Vector2(b.Hitbox.Left, b.Hitbox.Top);
                 Vector2 topRightCorner = new Vector2(b.Hitbox.Right, b.Hitbox.Top);
@@ -170,8 +170,8 @@ namespace breakout {
             return intersects;
         }
 
-        public List<Brick> getDestroyedBricks(GameLevel gameLevel) {
-            List<Brick> destroyedBricks = new List<Brick>();
+        public List<Brick> getTouchedBricks(GameLevel gameLevel) {
+            List<Brick> touchedBricks = new List<Brick>();
             foreach (Brick b in gameLevel.BricksMap) {
                 if (this.Hitbox.IntersectsRec(b.Hitbox) && b.Resistance > 0) {
                     this.sm.bumpBrick.Play(0.5f, 0.0f, 0.0f);
@@ -185,18 +185,18 @@ namespace breakout {
                     if (scoreIncrement == 100) {
                         gameLevel.Nb_bricks--;
                     }
-                    destroyedBricks.Add(b);
+                    touchedBricks.Add(b);
                 }
             }
-            return destroyedBricks;
+            return touchedBricks;
         }
 
 
         public void bouncingOnTheBricks2(GameLevel gameLevel) {
-            List<Brick> destroyedBricks = getDestroyedBricks(gameLevel);
+            List<Brick> touchedBricks = getTouchedBricks(gameLevel);
 
 
-            foreach (Brick b in destroyedBricks) {
+            foreach (Brick b in touchedBricks) {
 
                 Rectangle[] sideRectangles = buildSideAndCornerRectangles(b);
                 bool changed = false;
@@ -251,10 +251,10 @@ namespace breakout {
         }
 
         public void bouncingOnTheBricks3(GameLevel gameLevel) {
-            List<Brick> destroyedBricks = getDestroyedBricks(gameLevel);
+            List<Brick> touchedBricks = getTouchedBricks(gameLevel);
 
 
-            foreach (Brick b in destroyedBricks) {
+            foreach (Brick b in touchedBricks) {
 
                 Rectangle topBall = new Rectangle(Hitbox.X, (int)(Hitbox.Y - Hitbox.Radius), 2, 1);
                 Rectangle bottomBall = new Rectangle(Hitbox.X, (int)(Hitbox.Y + Hitbox.Radius), 2, 1);
@@ -262,7 +262,7 @@ namespace breakout {
                 Rectangle rightBall = new Rectangle((int)(Hitbox.X + Hitbox.Radius), Hitbox.Y, 1, 2);
                 Vector2 centerVector = new Vector2(b.Hitbox.Center.X - this.position.X, b.Hitbox.Center.Y - this.position.X);
 
-
+                centerVector = Vector2.Normalize(centerVector);
                 Console.WriteLine("Vecteur center : " + centerVector);
                 if (bottomBall.Intersects(b.Hitbox)) {
                     Direction = new Vector2(Direction.X, -Math.Abs(Direction.Y));

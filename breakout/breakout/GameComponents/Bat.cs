@@ -31,17 +31,8 @@ namespace breakout {
             Position = new Vector2(screenWidth / 2 - Texture.Width / 2, screenHeight - 10 - Texture.Height / 2);
         }
 
-        public void HandleInput(KeyboardState keyboardState, KeyboardState previousKeyboardState) {
+        public override void HandleInput(KeyboardState keyboardState, KeyboardState previousKeyboardState) {
 
-            /*if (keyboardState.IsKeyDown(Keys.Left)) {
-                Direction = -Vector2.UnitX;
-                Speed = 0.4f;
-            } else if (keyboardState.IsKeyDown(Keys.Right)) {
-                Direction = Vector2.UnitX;
-                Speed = 0.4f;
-            } else {
-                Speed = 0;
-            }*/
             if (keyboardState.IsKeyDown(Keys.Left) && !previousKeyboardState.IsKeyDown(Keys.Left)) {
                 direction = -Vector2.UnitX;
                 speed = 0.2f;
