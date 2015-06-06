@@ -36,7 +36,8 @@ namespace breakout {
         private SpriteFont scoreFont;
         private SpriteFont helpControlFont;
         private Sprite[] livesSprites;
-        private ButtonSprite startButton;
+        private ButtonSprite storyModeButton;
+        private ButtonSprite customModeButton;
         private ButtonSprite exitButton;
         private ButtonSprite resumeButton;
         private ButtonSprite restartButton;
@@ -52,7 +53,8 @@ namespace breakout {
             int screenWidth = Window.ClientBounds.Width;
             int screenHeight = Window.ClientBounds.Height;
 
-            startButton = new ButtonSprite(screenWidth, screenHeight, "start");
+            storyModeButton = new ButtonSprite(screenWidth, screenHeight, "story");
+            customModeButton = new ButtonSprite(screenWidth, screenHeight, "custom");
             exitButton = new ButtonSprite(screenWidth, screenHeight, "exit");
             resumeButton = new ButtonSprite(screenWidth, screenHeight, "resume");
             restartButton = new ButtonSprite(screenWidth, screenHeight, "restart");
@@ -82,7 +84,8 @@ namespace breakout {
         protected override void Initialize() {
             // TODO: Add your initialization logic here
 
-            startButton.Initialize();
+            storyModeButton.Initialize();
+            customModeButton.Initialize();
             exitButton.Initialize();
             resumeButton.Initialize();
             restartButton.Initialize();
@@ -118,15 +121,19 @@ namespace breakout {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             this.logo = Content.Load<Texture2D>("logo");
-            startButton.LoadContent(Content, "start");
+            storyModeButton.LoadContent(Content, "story");
+            customModeButton.LoadContent(Content, "custom");
+
             exitButton.LoadContent(Content, "exit");
             resumeButton.LoadContent(Content, "resume");
             restartButton.LoadContent(Content, "restart");
             nextLevelButton.LoadContent(Content, "next");
             soundTextures.LoadContent(Content.Load<Texture2D>("soundOn"), Content.Load<Texture2D>("soundOff"));
 
-            startButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height/2);
-            exitButton.Position = new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2);
+            storyModeButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height / 2);
+            customModeButton.Position = new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2);
+            exitButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 100, Window.ClientBounds.Height / 2 + 120);
+
             resumeButton.Position = new Vector2(Window.ClientBounds.Width / 2 - resumeButton.Texture.Width / 2, Window.ClientBounds.Height / 2 - resumeButton.Texture.Height / 2);
             restartButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height / 2);
             nextLevelButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height / 2);
@@ -186,9 +193,13 @@ namespace breakout {
             switch (gameState) {
                 case GameState.STARTMENU:
                     this.IsMouseVisible = true;
-                    startButton.Update(mouseState, previousMouseState, ref gameState);
+                    storyModeButton.Update(mouseState, previousMouseState, ref gameState);
+                    customModeButton.Update(mouseState, previousMouseState, ref gameState);
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
                     arrow.HandleInput(keyboardState, mouseState);
+                    break;
+                case GameState.CUSTOM:
+                    //treatment here @TODO
                     break;
                 case GameState.PLAYING:
                     this.checkSong();
@@ -377,7 +388,8 @@ namespace breakout {
             switch (gameState) {
                 case GameState.STARTMENU:
                     spriteBatch.Draw(this.logo, new Vector2(Window.ClientBounds.Width/2 - 200, 80), Color.White);
-                    startButton.Draw(spriteBatch, gameTime);
+                    storyModeButton.Draw(spriteBatch, gameTime);
+                    customModeButton.Draw(spriteBatch, gameTime);
                     exitButton.Draw(spriteBatch, gameTime);
                     break;
                 case GameState.PLAYING:
@@ -425,6 +437,9 @@ namespace breakout {
                     spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.White);
                     spriteBatch.DrawString(helpControlFont, "Press Enter to launch the ball and Space to pause the game", new Vector2(200,10),Color.White);
                     this.getLives(ref spriteBatch, gameTime);
+                    break;
+                case GameState.CUSTOM:
+                    //treatment here @TODO
                     break;
                 case GameState.PAUSED:
                     gameLevel.Bat.Draw(spriteBatch, gameTime);
