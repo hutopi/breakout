@@ -162,8 +162,15 @@ namespace breakout {
             List<Brick> touchedBricks = new List<Brick>();
             foreach (Brick b in gameLevel.BricksMap) {
                 if (this.Hitbox.IntersectsRec(b.Hitbox) && b.Resistance > 0) {
-                    this.sm.bumpBrick.Play(0.5f, 0.0f, 0.0f);
-
+                    if (b.Resistance == 4)
+                    {
+                        this.sm.bump.Play(0.5f, 0.0f, 0.0f);
+                    }
+                    else
+                    {
+                        this.sm.bumpBrick.Play(0.5f, 0.0f, 0.0f);
+                    }
+                    
                     if (b.Bonus.Type != BonusType.NONE && b.Bonus.Activated == false) {
                         b.Bonus.Activated = true;
                     }
