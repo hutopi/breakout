@@ -26,9 +26,9 @@ namespace breakout.Util
     public class Sounds
     {
         /// <summary>
-        /// Gets or sets the bump.
+        /// Gets or sets the Bump.
         /// </summary>
-        /// <value>The bump.</value>
+        /// <value>The Bump.</value>
         private SoundEffect bump { get; set; }
         /// <summary>
         /// Gets or sets the pause.

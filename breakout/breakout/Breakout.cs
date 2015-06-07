@@ -54,7 +54,7 @@ namespace breakout {
         /// </summary>
         private bool songStart = false;
         /// <summary>
-        /// The mute song
+        /// The Mute song
         /// </summary>
         private bool muteSong = false;
 
@@ -246,10 +246,10 @@ namespace breakout {
                 livesSprites[i].LoadContent(Content, "lives" + i);
             }
 
-            gameLevel.BrickTexture = new BrickTexture(this.buildBrickTextures());
-            gameLevel.BatTexture = this.buildBatTextures();
+            gameLevel.BrickTexture = new BrickTexture(this.BuildBrickTextures());
+            gameLevel.BatTexture = this.BuildBatTextures();
 
-            this.putBricksTexture();
+            this.PutBricksTexture();
 
             sounds.LoadContent(Content.Load<SoundEffect>("bump"),
                                Content.Load<SoundEffect>("pause"),
@@ -285,10 +285,10 @@ namespace breakout {
                     break;
                 case GameState.CUSTOM:
                     this.customMode = true;
-                    levelSelection();
+                    LevelSelection();
                     break;
                 case GameState.PLAYING:
-                    this.checkSong();
+                    this.CheckSong();
                     this.IsMouseVisible = false;
                     foreach (Ball b in gameLevel.Balls)
                     {
@@ -322,7 +322,7 @@ namespace breakout {
                         songStart = false;
                         this.sounds.Win.Play();
                     }
-                    this.resetBat();
+                    this.ResetBat();
                     this.IsMouseVisible = true;
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
                    
@@ -344,7 +344,7 @@ namespace breakout {
                         this.sounds.Loose.Play();
                     }
                     this.IsMouseVisible = true;
-                    this.resetBat();
+                    this.ResetBat();
                     restartButton.Update(mouseState, previousMouseState, ref gameState);
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
                     menuArrow.Update(keyboardState, previousKeyboardState, ref gameState);
@@ -359,7 +359,7 @@ namespace breakout {
                     break;
                 case GameState.READYTOSTART:
                     this.IsMouseVisible = false;
-                    this.resetBalls();
+                    this.ResetBalls();
                     foreach (Ball b in gameLevel.Balls)
                     {
                         b.Update(gameTime, gameLevel.Bat.Hitbox, gameLevel, false);
@@ -369,7 +369,7 @@ namespace breakout {
                     break;
                 case GameState.NEXT_LEVEL:
                     this.UpdateLevel(false);
-                    this.putBricksTexture();
+                    this.PutBricksTexture();
                     break;
                 case GameState.EXIT:
                     this.Exit();
@@ -390,7 +390,7 @@ namespace breakout {
             if (keyboardState.IsKeyUp(Keys.M) && previousKeyboardState.IsKeyDown(Keys.M) && gameState != GameState.STARTMENU)
             {
                 muteSong = (muteSong == false) ? (true) : (false);
-                this.mute();
+                this.Mute();
             }
 
             if (gameLevel.Nb_bricks == 0 && gameState != GameState.NEXT_LEVEL && gameState != GameState.EXIT) {
@@ -420,7 +420,7 @@ namespace breakout {
         /// <summary>
         /// Checks the song.
         /// </summary>
-        private void checkSong()
+        private void CheckSong()
         {
             if (!songStart)
             {
@@ -440,7 +440,7 @@ namespace breakout {
         /// <summary>
         /// Mutes this instance.
         /// </summary>
-        private void mute()
+        private void Mute()
         {
             if (muteSong)
             {
@@ -467,14 +467,14 @@ namespace breakout {
                 gameLevel.CreateSong();
             }
 
-            this.putBricksTexture();
+            this.PutBricksTexture();
             gameState = GameState.READYTOSTART;
         }
 
         /// <summary>
         /// Levels the selection.
         /// </summary>
-        private void levelSelection()
+        private void LevelSelection()
         {
             var dialog = new System.Windows.Forms.OpenFileDialog();
             dialog.DefaultExt = "json";
@@ -496,7 +496,7 @@ namespace breakout {
 
                 gameState = GameState.READYTOSTART;
                 gameLevel.CreateSong();
-                this.putBricksTexture();
+                this.PutBricksTexture();
                 gameState = GameState.READYTOSTART;
             }
         }
@@ -517,7 +517,7 @@ namespace breakout {
             if (numberOfBalls == 0)
             {
                 gameLevel.Lives--;
-                this.resetBat();
+                this.ResetBat();
                 gameState = GameState.READYTOSTART;
             }
         }
@@ -525,7 +525,7 @@ namespace breakout {
         /// <summary>
         /// Resets the balls.
         /// </summary>
-        private void resetBalls()
+        private void ResetBalls()
         {
             if (gameLevel.Balls.Count > 1)
             {
@@ -539,7 +539,7 @@ namespace breakout {
         /// <summary>
         /// Resets the bat.
         /// </summary>
-        private void resetBat()
+        private void ResetBat()
         {
             gameLevel.Bat.Texture = gameLevel.BatTexture.Regular;
             gameLevel.Bat.Position = new Vector2(Window.ClientBounds.Width / 2 - gameLevel.Bat.Texture.Width / 2, Window.ClientBounds.Height - 10 - gameLevel.Bat.Texture.Height / 2);
@@ -582,7 +582,7 @@ namespace breakout {
                         }
                     }
                     spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.White);
-                    this.getLives(ref spriteBatch, gameTime);
+                    this.GetLives(ref spriteBatch, gameTime);
                     break;
                 case GameState.READYTOSTART:
                     gameLevel.Bat.Draw(spriteBatch, gameTime);
@@ -605,7 +605,7 @@ namespace breakout {
                     }
                     spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.White);
                     spriteBatch.DrawString(helpControlFont, "Press Space to launch the ball and Escape to pause the game", new Vector2(200,10),Color.White);
-                    this.getLives(ref spriteBatch, gameTime);
+                    this.GetLives(ref spriteBatch, gameTime);
                     break;
                 case GameState.CUSTOM:
                     //treatment here @TODO
@@ -631,7 +631,7 @@ namespace breakout {
                     }
                     resumeButton.Draw(spriteBatch, gameTime);
                     spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.White);
-                    this.getLives(ref spriteBatch, gameTime);
+                    this.GetLives(ref spriteBatch, gameTime);
                     break;
                 case GameState.WIN:
                     spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.White);
@@ -659,7 +659,7 @@ namespace breakout {
         /// Builds the brick textures.
         /// </summary>
         /// <returns>Texture2D[].</returns>
-        public Texture2D[] buildBrickTextures() {
+        public Texture2D[] BuildBrickTextures() {
             Texture2D[] textures = new Texture2D[5];
             for (int i = 0; i < 5; i++)
             {
@@ -672,7 +672,7 @@ namespace breakout {
         /// Builds the bat textures.
         /// </summary>
         /// <returns>BatTextures.</returns>
-        private BatTextures buildBatTextures() {
+        private BatTextures BuildBatTextures() {
             Texture2D reduced = Content.Load<Texture2D>("reduced_bat");
             Texture2D regular = Content.Load<Texture2D>("bat");
             Texture2D extended = Content.Load<Texture2D>("extended_bat");
@@ -683,7 +683,7 @@ namespace breakout {
         /// <summary>
         /// Puts the bricks texture.
         /// </summary>
-        private void putBricksTexture()
+        private void PutBricksTexture()
         {
             foreach (Brick b in gameLevel.BricksMap)
             {
@@ -700,7 +700,7 @@ namespace breakout {
         /// </summary>
         /// <param name="spriteBatch">The sprite batch.</param>
         /// <param name="gameTime">The game time.</param>
-        private void getLives(ref SpriteBatch spriteBatch, GameTime gameTime)
+        private void GetLives(ref SpriteBatch spriteBatch, GameTime gameTime)
         {
             livesSprites[gameLevel.Lives].Draw(spriteBatch, gameTime);
 

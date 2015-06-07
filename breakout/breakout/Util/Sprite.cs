@@ -29,11 +29,11 @@ namespace breakout.Util {
         /// <summary>
         /// The screen height
         /// </summary>
-        protected int screenHeight;
+        protected int ScreenHeight;
         /// <summary>
         /// The screen width
         /// </summary>
-        protected int screenWidth;
+        protected int ScreenWidth;
 
         /// <summary>
         /// The texture
@@ -67,8 +67,8 @@ namespace breakout.Util {
         /// <param name="screenWidth">Width of the screen.</param>
         /// <param name="screenHeight">Height of the screen.</param>
         public Sprite(int screenWidth, int screenHeight) {
-            this.screenWidth = screenWidth;
-            this.screenHeight = screenHeight;
+            this.ScreenWidth = screenWidth;
+            this.ScreenHeight = screenHeight;
 
         }
 

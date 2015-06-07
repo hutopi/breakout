@@ -27,43 +27,43 @@ namespace breakout
     public class SoundManager
     {
         /// <summary>
-        /// The bump
+        /// The Bump
         /// </summary>
-        public SoundEffect bump;
+        public SoundEffect Bump;
         /// <summary>
-        /// The bump brick
+        /// The Bump brick
         /// </summary>
-        public SoundEffect bumpBrick;
+        public SoundEffect BumpBrick;
         /// <summary>
         /// The power up
         /// </summary>
-        public SoundEffect powerUp;
+        public SoundEffect PowerUp;
         /// <summary>
         /// The power down
         /// </summary>
-        public SoundEffect powerDown;
+        public SoundEffect PowerDown;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SoundManager"/> class.
         /// </summary>
         public SoundManager()
         {
-            bump = null;
-            bumpBrick = null;
-            powerUp = null;
-            powerDown = null;
+            Bump = null;
+            BumpBrick = null;
+            PowerUp = null;
+            PowerDown = null;
         }
 
         /// <summary>
         /// Loads the content.
         /// </summary>
-        /// <param name="Content">The content.</param>
-        public void LoadContent(ContentManager Content)
+        /// <param name="content">The content.</param>
+        public void LoadContent(ContentManager content)
         {
-            bump = Content.Load<SoundEffect>("bump");
-            bumpBrick = Content.Load<SoundEffect>("bumpBrick");
-            powerUp = Content.Load<SoundEffect>("powerup");
-            powerDown = Content.Load<SoundEffect>("powerdown");
+            Bump = content.Load<SoundEffect>("Bump");
+            BumpBrick = content.Load<SoundEffect>("BumpBrick");
+            PowerUp = content.Load<SoundEffect>("powerup");
+            PowerDown = content.Load<SoundEffect>("powerdown");
         }
     }
 }

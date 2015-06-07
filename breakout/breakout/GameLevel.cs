@@ -228,9 +228,9 @@ namespace breakout
             this.Lives = 3;
 
             this.levelFile.Load();
-            this.loadLevel();
+            this.LoadLevel();
            
-            this.setBonus();
+            this.SetBonus();
             this.InitializeBonus();
         }
 
@@ -325,7 +325,7 @@ namespace breakout
         /// <param name="bricks">The bricks.</param>
         /// <param name="indestructible">The indestructible.</param>
         /// <param name="percentBonus">The percent bonus.</param>
-        private void initializeBoard(int bricks, int indestructible, double percentBonus)
+        private void InitializeBoard(int bricks, int indestructible, double percentBonus)
         {
             this.nb_bricks = bricks - indestructible;
             this.nbBonus = (int)(percentBonus * (double)(bricks));
@@ -335,10 +335,10 @@ namespace breakout
         /// <summary>
         /// Loads the level.
         /// </summary>
-        private void loadLevel()
+        private void LoadLevel()
         {
-            int indestructibles = countIndestructibles(this.levelFile.Data.Bricks);
-            this.initializeBoard(this.levelFile.Data.Bricks.Count, indestructibles, 0.1);
+            int indestructibles = CountIndestructibles(this.levelFile.Data.Bricks);
+            this.InitializeBoard(this.levelFile.Data.Bricks.Count, indestructibles, 0.1);
             
             int margin_h = 20;
             int margin_w = 50;
@@ -359,7 +359,7 @@ namespace breakout
         /// </summary>
         /// <param name="bricksData">The bricks data.</param>
         /// <returns>System.Int32.</returns>
-        private static int countIndestructibles(List<object> bricksData)
+        private static int CountIndestructibles(List<object> bricksData)
         {
             int result = 0;
             foreach (Dictionary<string, object> brick in bricksData)
@@ -375,7 +375,7 @@ namespace breakout
         /// <summary>
         /// Sets the bonus.
         /// </summary>
-        private void setBonus()
+        private void SetBonus()
         {
             Random rnd = new Random();
             Random x_rnd = new Random();

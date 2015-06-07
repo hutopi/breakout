@@ -161,7 +161,7 @@ namespace breakout.GameComponents
         /// <summary>
         /// Updates this instance.
         /// </summary>
-        protected override void Update()
+        public override void Update()
         {
             base.Update();
         }

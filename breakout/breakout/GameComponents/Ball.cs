@@ -101,9 +101,9 @@ namespace breakout.GameComponents {
         public void Update(GameTime gameTime, Rectangle batHitBox, GameLevel gameLevel, bool isGameStarted) {
 
             if (isGameStarted) {
-                bouncingOnTheWalls(gameLevel);
-                bouncingOnTheBat(batHitBox);
-                bouncingOnTheBricks(gameLevel);
+                BouncingOnTheWalls(gameLevel);
+                BouncingOnTheBat(batHitBox);
+                BouncingOnTheBricks(gameLevel);
 
             } else {
                 Position = new Vector2(batHitBox.X + batHitBox.Width / 2 - this.Texture.Width / 2, batHitBox.Y - this.Texture.Height / 2);
@@ -117,7 +117,7 @@ namespace breakout.GameComponents {
         /// Changes the direction of the ball if it bounces on a wall.
         /// </summary>
         /// <param name="gameLevel">The game level.</param>
-        private void bouncingOnTheWalls(GameLevel gameLevel) {
+        private void BouncingOnTheWalls(GameLevel gameLevel) {
             if ((Position.Y <= 0 && Direction.Y < 0)) {
                 this.sm.bump.Play(0.5f, 0.0f, 0.0f);
                 Direction = new Vector2(Direction.X, -Direction.Y);
@@ -133,7 +133,7 @@ namespace breakout.GameComponents {
         /// Changes the direction of the ball if it bounces on the bat.
         /// </summary>
         /// <param name="batHitBox">The bat hitbox.</param>
-        private void bouncingOnTheBat(Rectangle batHitBox) {
+        private void BouncingOnTheBat(Rectangle batHitBox) {
             if ((Direction.Y > 0 && this.hitbox.IntersectsRec(batHitBox))) {
                 Direction = new Vector2(((float)hitbox.X - batHitBox.Center.X) / (batHitBox.Width / 2), -Direction.Y);
                 Direction = Vector2.Normalize(Direction);
@@ -146,7 +146,7 @@ namespace breakout.GameComponents {
         /// </summary>
         /// <param name="gameLevel">The game level.</param>
         /// <returns>List&lt;Brick&gt;.</returns>
-        private List<Brick> getTouchedBricks(GameLevel gameLevel) {
+        private List<Brick> GetTouchedBricks(GameLevel gameLevel) {
             List<Brick> touchedBricks = new List<Brick>();
             foreach (Brick b in gameLevel.BricksMap) {
                 if (this.hitbox.IntersectsRec(b.Hitbox) && b.Resistance > 0) {
@@ -178,8 +178,8 @@ namespace breakout.GameComponents {
         /// Changes the direction of the ball if it bounces on a brick.
         /// </summary>
         /// <param name="gameLevel">The game level.</param>
-        private void bouncingOnTheBricks(GameLevel gameLevel) {
-            List<Brick> touchedBricks = getTouchedBricks(gameLevel);
+        private void BouncingOnTheBricks(GameLevel gameLevel) {
+            List<Brick> touchedBricks = GetTouchedBricks(gameLevel);
 
 
             foreach (Brick b in touchedBricks) {
