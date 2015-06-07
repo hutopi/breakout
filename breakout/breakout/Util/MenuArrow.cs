@@ -57,8 +57,11 @@ namespace breakout {
             
             if (keyboardState.IsKeyUp(Keys.Enter) && previousKeyboardState.IsKeyDown(Keys.Enter)) {
                 switch (currentButtonSelected.Name) {
-                    case "start":
+                    case "story":
                         gameState = GameState.READYTOSTART;
+                        break;
+                    case "custom":
+                        gameState = GameState.CUSTOM;
                         break;
                     case "ex":
                         gameState = GameState.RESTART;
