@@ -12,20 +12,14 @@
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
-using System;
-using System.Collections.Generic;
+
 using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using breakout.Util;
 using Json;
 
 /// <summary>
 /// The breakout namespace.
 /// </summary>
-namespace breakout
+namespace breakout.Util
 {
     /// <summary>
     /// Class GameFile.

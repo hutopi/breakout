@@ -12,15 +12,11 @@
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 /// <summary>
 /// The breakout namespace.
 /// </summary>
-namespace breakout
+namespace breakout.GameComponents
 {
     /// <summary>
     /// Enum BonusType

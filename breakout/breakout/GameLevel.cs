@@ -21,6 +21,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using breakout.GameComponents;
 using breakout.Textures;
 using breakout.Util;
 using Microsoft.Xna.Framework;

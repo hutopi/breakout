@@ -12,17 +12,16 @@
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using breakout.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 
 /// <summary>
 /// The breakout namespace.
 /// </summary>
-namespace breakout
+namespace breakout.GameComponents
 {
     /// <summary>
     /// Class Bonus.

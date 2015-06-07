@@ -12,22 +12,15 @@
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 
 /// <summary>
 /// The breakout namespace.
 /// </summary>
-namespace breakout {
+namespace breakout.Util {
     /// <summary>
     /// Class ButtonSprite.
     /// Describes the behavior of the button in the menus to allow the user to interact with them.
