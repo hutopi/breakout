@@ -125,8 +125,8 @@ namespace breakout {
             exitButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 100, Window.ClientBounds.Height / 2 + 120);
 
             resumeButton.Position = new Vector2(Window.ClientBounds.Width / 2 - resumeButton.Texture.Width / 2, Window.ClientBounds.Height / 2 - resumeButton.Texture.Height / 2);
-            restartButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height / 2);
-            nextLevelButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height / 2);
+            restartButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 100, Window.ClientBounds.Height / 2);
+            nextLevelButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 100, Window.ClientBounds.Height / 2);
 
 
             menuArrow.ButtonGroup.Add(storyModeButton);
@@ -164,7 +164,7 @@ namespace breakout {
 
 
         protected override void UnloadContent() {
-            // @TODO Thomas ?
+            
         }
 
 
