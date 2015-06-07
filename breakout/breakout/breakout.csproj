@@ -80,7 +80,6 @@
   <ItemGroup>
     <Compile Include="SoundManager.cs" />
     <Compile Include="Textures\BatTextures.cs" />
-    <Compile Include="Textures\SoundTextures.cs" />
     <Compile Include="GameComponents\Ball.cs" />
     <Compile Include="GameComponents\Bat.cs" />
     <Compile Include="GameComponents\Bonus.cs" />
