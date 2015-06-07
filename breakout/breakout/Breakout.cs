@@ -12,22 +12,17 @@
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
-using System;
+
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.Serialization;
 using breakout.GameComponents;
 using breakout.Textures;
 using breakout.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 /// <summary>
 /// The breakout namespace.

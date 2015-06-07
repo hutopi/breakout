@@ -12,14 +12,13 @@
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using breakout.Util;
-using Microsoft.Xna.Framework.Graphics;
 
 /// <summary>
 /// The breakout namespace.
