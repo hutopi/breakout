@@ -1,44 +1,102 @@
-﻿using System;
+﻿// ***********************************************************************
+// Assembly         : Super Roberto Breakout
+// Author           : Pierre Defache
+// Created          : 06-07-2015
+//
+// Last Modified By : Pierre Defache
+// Last Modified On : 06-07-2015
+// ***********************************************************************
+// <copyright file="Bonus.cs" company="Hutopi">
+//     Copyright ©  2015
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 
+/// <summary>
+/// The breakout namespace.
+/// </summary>
 namespace breakout
 {
+    /// <summary>
+    /// Class Bonus.
+    /// </summary>
     public class Bonus : MovingSprite
     {
+        /// <summary>
+        /// The name
+        /// </summary>
         private string name;
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>The name.</value>
         public string Name
         {
             get { return name; }
             set { name = value; }
         }
 
+        /// <summary>
+        /// The type
+        /// </summary>
         private BonusType type;
+        /// <summary>
+        /// Gets or sets the type.
+        /// </summary>
+        /// <value>The type.</value>
         public BonusType Type
         {
             get { return type; }
             set { type = value; }
         }
 
+        /// <summary>
+        /// The activated
+        /// </summary>
         private bool activated = false;
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="Bonus"/> is activated.
+        /// </summary>
+        /// <value><c>true</c> if activated; otherwise, <c>false</c>.</value>
         public bool Activated
         {
             get { return activated; }
             set { activated = value; }
         }
 
+        /// <summary>
+        /// The sm
+        /// </summary>
         private SoundManager sm = new SoundManager();
 
+        /// <summary>
+        /// Gets the hitbox.
+        /// </summary>
+        /// <value>The hitbox.</value>
         public Rectangle Hitbox
         {
             get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height); }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Sprite" /> class.
+        /// </summary>
+        /// <param name="screenWidth">Width of the screen.</param>
+        /// <param name="screenHeight">Height of the screen.</param>
         public Bonus(int screenWidth, int screenHeight) : base(screenWidth, screenHeight) { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Bonus"/> class.
+        /// </summary>
+        /// <param name="screenWidth">Width of the screen.</param>
+        /// <param name="screenHeight">Height of the screen.</param>
+        /// <param name="type">The type.</param>
         public Bonus(int screenWidth, int screenHeight, BonusType type)
             : base(screenWidth, screenHeight)
         {
@@ -46,12 +104,24 @@ namespace breakout
             Speed = 0.2f;
         }
 
+        /// <summary>
+        /// Loads the content common to every sprite of our game, the texture 2D
+        /// </summary>
+        /// <param name="content">The content manager.</param>
+        /// <param name="assetName">Name of the asset.</param>
         public override void LoadContent(ContentManager content, String assetName)
         {
             sm.LoadContent(content);
             base.LoadContent(content, assetName);
         }
 
+        /// <summary>
+        /// Updates the specified game time.
+        /// </summary>
+        /// <param name="gameTime">The game time.</param>
+        /// <param name="batHitBox">The bat hit box.</param>
+        /// <param name="gameLevel">The game level.</param>
+        /// <param name="brick">The brick.</param>
         public void Update(GameTime gameTime, Rectangle batHitBox, GameLevel gameLevel, Brick brick)
         {
             Direction = new Vector2(0, 1);

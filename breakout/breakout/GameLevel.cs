@@ -1,4 +1,17 @@
-﻿using System;
+﻿// ***********************************************************************
+// Assembly         : Super Roberto Breakout
+// Author           : Pierre Defache
+// Created          : 06-07-2015
+//
+// Last Modified By : Pierre Defache
+// Last Modified On : 06-07-2015
+// ***********************************************************************
+// <copyright file="GameLevel.cs" company="Hutopi">
+//     Copyright ©  2015
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.PerformanceData;
 using System.IO;
@@ -13,44 +26,97 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 
+/// <summary>
+/// The breakout namespace.
+/// </summary>
 namespace breakout
 {
+    /// <summary>
+    /// Class GameLevel.
+    /// </summary>
     public class GameLevel
     {
+        /// <summary>
+        /// The columns
+        /// </summary>
         private int columns;
+        /// <summary>
+        /// The lines
+        /// </summary>
         private int lines;
+        /// <summary>
+        /// The screen width
+        /// </summary>
         private int screenWidth;
+        /// <summary>
+        /// The screen height
+        /// </summary>
         private int screenHeight;
 
+        /// <summary>
+        /// The lives
+        /// </summary>
         private int lives;
+        /// <summary>
+        /// Gets or sets the lives.
+        /// </summary>
+        /// <value>The lives.</value>
         public int Lives
         {
             get { return lives; }
             set { lives = value; }
         }
 
+        /// <summary>
+        /// The nb_bricks
+        /// </summary>
         private int nb_bricks;
+        /// <summary>
+        /// Gets or sets the nb_bricks.
+        /// </summary>
+        /// <value>The nb_bricks.</value>
         public int Nb_bricks
         {
             get { return nb_bricks; }
             set { nb_bricks = value; }
         }
 
+        /// <summary>
+        /// The nb bonus
+        /// </summary>
         private int nbBonus;
+        /// <summary>
+        /// Gets or sets the nb bonus.
+        /// </summary>
+        /// <value>The nb bonus.</value>
         public int NbBonus
         {
             get { return nbBonus; }
             set { nbBonus = value; }
         }
 
+        /// <summary>
+        /// The bat
+        /// </summary>
         private Bat bat;
+        /// <summary>
+        /// Gets or sets the bat.
+        /// </summary>
+        /// <value>The bat.</value>
         public Bat Bat
         {
             get { return bat; }
             set { bat = value; }
         }
 
+        /// <summary>
+        /// The balls
+        /// </summary>
         private List<Ball> balls;
+        /// <summary>
+        /// Gets or sets the balls.
+        /// </summary>
+        /// <value>The balls.</value>
         public List<Ball> Balls
         {
             get { return balls; }
@@ -58,23 +124,48 @@ namespace breakout
         }
 
 
+        /// <summary>
+        /// Gets or sets the level file.
+        /// </summary>
+        /// <value>The level file.</value>
         public GameFile LevelFile { get; set; }
 
+        /// <summary>
+        /// The score
+        /// </summary>
         private int score = 0;
+        /// <summary>
+        /// Gets or sets the score.
+        /// </summary>
+        /// <value>The score.</value>
         public int Score
         {
             get { return score; }
             set { score = value; }
         }
 
+        /// <summary>
+        /// The brick texture
+        /// </summary>
         private BrickTexture brickTexture;
+        /// <summary>
+        /// Gets or sets the brick texture.
+        /// </summary>
+        /// <value>The brick texture.</value>
         public BrickTexture BrickTexture
         {
             get { return brickTexture; }
             set { brickTexture = value; }
         }
 
+        /// <summary>
+        /// The bat texture
+        /// </summary>
         private BatTextures batTexture;
+        /// <summary>
+        /// Gets or sets the bat texture.
+        /// </summary>
+        /// <value>The bat texture.</value>
         public BatTextures BatTexture
         {
             get { return batTexture; }
@@ -82,16 +173,41 @@ namespace breakout
         }
 
 
+        /// <summary>
+        /// The bricks map
+        /// </summary>
         private List<Brick> bricksMap;
+        /// <summary>
+        /// Gets or sets the bricks map.
+        /// </summary>
+        /// <value>The bricks map.</value>
         public List<Brick> BricksMap
         {
             get { return bricksMap; }
             set { bricksMap = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the background.
+        /// </summary>
+        /// <value>The background.</value>
         public Texture2D Background { get; set; }
+        /// <summary>
+        /// Gets or sets the song.
+        /// </summary>
+        /// <value>The song.</value>
         public Song Song { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GameLevel"/> class.
+        /// </summary>
+        /// <param name="screenWidth">Width of the screen.</param>
+        /// <param name="screenHeight">Height of the screen.</param>
+        /// <param name="level">The level.</param>
+        /// <param name="lines">The lines.</param>
+        /// <param name="columns">The columns.</param>
+        /// <param name="balls">The balls.</param>
+        /// <param name="bat">The bat.</param>
         public GameLevel(int screenWidth, int screenHeight, GameFile level, int lines, int columns, List<Ball> balls, Bat bat)
         {
             this.screenWidth = screenWidth;
@@ -105,6 +221,9 @@ namespace breakout
             this.nb_bricks = this.lines * this.columns;
         }
 
+        /// <summary>
+        /// Initializes this instance.
+        /// </summary>
         public void Initialize()
         {
             this.Score = 0;
@@ -117,6 +236,10 @@ namespace breakout
             this.InitializeBonus();
         }
 
+        /// <summary>
+        /// Creates the background.
+        /// </summary>
+        /// <param name="device">The device.</param>
         public void CreateBackground(GraphicsDevice device)
         {
             byte[] bgbitmap = Convert.FromBase64String((string)this.LevelFile.Data.Background["file"]);
@@ -124,6 +247,9 @@ namespace breakout
             this.Background = Texture2D.FromStream(device, stream);
         }
 
+        /// <summary>
+        /// Creates the song.
+        /// </summary>
         public void CreateSong()
         {
             byte[] songBytes = Convert.FromBase64String((string)this.LevelFile.Data.Music["file"]);
@@ -137,6 +263,11 @@ namespace breakout
             this.Song = (Song)ctor.Invoke(new object[] { "level", temp, 0 });
         }
 
+        /// <summary>
+        /// Updates the specified restart.
+        /// </summary>
+        /// <param name="restart">if set to <c>true</c> [restart].</param>
+        /// <param name="levels">The levels.</param>
         public void Update(bool restart, DefaultLevels levels)
         {
             if (!restart)
@@ -148,6 +279,11 @@ namespace breakout
             this.Initialize();
         }
 
+        /// <summary>
+        /// Updates the specified restart.
+        /// </summary>
+        /// <param name="restart">if set to <c>true</c> [restart].</param>
+        /// <param name="file">The file.</param>
         public void Update(bool restart, GameFile file)
         {
             if (!restart)
@@ -158,6 +294,9 @@ namespace breakout
             this.Initialize();
         }
 
+        /// <summary>
+        /// Initializes the bonus.
+        /// </summary>
         public void InitializeBonus()
         {
             int index = 0;
@@ -182,6 +321,12 @@ namespace breakout
             }
         }
 
+        /// <summary>
+        /// Initializes the board.
+        /// </summary>
+        /// <param name="bricks">The bricks.</param>
+        /// <param name="indestructible">The indestructible.</param>
+        /// <param name="percentBonus">The percent bonus.</param>
         public void InitializeBoard(int bricks, int indestructible, double percentBonus)
         {
             this.nb_bricks = bricks - indestructible;
@@ -189,6 +334,9 @@ namespace breakout
             this.BricksMap = new List<Brick>();
         }
 
+        /// <summary>
+        /// Loads the level.
+        /// </summary>
         public void LoadLevel()
         {
             int indestructibles = countIndestructibles(this.LevelFile.Data.Bricks);
@@ -208,6 +356,11 @@ namespace breakout
             }
         }
 
+        /// <summary>
+        /// Counts the indestructibles.
+        /// </summary>
+        /// <param name="bricksData">The bricks data.</param>
+        /// <returns>System.Int32.</returns>
         public static int countIndestructibles(List<object> bricksData)
         {
             int result = 0;
@@ -221,6 +374,9 @@ namespace breakout
             return result;
         }
 
+        /// <summary>
+        /// Sets the bonus.
+        /// </summary>
         public void SetBonus()
         {
             Random rnd = new Random();

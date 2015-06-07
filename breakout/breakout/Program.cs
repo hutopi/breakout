@@ -1,16 +1,36 @@
+// ***********************************************************************
+// Assembly         : Super Roberto Breakout
+// Author           : Thomas Fossati
+// Created          : 05-24-2015
+//
+// Last Modified By : Thomas Fossati
+// Last Modified On : 06-07-2015
+// ***********************************************************************
+// <copyright file="Program.cs" company="Hutopi">
+//     Copyright ©  2015
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
 using System;
 using System.IO;
 using System.Windows.Forms;
 using System.Reflection;
 
+/// <summary>
+/// The breakout namespace.
+/// </summary>
 namespace breakout
 {
 #if WINDOWS || XBOX
+    /// <summary>
+    /// Class Program.
+    /// </summary>
     static class Program
     {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+        /// <param name="args">The arguments.</param>
         [STAThread]
         static void Main(string[] args)
         {

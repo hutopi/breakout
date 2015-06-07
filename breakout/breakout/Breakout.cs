@@ -1,3 +1,16 @@
+// ***********************************************************************
+// Assembly         : Super Roberto Breakout
+// Author           : Thomas Fossati
+// Created          : 05-24-2015
+//
+// Last Modified By : Thomas Fossati
+// Last Modified On : 06-07-2015
+// ***********************************************************************
+// <copyright file="Breakout.cs" company="Hutopi">
+//     Copyright ©  2015
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,39 +27,123 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 
+/// <summary>
+/// The breakout namespace.
+/// </summary>
 namespace breakout {
 
+    /// <summary>
+    /// Class Breakout.
+    /// </summary>
     public class Breakout : Game {
+        /// <summary>
+        /// The graphics
+        /// </summary>
         GraphicsDeviceManager graphics;
+        /// <summary>
+        /// The sprite batch
+        /// </summary>
         SpriteBatch spriteBatch;
+        /// <summary>
+        /// The logo
+        /// </summary>
         private Texture2D logo;
+        /// <summary>
+        /// The sounds
+        /// </summary>
         private Sounds sounds;
+        /// <summary>
+        /// The songs
+        /// </summary>
         private Songs songs;
+        /// <summary>
+        /// The song start
+        /// </summary>
         private bool songStart = false;
+        /// <summary>
+        /// The mute song
+        /// </summary>
         private bool muteSong = false;
 
+        /// <summary>
+        /// The game state
+        /// </summary>
         private GameState gameState;
+        /// <summary>
+        /// The game level
+        /// </summary>
         private GameLevel gameLevel;
+        /// <summary>
+        /// The default levels
+        /// </summary>
         private DefaultLevels defaultLevels;
 
+        /// <summary>
+        /// The keyboard state
+        /// </summary>
         private KeyboardState keyboardState;
+        /// <summary>
+        /// The previous keyboard state
+        /// </summary>
         private KeyboardState previousKeyboardState;
+        /// <summary>
+        /// The mouse state
+        /// </summary>
         private MouseState mouseState;
+        /// <summary>
+        /// The previous mouse state
+        /// </summary>
         private MouseState previousMouseState;
 
+        /// <summary>
+        /// The menu arrow
+        /// </summary>
         private MenuArrow menuArrow;
+        /// <summary>
+        /// The score font
+        /// </summary>
         private SpriteFont scoreFont;
+        /// <summary>
+        /// The help control font
+        /// </summary>
         private SpriteFont helpControlFont;
+        /// <summary>
+        /// The lives sprites
+        /// </summary>
         private Sprite[] livesSprites;
+        /// <summary>
+        /// The story mode button
+        /// </summary>
         private ButtonSprite storyModeButton;
+        /// <summary>
+        /// The custom mode button
+        /// </summary>
         private ButtonSprite customModeButton;
+        /// <summary>
+        /// The exit button
+        /// </summary>
         private ButtonSprite exitButton;
+        /// <summary>
+        /// The resume button
+        /// </summary>
         private ButtonSprite resumeButton;
+        /// <summary>
+        /// The restart button
+        /// </summary>
         private ButtonSprite restartButton;
+        /// <summary>
+        /// The next level button
+        /// </summary>
         private ButtonSprite nextLevelButton;
 
+        /// <summary>
+        /// The custom mode
+        /// </summary>
         private bool customMode;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Breakout"/> class.
+        /// </summary>
         public Breakout() {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 800;
@@ -80,6 +177,9 @@ namespace breakout {
             sounds = new Sounds();
         }
 
+        /// <summary>
+        /// Called after the Game and GraphicsDevice are created, but before LoadContent.  Reference page contains code sample.
+        /// </summary>
         protected override void Initialize() {
             storyModeButton.Initialize();
             customModeButton.Initialize();
@@ -111,6 +211,9 @@ namespace breakout {
         }
 
 
+        /// <summary>
+        /// Loads the content.
+        /// </summary>
         protected override void LoadContent() {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -162,11 +265,18 @@ namespace breakout {
         }
 
 
+        /// <summary>
+        /// Called when graphics resources need to be unloaded. Override this method to unload any game-specific graphics resources.
+        /// </summary>
         protected override void UnloadContent() {
             
         }
 
 
+        /// <summary>
+        /// Reference page contains links to related conceptual articles.
+        /// </summary>
+        /// <param name="gameTime">Time passed since the last call to Update.</param>
         protected override void Update(GameTime gameTime) {
             keyboardState = Keyboard.GetState();
             mouseState = Mouse.GetState();
@@ -314,6 +424,9 @@ namespace breakout {
             base.Update(gameTime);
         }
 
+        /// <summary>
+        /// Checks the song.
+        /// </summary>
         private void checkSong()
         {
             if (!songStart)
@@ -331,6 +444,9 @@ namespace breakout {
             }
         }
 
+        /// <summary>
+        /// Mutes this instance.
+        /// </summary>
         private void mute()
         {
             if (muteSong)
@@ -343,6 +459,10 @@ namespace breakout {
             }
         }
 
+        /// <summary>
+        /// Updates the level.
+        /// </summary>
+        /// <param name="restart">if set to <c>true</c> [restart].</param>
         private void UpdateLevel(bool restart)
         {
             gameLevel.Lives = 3;
@@ -358,6 +478,9 @@ namespace breakout {
             gameState = GameState.READYTOSTART;
         }
 
+        /// <summary>
+        /// Levels the selection.
+        /// </summary>
         public void LevelSelection()
         {
             var dialog = new System.Windows.Forms.OpenFileDialog();
@@ -385,6 +508,9 @@ namespace breakout {
             }
         }
 
+        /// <summary>
+        /// Checks if ball out.
+        /// </summary>
         private void CheckIfBallOut() {
             int numberOfBalls = gameLevel.Balls.Count;
             foreach (Ball b in gameLevel.Balls)
@@ -403,6 +529,9 @@ namespace breakout {
             }
         }
 
+        /// <summary>
+        /// Resets the balls.
+        /// </summary>
         private void resetBalls()
         {
             if (gameLevel.Balls.Count > 1)
@@ -414,12 +543,19 @@ namespace breakout {
            
         }
 
+        /// <summary>
+        /// Resets the bat.
+        /// </summary>
         private void resetBat()
         {
             gameLevel.Bat.Texture = gameLevel.BatTexture.Regular;
             gameLevel.Bat.Position = new Vector2(Window.ClientBounds.Width / 2 - gameLevel.Bat.Texture.Width / 2, Window.ClientBounds.Height - 10 - gameLevel.Bat.Texture.Height / 2);
         }
 
+        /// <summary>
+        /// Reference page contains code sample.
+        /// </summary>
+        /// <param name="gameTime">Time passed since the last call to Draw.</param>
         protected override void Draw(GameTime gameTime) {
             spriteBatch.Begin();
             spriteBatch.Draw(gameLevel.Background,
@@ -526,6 +662,10 @@ namespace breakout {
             base.Draw(gameTime);
         }
 
+        /// <summary>
+        /// Builds the brick textures.
+        /// </summary>
+        /// <returns>Texture2D[].</returns>
         public Texture2D[] buildBrickTextures() {
             Texture2D[] textures = new Texture2D[5];
             for (int i = 0; i < 5; i++)
@@ -535,6 +675,10 @@ namespace breakout {
             return textures;
         }
 
+        /// <summary>
+        /// Builds the bat textures.
+        /// </summary>
+        /// <returns>BatTextures.</returns>
         public BatTextures buildBatTextures() {
             Texture2D reduced = Content.Load<Texture2D>("reduced_bat");
             Texture2D regular = Content.Load<Texture2D>("bat");
@@ -543,6 +687,9 @@ namespace breakout {
 
         }
 
+        /// <summary>
+        /// Puts the bricks texture.
+        /// </summary>
         public void putBricksTexture()
         {
             foreach (Brick b in gameLevel.BricksMap)
@@ -555,6 +702,11 @@ namespace breakout {
             }
         }
 
+        /// <summary>
+        /// Gets the lives.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch.</param>
+        /// <param name="gameTime">The game time.</param>
         public void getLives(ref SpriteBatch spriteBatch, GameTime gameTime)
         {
             livesSprites[gameLevel.Lives].Draw(spriteBatch, gameTime);
