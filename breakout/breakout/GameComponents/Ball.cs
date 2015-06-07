@@ -23,13 +23,13 @@ namespace breakout {
 
         }
         private Vector2 lastPosition;
-        private Brick lastBrick = new Brick(0,0,new Vector2(-1,-1),0,0);
+        private Brick lastBrick = new Brick(0, 0, new Vector2(-1, -1), 0, 0);
         private SoundManager sm = new SoundManager();
 
         public Ball(int screenWidth, int screenHeight) : base(screenWidth, screenHeight) { }
 
-        public Ball(Ball ball): base(ball.screenWidth, ball.screenHeight)
-        {
+        public Ball(Ball ball)
+            : base(ball.screenWidth, ball.screenHeight) {
             this.Position = ball.Position;
             this.Texture = ball.Texture;
             this.Direction = -ball.Direction;
@@ -67,10 +67,10 @@ namespace breakout {
                 //bouncing on the bat
                 bouncingOnTheBat(batHitBox);
                 // boucing on the bricks
-                bouncingOnTheBricks2(gameLevel);
+                bouncingOnTheBricks3(gameLevel);
 
             } else {
-                Position = new Vector2(batHitBox.X + batHitBox.Width / 2 - this.Texture.Width / 2, batHitBox.Y- this.Texture.Height / 2);
+                Position = new Vector2(batHitBox.X + batHitBox.Width / 2 - this.Texture.Width / 2, batHitBox.Y - this.Texture.Height / 2);
 
             }
 
@@ -93,11 +93,10 @@ namespace breakout {
             if ((Direction.Y > 0 && this.Hitbox.IntersectsRec(batHitBox))) {
                 Direction = new Vector2(((float)Hitbox.X - batHitBox.Center.X) / (batHitBox.Width / 2), -Direction.Y);
                 Direction = Vector2.Normalize(Direction);
-                Console.WriteLine(Direction);
                 this.sm.bump.Play(0.5f, 0.0f, 0.0f);
             }
         }
-        private void bouncingOnTheBricks(GameLevel gameLevel, GameTime gameTime) {
+        private void bouncingOnTheBricks(GameLevel gameLevel) {
             Vector2 centerTopBall = new Vector2((float)HitBoxRec.Width, 0);
             Vector2 centerLeftBall = new Vector2(0, (float)HitBoxRec.Width);
             Vector2 centerRightBall = new Vector2((float)HitBoxRec.Width, (float)HitBoxRec.Width);
@@ -105,11 +104,11 @@ namespace breakout {
 
             Vector2 newDirection = new Vector2(Direction.X, Direction.Y);
 
-            List<Brick> destroyedBricks = getDestroyedBricks(gameLevel);
+            List<Brick> touchedBricks = getTouchedBricks(gameLevel);
 
 
 
-            foreach (Brick b in destroyedBricks) {
+            foreach (Brick b in touchedBricks) {
                 bool changed = false;
                 Vector2 topLeftCorner = new Vector2(b.Hitbox.Left, b.Hitbox.Top);
                 Vector2 topRightCorner = new Vector2(b.Hitbox.Right, b.Hitbox.Top);
@@ -118,31 +117,22 @@ namespace breakout {
 
                 if (Direction.X > 0 && LineIntersects(lastPosition + centerRightBall, position + centerRightBall, topLeftCorner, bottomLeftCorner)) {
                     newDirection = new Vector2(-(Math.Abs(Direction.X)), Direction.Y);
-                    Console.WriteLine("left");
                     changed = true;
                 } else if (Direction.X < 0 && LineIntersects(lastPosition + centerLeftBall, position + centerLeftBall, topRightCorner, bottomRightCorner)) {
                     newDirection = new Vector2((Math.Abs(Direction.X)), Direction.Y);
-                    Console.WriteLine("right");
                     changed = true;
-                }
-
-                else if (Direction.Y > 0 && LineIntersects(lastPosition + centerBottomBall, position + centerBottomBall, topLeftCorner, topRightCorner)) {
+                } else if (Direction.Y > 0 && LineIntersects(lastPosition + centerBottomBall, position + centerBottomBall, topLeftCorner, topRightCorner)) {
                     newDirection = new Vector2(Direction.X, -(Math.Abs(Direction.Y)));
-                    Console.WriteLine("top");
                     changed = true;
                 } else if (Direction.Y < 0 && LineIntersects(lastPosition + centerTopBall, position + centerTopBall, bottomLeftCorner, bottomRightCorner)) {
                     newDirection = new Vector2(Direction.X, (Math.Abs(Direction.Y)));
-                    Console.WriteLine("bottom");
                     changed = true;
                 }
 
                 // Hit a corner  bounce it back
                 if (!changed) {
-                    Console.WriteLine("corner");
                     Direction = new Vector2(-Direction.X, -Direction.Y);
-
                 }
-
 
                 break;
 
@@ -168,12 +158,19 @@ namespace breakout {
             return intersects;
         }
 
-        public List<Brick> getDestroyedBricks(GameLevel gameLevel) {
-            List<Brick> destroyedBricks = new List<Brick>();
+        public List<Brick> getTouchedBricks(GameLevel gameLevel) {
+            List<Brick> touchedBricks = new List<Brick>();
             foreach (Brick b in gameLevel.BricksMap) {
                 if (this.Hitbox.IntersectsRec(b.Hitbox) && b.Resistance > 0) {
-                    this.sm.bumpBrick.Play(0.5f, 0.0f, 0.0f);
-
+                    if (b.Resistance == 4)
+                    {
+                        this.sm.bump.Play(0.5f, 0.0f, 0.0f);
+                    }
+                    else
+                    {
+                        this.sm.bumpBrick.Play(0.5f, 0.0f, 0.0f);
+                    }
+                    
                     if (b.Bonus.Type != BonusType.NONE && b.Bonus.Activated == false) {
                         b.Bonus.Activated = true;
                     }
@@ -183,18 +180,18 @@ namespace breakout {
                     if (scoreIncrement == 100) {
                         gameLevel.Nb_bricks--;
                     }
-                    destroyedBricks.Add(b);
+                    touchedBricks.Add(b);
                 }
             }
-            return destroyedBricks;
+            return touchedBricks;
         }
 
 
         public void bouncingOnTheBricks2(GameLevel gameLevel) {
-            List<Brick> destroyedBricks = getDestroyedBricks(gameLevel);
+            List<Brick> touchedBricks = getTouchedBricks(gameLevel);
 
 
-            foreach (Brick b in destroyedBricks) {
+            foreach (Brick b in touchedBricks) {
 
                 Rectangle[] sideRectangles = buildSideAndCornerRectangles(b);
                 bool changed = false;
@@ -202,43 +199,28 @@ namespace breakout {
                     Rectangle[] sideRectanglesLast = buildSideAndCornerRectangles(lastBrick);
                     if ((Hitbox.IntersectsRec(sideRectangles[5]) && Hitbox.IntersectsRec(sideRectanglesLast[4])) || (Hitbox.IntersectsRec(sideRectangles[4]) && Hitbox.IntersectsRec(sideRectanglesLast[5]))) {
                         Direction = new Vector2(Direction.X, -Math.Abs(Direction.Y));
-                        Console.WriteLine("coin haut droit A + coin haut gauche B :" + Direction);
                         changed = true;
                     } else if ((Hitbox.IntersectsRec(sideRectangles[7]) && Hitbox.IntersectsRec(sideRectanglesLast[6])) || (Hitbox.IntersectsRec(sideRectangles[6]) && Hitbox.IntersectsRec(sideRectanglesLast[7]))) {
                         Direction = new Vector2(Direction.X, Math.Abs(Direction.Y));
-                        Console.WriteLine("coin bas droit A + coin bas gauche B :" + Direction);
                         changed = true;
                     } else if ((Hitbox.IntersectsRec(sideRectangles[5]) && Hitbox.IntersectsRec(sideRectanglesLast[7])) || (Hitbox.IntersectsRec(sideRectangles[7]) && Hitbox.IntersectsRec(sideRectanglesLast[5]))) {
                         Direction = new Vector2(Math.Abs(Direction.X), -Direction.Y);
-                        Console.WriteLine("coin haut droit A + coin bas droit B :" + Direction);
                         changed = true;
                     } else if ((Hitbox.IntersectsRec(sideRectangles[4]) && Hitbox.IntersectsRec(sideRectanglesLast[6])) || (Hitbox.IntersectsRec(sideRectangles[6]) && Hitbox.IntersectsRec(sideRectanglesLast[4]))) {
                         Direction = new Vector2(-Math.Abs(Direction.X), Direction.Y);
-                        Console.WriteLine("coin haut gauche A + coin bas gauche B :" + Direction);
                         changed = true;
+                    } else if (Hitbox.IntersectsRec(sideRectangles[0]) || Hitbox.IntersectsRec(sideRectangles[1])) {
+
+                        Direction = new Vector2(Direction.X, -Direction.Y);
+                        changed = true;
+                    } else if (Hitbox.IntersectsRec(sideRectangles[2]) || Hitbox.IntersectsRec(sideRectangles[3])) {
+                        Direction = new Vector2(-Direction.X, Direction.Y);
+                        changed = true;
+
+                    }
                 }
-                    else if (Hitbox.IntersectsRec(sideRectangles[0]) || Hitbox.IntersectsRec(sideRectangles[1])) {
-
-                    Direction = new Vector2(Direction.X, -Direction.Y);
-                    Console.WriteLine("top || bottom : " + Direction);
-                        changed = true;
-                } else if (Hitbox.IntersectsRec(sideRectangles[2]) || Hitbox.IntersectsRec(sideRectangles[3])) {
-                    Direction = new Vector2(-Direction.X, Direction.Y);
-                    Console.WriteLine("right || left : " + Direction);
-                        changed = true;
-
-                }
-
-                /*if (singleCornerHit(sideRectangles)) {
+                if (!changed) {
                     Direction = new Vector2(-Direction.X, -Direction.Y);
-                    Console.WriteLine("un coin " + Direction);
-                    break;
-                } else*/ 
-                }
-                if(!changed){
-                    Direction = new Vector2(-Direction.X, -Direction.Y);
-                    Console.WriteLine("coincoin");
-
                 }
 
 
@@ -247,6 +229,40 @@ namespace breakout {
 
             }
 
+        }
+
+        public void bouncingOnTheBricks3(GameLevel gameLevel) {
+            List<Brick> touchedBricks = getTouchedBricks(gameLevel);
+
+
+            foreach (Brick b in touchedBricks) {
+
+                Rectangle topBall = new Rectangle(Hitbox.X, (int)(Hitbox.Y - Hitbox.Radius), 2, 1);
+                Rectangle bottomBall = new Rectangle(Hitbox.X, (int)(Hitbox.Y + Hitbox.Radius), 2, 1);
+                Rectangle leftBall = new Rectangle((int)(Hitbox.X - Hitbox.Radius), Hitbox.Y, 1, 2);
+                Rectangle rightBall = new Rectangle((int)(Hitbox.X + Hitbox.Radius), Hitbox.Y, 1, 2);
+                Vector2 centerVector = new Vector2(b.Hitbox.Center.X - this.position.X, b.Hitbox.Center.Y - this.position.X);
+
+                centerVector = Vector2.Normalize(centerVector);
+                if (bottomBall.Intersects(b.Hitbox)) {
+                    Direction = new Vector2(Direction.X, -Math.Abs(Direction.Y));
+                } else if (leftBall.Intersects(b.Hitbox)) {
+                    Direction = new Vector2(Math.Abs(Direction.X), Direction.Y);
+                } else if (topBall.Intersects(b.Hitbox)) {
+                    Direction = new Vector2(Direction.X, Math.Abs(Direction.Y));
+                } else if (rightBall.Intersects(b.Hitbox)) {
+                    Direction = new Vector2(-Math.Abs(Direction.X), Direction.Y);
+                } else if (centerVector.X > 0 && centerVector.Y > 0) {
+                    Direction = new Vector2(-Math.Abs(Direction.X), -Math.Abs(Direction.Y));
+                } else if (centerVector.X < 0 && centerVector.Y > 0) {
+                    Direction = new Vector2(Math.Abs(Direction.X), -Math.Abs(Direction.Y));
+                } else if (centerVector.X < 0 && centerVector.Y < 0) {
+                    Direction = new Vector2(Math.Abs(Direction.X), Math.Abs(Direction.Y));
+                } else if (centerVector.X > 0 && centerVector.Y < 0) {
+                    Direction = new Vector2(-Math.Abs(Direction.X), Math.Abs(Direction.Y));
+                }
+                break;
+            }
         }
 
         public Rectangle[] buildSideAndCornerRectangles(Brick b) {

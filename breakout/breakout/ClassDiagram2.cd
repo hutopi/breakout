@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="breakout.Sprite" Collapsed="true">
+    <Position X="8.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAACAAABAAwAgAAAAIAAAAAAAAgAAAAIAQAAAAAQ=</HashCode>
+      <FileName>Util\Sprite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="breakout.ButtonSprite" Collapsed="true">
+    <Position X="7.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Util\ButtonSprite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="breakout.MovingSprite" Collapsed="true">
+    <Position X="12.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAIQAAACAAAAABAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Util\MovingSprite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="breakout.Brick" Collapsed="true">
+    <Position X="5.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAABAAEAwAAAAAAAEEAAgAAAIAAAAAAAAAIAAQ=</HashCode>
+      <FileName>GameComponents\Brick.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="breakout.Bonus" Collapsed="true">
+    <Position X="12.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAEAABAAAAAQAQAAAAFAAAAAQAAAAAAAAQ=</HashCode>
+      <FileName>GameComponents\Bonus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="breakout.Ball" Collapsed="true">
+    <Position X="14.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAQAgAAAAAAEAQAABAAAAAAgCIAAAAAICAAAICABAQQ=</HashCode>
+      <FileName>GameComponents\Ball.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="breakout.Bat" Collapsed="true">
+    <Position X="10" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAACAAAAEAQAAAAAAAAAAAAAAAAQAAAQEAAAAAAQ=</HashCode>
+      <FileName>GameComponents\Bat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="breakout.MenuArrow" Collapsed="true">
+    <Position X="3.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Util\MenuArrow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

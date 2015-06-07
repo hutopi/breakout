@@ -12,16 +12,15 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 namespace breakout {
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
-    public class Breakout : Microsoft.Xna.Framework.Game {
+
+    public class Breakout : Game {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Texture2D logo;
         private Sounds sounds;
         private Songs songs;
-        private bool songStart;
+        private bool songStart = false;
+        private bool muteSong = false;
 
         private GameState gameState;
         private GameLevel gameLevel;
@@ -32,8 +31,7 @@ namespace breakout {
         private MouseState mouseState;
         private MouseState previousMouseState;
 
-        //sprites
-        private Arrow arrow;
+        private MenuArrow menuArrow;
         private SpriteFont scoreFont;
         private SpriteFont helpControlFont;
         private Sprite[] livesSprites;
@@ -43,7 +41,6 @@ namespace breakout {
         private ButtonSprite resumeButton;
         private ButtonSprite restartButton;
         private ButtonSprite nextLevelButton;
-        private SoundTextures soundTextures;
 
         public Breakout() {
             graphics = new GraphicsDeviceManager(this);
@@ -60,8 +57,7 @@ namespace breakout {
             resumeButton = new ButtonSprite(screenWidth, screenHeight, "resume");
             restartButton = new ButtonSprite(screenWidth, screenHeight, "restart");
             nextLevelButton = new ButtonSprite(screenWidth, screenHeight, "next");
-            soundTextures = new SoundTextures();
-            arrow = new Arrow(screenWidth, screenHeight);
+            menuArrow = new MenuArrow(screenWidth, screenHeight);
 
 
             livesSprites = new Sprite[5];
@@ -80,15 +76,7 @@ namespace breakout {
             songs = new Songs();
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize() {
-            // TODO: Add your initialization logic here
-
             storyModeButton.Initialize();
             customModeButton.Initialize();
             exitButton.Initialize();
@@ -96,6 +84,7 @@ namespace breakout {
             restartButton.Initialize();
             nextLevelButton.Initialize();
             gameLevel.Bat.Initialize();
+            menuArrow.Initialize();
 
             foreach (var ball in gameLevel.Balls) {
                 ball.Initialize();
@@ -117,12 +106,8 @@ namespace breakout {
             gameLevel.CreateSong();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
+
         protected override void LoadContent() {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             this.logo = Content.Load<Texture2D>("logo");
@@ -133,7 +118,7 @@ namespace breakout {
             resumeButton.LoadContent(Content, "resume");
             restartButton.LoadContent(Content, "restart");
             nextLevelButton.LoadContent(Content, "next");
-            soundTextures.LoadContent(Content.Load<Texture2D>("soundOn"), Content.Load<Texture2D>("soundOff"));
+            menuArrow.LoadContent(Content, "arrow");
 
             storyModeButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height / 2);
             customModeButton.Position = new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2);
@@ -142,6 +127,11 @@ namespace breakout {
             resumeButton.Position = new Vector2(Window.ClientBounds.Width / 2 - resumeButton.Texture.Width / 2, Window.ClientBounds.Height / 2 - resumeButton.Texture.Height / 2);
             restartButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height / 2);
             nextLevelButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height / 2);
+
+
+            menuArrow.ButtonGroup.Add(storyModeButton);
+            menuArrow.ButtonGroup.Add(customModeButton);
+            menuArrow.CurrentButtonSelected = storyModeButton;
 
             gameLevel.Bat.LoadContent(Content, "bat");
             foreach (Ball b in gameLevel.Balls)
@@ -170,28 +160,15 @@ namespace breakout {
                               Content.Load<Song>("underground"),
                               Content.Load<Song>("underwater"),
                               Content.Load<Song>("bowser"));
-            // TODO: use this.Content to load your game content here
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
+
         protected override void UnloadContent() {
-            // TODO: Unload any non ContentManager content here
+            // @TODO Thomas ?
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime) {
-            /* // Allows the game to exit
-             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                 this.Exit();*/
 
-            // TODO: Add your update logic here
+        protected override void Update(GameTime gameTime) {
             keyboardState = Keyboard.GetState();
             mouseState = Mouse.GetState();
 
@@ -201,7 +178,7 @@ namespace breakout {
                     storyModeButton.Update(mouseState, previousMouseState, ref gameState);
                     customModeButton.Update(mouseState, previousMouseState, ref gameState);
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
-                    arrow.HandleInput(keyboardState, mouseState);
+                    menuArrow.Update(keyboardState, previousKeyboardState, ref gameState);
                     break;
                 case GameState.CUSTOM:
                     //treatment here @TODO
@@ -247,11 +224,12 @@ namespace breakout {
                     {
                         nextLevelButton.Update(mouseState, previousMouseState, ref gameState);
                     }
-                    else
-                    {
-                        // Bravo, vous avez terminé le jeu ! @TODO
-                    }
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
+                    menuArrow.ButtonGroup.Clear();
+                    menuArrow.ButtonGroup.Add(nextLevelButton);
+                    menuArrow.ButtonGroup.Add(exitButton);
+                    menuArrow.CurrentButtonSelected = nextLevelButton;
+                    menuArrow.Update(keyboardState, previousKeyboardState, ref gameState);
                     break;
                 case GameState.LOOSE:
                     if (songStart)
@@ -264,6 +242,10 @@ namespace breakout {
                     this.resetBat();
                     restartButton.Update(mouseState, previousMouseState, ref gameState);
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
+                    menuArrow.ButtonGroup.Clear();
+                    menuArrow.ButtonGroup.Add(restartButton);
+                    menuArrow.ButtonGroup.Add(exitButton);
+                    menuArrow.Update(keyboardState, previousKeyboardState, ref gameState);
                     break;
                 case GameState.RESTART:
                     if (songStart)
@@ -295,7 +277,7 @@ namespace breakout {
             }
 
             
-            if (gameState == GameState.READYTOSTART && keyboardState.IsKeyUp(Keys.Enter) && previousKeyboardState.IsKeyDown(Keys.Enter)) {
+            if (gameState == GameState.READYTOSTART && previousKeyboardState.IsKeyDown(Keys.Enter) && keyboardState.IsKeyUp(Keys.Enter)) {
                 gameState = GameState.PLAYING;
             }
             if (keyboardState.IsKeyUp(Keys.Space) && previousKeyboardState.IsKeyDown(Keys.Space) && gameState != GameState.STARTMENU ) {
@@ -303,12 +285,20 @@ namespace breakout {
                 gameState = (gameState == GameState.PAUSED) ? (GameState.PLAYING) : (GameState.PAUSED);
             }
 
+            if (keyboardState.IsKeyUp(Keys.M) && previousKeyboardState.IsKeyDown(Keys.M) && gameState != GameState.STARTMENU)
+            {
+                muteSong = (muteSong == false) ? (true) : (false);
+                this.mute();
+            }
+
             if (gameLevel.Nb_bricks == 0 && gameState != GameState.NEXT_LEVEL && gameState != GameState.EXIT) {
                 gameState = GameState.WIN;
+                menuArrow.CurrentButtonSelectedIndex = 0;
             }
 
             if (gameLevel.Lives < 0 && gameState != GameState.RESTART && gameState != GameState.EXIT) {
                 gameState = GameState.LOOSE;
+                menuArrow.CurrentButtonSelectedIndex = 0;
             }
 
             previousKeyboardState = keyboardState;
@@ -330,6 +320,18 @@ namespace breakout {
                     MediaPlayer.IsRepeating = true;
                 }
                 songStart = true;
+            }
+        }
+
+        private void mute()
+        {
+            if (muteSong)
+            {
+                MediaPlayer.IsMuted = true;
+            }
+            else
+            {
+                MediaPlayer.IsMuted = false;
             }
         }
 
@@ -380,12 +382,7 @@ namespace breakout {
             gameLevel.Bat.Position = new Vector2(Window.ClientBounds.Width / 2 - gameLevel.Bat.Texture.Width / 2, Window.ClientBounds.Height - 10 - gameLevel.Bat.Texture.Height / 2);
         }
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime) {
-            // TODO: Add your drawing code here
             spriteBatch.Begin();
             spriteBatch.Draw(gameLevel.Background,
                              new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height),
@@ -396,10 +393,10 @@ namespace breakout {
                     storyModeButton.Draw(spriteBatch, gameTime);
                     customModeButton.Draw(spriteBatch, gameTime);
                     exitButton.Draw(spriteBatch, gameTime);
+                    menuArrow.Draw(spriteBatch, gameTime);
                     break;
                 case GameState.PLAYING:
                     gameLevel.Bat.Draw(spriteBatch, gameTime);
-                 //   soundButton.Draw(spriteBatch, gameTime);
                     foreach (Ball b in gameLevel.Balls)
                     {
                         b.Draw(spriteBatch, gameTime);
@@ -470,19 +467,18 @@ namespace breakout {
                     this.getLives(ref spriteBatch, gameTime);
                     break;
                 case GameState.WIN:
+                    spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.White);
                     if (this.defaultLevels.Current <= this.defaultLevels.MaxLevel)
                     {
                         nextLevelButton.Draw(spriteBatch, gameTime);
                     }
-                    else
-                    {
-                        // Affiche du SpriteFont : Vous avez terminé le jeu ! @TODO
-                    }
                     exitButton.Draw(spriteBatch, gameTime);
+                    menuArrow.Draw(spriteBatch, gameTime);
                     break;
                 case GameState.LOOSE:
                     restartButton.Draw(spriteBatch, gameTime);
                     exitButton.Draw(spriteBatch, gameTime);
+                    menuArrow.Draw(spriteBatch, gameTime);
                     break;
                 default:
                     break;

@@ -41,7 +41,7 @@ namespace breakout {
             texture = content.Load<Texture2D>(assetName);
         }
 
-        public virtual void HandleInput(KeyboardState keyboardState, MouseState mouseState) {
+        public virtual void HandleInput(KeyboardState keyboardState, KeyboardState previousKeyboardState) {
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
