@@ -129,12 +129,13 @@ namespace breakout
         {
             byte[] songBytes = Convert.FromBase64String((string)this.LevelFile.Data.Music["file"]);
             string mime = (string) this.LevelFile.Data.Music["type"];
-            File.WriteAllBytes("level.mp3", songBytes);
+            string temp = Path.GetTempFileName();
+            File.WriteAllBytes(temp, songBytes);
 
             var ctor = typeof(Song).GetConstructor(
                 BindingFlags.NonPublic | BindingFlags.Instance, null,
                 new[] { typeof(string), typeof(string), typeof(int) }, null);
-            this.Song = (Song)ctor.Invoke(new object[] { "level", Directory.GetCurrentDirectory() + @"\level.mp3", 0 });
+            this.Song = (Song)ctor.Invoke(new object[] { "level", temp, 0 });
         }
 
         public void Update(bool restart, DefaultLevels levels)
