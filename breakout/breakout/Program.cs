@@ -42,7 +42,7 @@ namespace breakout
                 {
                     Assembly.Load("Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553");
                 }
-                catch (FileNotFoundException ex)
+                catch (FileNotFoundException)
                 {
                     MessageBox.Show(
                         "Unable to locate XNA Game Framework 4.0.",

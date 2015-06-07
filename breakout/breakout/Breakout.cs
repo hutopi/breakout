@@ -50,10 +50,6 @@ namespace breakout {
         /// </summary>
         private Sounds sounds;
         /// <summary>
-        /// The songs
-        /// </summary>
-        private Songs songs;
-        /// <summary>
         /// The song start
         /// </summary>
         private bool songStart = false;
