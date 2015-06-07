@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.PerformanceData;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -129,9 +130,12 @@ namespace breakout
             byte[] songBytes = Convert.FromBase64String((string)this.LevelFile.Data.Music["file"]);
             string mime = (string) this.LevelFile.Data.Music["type"];
             File.WriteAllBytes("level.mp3", songBytes);
-            this.Song = Song.FromUri("level", new Uri(Directory.GetCurrentDirectory() + @"\level.mp3"));
-        }
 
+            var ctor = typeof(Song).GetConstructor(
+                BindingFlags.NonPublic | BindingFlags.Instance, null,
+                new[] { typeof(string), typeof(string), typeof(int) }, null);
+            this.Song = (Song)ctor.Invoke(new object[] { "level", Directory.GetCurrentDirectory() + @"\level.mp3", 0 });
+        }
         public void Initialize()
         {
             this.constructLevel();
