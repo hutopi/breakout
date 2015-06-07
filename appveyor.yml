@@ -150,11 +150,11 @@ install:
     Write-Host "`r`nInstallation Complete.";
 
 before_build:
-  - nuget restore
+- nuget restore "breakout.sln"
 build:
   verbosity: minimal
 after_build:
-  - 7z a breakout.zip .\breakout\breakout\bin\x86\Release\
+- 7z a breakout.zip .\breakout\breakout\bin\x86\Release\
 artifacts:
 - path: breakout.zip
   name: Breakout
