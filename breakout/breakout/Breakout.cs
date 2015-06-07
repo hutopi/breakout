@@ -33,103 +33,36 @@ namespace breakout {
     /// Class Breakout.
     /// </summary>
     public class Breakout : Game {
-        /// <summary>
-        /// The sprite batch
-        /// </summary>
         SpriteBatch spriteBatch;
-        /// <summary>
-        /// The logo
-        /// </summary>
         private Texture2D logo;
-        /// <summary>
-        /// The sounds
-        /// </summary>
+        
         private Sounds sounds;
-
-        /// <summary>
-        /// The song start
-        /// </summary>
         private bool songStart;
-
-        /// <summary>
-        /// The Mute song
-        /// </summary>
         private bool muteSong;
 
-        /// <summary>
-        /// The game state
-        /// </summary>
         private GameState gameState;
-        /// <summary>
-        /// The game level
-        /// </summary>
         private GameLevel gameLevel;
-        /// <summary>
-        /// The default levels
-        /// </summary>
         private DefaultLevels defaultLevels;
 
-        /// <summary>
-        /// The keyboard state
-        /// </summary>
         private KeyboardState keyboardState;
-        /// <summary>
-        /// The previous keyboard state
-        /// </summary>
         private KeyboardState previousKeyboardState;
-        /// <summary>
-        /// The mouse state
-        /// </summary>
+
         private MouseState mouseState;
-        /// <summary>
-        /// The previous mouse state
-        /// </summary>
         private MouseState previousMouseState;
 
-        /// <summary>
-        /// The menu arrow
-        /// </summary>
         private MenuArrow menuArrow;
-        /// <summary>
-        /// The score font
-        /// </summary>
-        private SpriteFont scoreFont;
-        /// <summary>
-        /// The help control font
-        /// </summary>
-        private SpriteFont helpControlFont;
-        /// <summary>
-        /// The lives sprites
-        /// </summary>
-        private Sprite[] livesSprites;
-        /// <summary>
-        /// The story mode button
-        /// </summary>
-        private ButtonSprite storyModeButton;
-        /// <summary>
-        /// The custom mode button
-        /// </summary>
-        private ButtonSprite customModeButton;
-        /// <summary>
-        /// The exit button
-        /// </summary>
-        private ButtonSprite exitButton;
-        /// <summary>
-        /// The resume button
-        /// </summary>
-        private ButtonSprite resumeButton;
-        /// <summary>
-        /// The restart button
-        /// </summary>
-        private ButtonSprite restartButton;
-        /// <summary>
-        /// The next level button
-        /// </summary>
-        private ButtonSprite nextLevelButton;
 
-        /// <summary>
-        /// The custom mode
-        /// </summary>
+        private SpriteFont scoreFont;
+        private SpriteFont helpControlFont;
+        private Sprite[] livesSprites;
+
+        private ButtonSprite storyModeButton;
+        private ButtonSprite customModeButton;
+        private ButtonSprite exitButton;
+        private ButtonSprite resumeButton;
+        private ButtonSprite restartButton;
+        private ButtonSprite nextLevelButton;
+        
         private bool customMode;
 
         /// <summary>

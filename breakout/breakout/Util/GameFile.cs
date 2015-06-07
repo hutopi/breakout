@@ -31,7 +31,7 @@ namespace breakout.Util
         /// </summary>
         private string filePath;
         /// <summary>
-        /// Gets or sets the data.
+        /// Stores this level's data.
         /// </summary>
         /// <value>The data.</value>
         public LevelData Data { get; private set; }
@@ -46,7 +46,7 @@ namespace breakout.Util
         }
 
         /// <summary>
-        /// Loads this instance.
+        /// Loads and parse JSON file.
         /// </summary>
         public void Load()
         {
