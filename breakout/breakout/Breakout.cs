@@ -353,10 +353,8 @@ namespace breakout {
                 gameLevel.CreateBackground(GraphicsDevice);
                 gameLevel.CreateSong();
             }
-            foreach (Brick b in gameLevel.BricksMap)
-            {
-                b.LoadContent(Content, "brick");
-            }
+
+            this.putBricksTexture();
             gameState = GameState.READYTOSTART;
         }
 

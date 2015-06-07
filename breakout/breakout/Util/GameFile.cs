@@ -26,6 +26,7 @@ namespace breakout
             var reader = new StreamReader(stream);
             string json = reader.ReadToEnd();
             this.Data = JsonParser.Deserialize<LevelData>(json);
+            stream.Close();
         }
 
     }

@@ -59,7 +59,6 @@ namespace breakout
 
 
         public GameFile LevelFile { get; set; }
-        private bool alreadyLoaded { get; set; }
 
         private int score = 0;
         public int Score
@@ -104,7 +103,6 @@ namespace breakout
             this.columns = columns;
             this.BricksMap = new List<Brick>();
             this.nb_bricks = this.lines * this.columns;
-            this.alreadyLoaded = false;
         }
 
         public void Initialize()
@@ -112,12 +110,7 @@ namespace breakout
             this.Score = 0;
             this.Lives = 3;
 
-            if (!this.alreadyLoaded)
-            {
-                this.LevelFile.Load();
-                this.alreadyLoaded = true;
-            }
-
+            this.LevelFile.Load();
             this.LoadLevel();
            
             this.SetBonus();
@@ -233,25 +226,18 @@ namespace breakout
             Random rnd = new Random();
             Random x_rnd = new Random();
             Random y_rnd = new Random();
-            int x, y = 0;
-
-            Console.WriteLine("Nombre de bonus:" + nbBonus);
+            int x = 0;
 
             for (int i = 0; i < this.nbBonus; i++)
             {
                 x = x_rnd.Next(0, this.BricksMap.Count);
-
-                
-
                 if (this.BricksMap[x].Bonus.Type == BonusType.NONE && this.BricksMap[x].Resistance > 0)
                 {
-                    Console.WriteLine("{0}, {1}", x, y);
                     Array values = Enum.GetValues(typeof(BonusType));
                     this.BricksMap[x].Bonus.Type = (BonusType)values.GetValue(rnd.Next(1, values.Length));
                 }
                 else
                 {
-                    Console.WriteLine("i--");
                     i--;
                 }
             }
