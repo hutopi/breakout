@@ -156,7 +156,7 @@ build:
 after_build:
 - 7z a breakout.zip .\breakout\breakout\bin\x86\Release\
 - choco install -y innosetup
-- "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" setup.iss
+- '"C:\Program Files (x86)\Inno Setup 5\ISCC.exe" setup.iss'
 artifacts:
 - path: breakout.zip
   name: Breakout
