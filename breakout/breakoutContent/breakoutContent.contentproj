@@ -265,18 +265,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="soundOff.png">
-      <Name>soundOff</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="soundOn.png">
-      <Name>soundOn</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="bowser.mp3">
       <Name>bowser</Name>
       <Importer>Mp3Importer</Importer>

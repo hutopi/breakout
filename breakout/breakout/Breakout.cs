@@ -39,7 +39,6 @@ namespace breakout {
         private ButtonSprite resumeButton;
         private ButtonSprite restartButton;
         private ButtonSprite nextLevelButton;
-        private SoundTextures soundTextures;
 
         public Breakout() {
             graphics = new GraphicsDeviceManager(this);
@@ -55,7 +54,6 @@ namespace breakout {
             resumeButton = new ButtonSprite(screenWidth, screenHeight, "resume");
             restartButton = new ButtonSprite(screenWidth, screenHeight, "restart");
             nextLevelButton = new ButtonSprite(screenWidth, screenHeight, "next");
-            soundTextures = new SoundTextures();
             menuArrow = new MenuArrow(screenWidth, screenHeight);
 
 
@@ -110,7 +108,6 @@ namespace breakout {
             restartButton.LoadContent(Content, "restart");
             nextLevelButton.LoadContent(Content, "next");
             menuArrow.LoadContent(Content, "arrow");
-            soundTextures.LoadContent(Content.Load<Texture2D>("soundOn"), Content.Load<Texture2D>("soundOff"));
 
             startButton.Position = new Vector2(Window.ClientBounds.Width / 2 - 200, Window.ClientBounds.Height/2);
             exitButton.Position = new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2);
