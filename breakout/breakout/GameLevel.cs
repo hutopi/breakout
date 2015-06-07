@@ -59,6 +59,7 @@ namespace breakout
 
 
         public GameFile LevelFile { get; set; }
+        private bool alreadyLoaded { get; set; }
 
         private int score = 0;
         public int Score
@@ -103,6 +104,7 @@ namespace breakout
             this.columns = columns;
             this.BricksMap = new List<Brick>();
             this.nb_bricks = this.lines * this.columns;
+            this.alreadyLoaded = false;
         }
 
         public void Initialize()
@@ -110,7 +112,11 @@ namespace breakout
             this.Score = 0;
             this.Lives = 3;
 
-            this.LevelFile.Load();
+            if (!this.alreadyLoaded)
+            {
+                this.LevelFile.Load();
+                this.alreadyLoaded = true;
+            }
 
             this.LoadLevel();
            
