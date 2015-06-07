@@ -221,9 +221,16 @@ namespace breakout
         /// <param name="device">The device.</param>
         public void CreateBackground(GraphicsDevice device)
         {
-            byte[] bgbitmap = Convert.FromBase64String((string)this.levelFile.Data.Background["file"]);
-            var stream = new MemoryStream(bgbitmap);
-            this.Background = Texture2D.FromStream(device, stream);
+            try
+            {
+                byte[] bgbitmap = Convert.FromBase64String((string) this.levelFile.Data.Background["file"]);
+                var stream = new MemoryStream(bgbitmap);
+                this.Background = Texture2D.FromStream(device, stream);
+            }
+            catch (ArgumentNullException)
+            {
+                return;
+            }
         }
 
         /// <summary>
@@ -231,14 +238,21 @@ namespace breakout
         /// </summary>
         public void CreateSong()
         {
-            byte[] songBytes = Convert.FromBase64String((string)this.levelFile.Data.Music["file"]);
-            string temp = Path.GetTempFileName();
-            File.WriteAllBytes(temp, songBytes);
+            try
+            {
+                byte[] songBytes = Convert.FromBase64String((string) this.levelFile.Data.Music["file"]);
+                string temp = Path.GetTempFileName();
+                File.WriteAllBytes(temp, songBytes);
 
-            var ctor = typeof(Song).GetConstructor(
-                BindingFlags.NonPublic | BindingFlags.Instance, null,
-                new[] { typeof(string), typeof(string), typeof(int) }, null);
-            this.Song = (Song)ctor.Invoke(new object[] { "level", temp, 0 });
+                var ctor = typeof(Song).GetConstructor(
+                    BindingFlags.NonPublic | BindingFlags.Instance, null,
+                    new[] { typeof(string), typeof(string), typeof(int) }, null);
+                this.Song = (Song)ctor.Invoke(new object[] { "level", temp, 0 });
+            }
+            catch (ArgumentNullException)
+            {
+                return;
+            }
         }
 
         /// <summary>
