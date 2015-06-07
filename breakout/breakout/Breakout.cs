@@ -227,15 +227,19 @@ namespace breakout {
                     }
                     this.resetBat();
                     this.IsMouseVisible = true;
+                    exitButton.Update(mouseState, previousMouseState, ref gameState);
+                    menuArrow.ButtonGroup.Clear();
                     if (this.defaultLevels.Current < this.defaultLevels.MaxLevel && !this.customMode)
                     {
                         nextLevelButton.Update(mouseState, previousMouseState, ref gameState);
+                        menuArrow.ButtonGroup.Add(nextLevelButton);
+                        menuArrow.CurrentButtonSelected = nextLevelButton;
                     }
-                    exitButton.Update(mouseState, previousMouseState, ref gameState);
-                    menuArrow.ButtonGroup.Clear();
-                    menuArrow.ButtonGroup.Add(nextLevelButton);
+                    else
+                    {
+                        menuArrow.CurrentButtonSelected = exitButton;
+                    }
                     menuArrow.ButtonGroup.Add(exitButton);
-                    menuArrow.CurrentButtonSelected = nextLevelButton;
                     menuArrow.Update(keyboardState, previousKeyboardState, ref gameState);
                     break;
                 case GameState.LOOSE:
