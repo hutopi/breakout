@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -21,11 +22,13 @@ namespace breakout
 
         public void loadFiles()
         {
-            var directory = Directory.GetCurrentDirectory() + @"\levels";
-            List<String> filenames = Directory.EnumerateFiles(directory, "level*.json").ToList();
+            List<string> appPath = Assembly.GetExecutingAssembly().Location.Split('\\').ToList();
+            appPath.RemoveAt(appPath.Count - 1);
+            var levelsDir = String.Join("\\", appPath.ToArray()) + @"\levels";
+            List<String> filenames = Directory.EnumerateFiles(levelsDir, "level*.json").ToList();
             for (int level = 1; level <= filenames.Count; level++)
             {
-                var path = String.Format(Directory.GetCurrentDirectory() + @"\levels\level{0}.json", level);
+                var path = String.Format(levelsDir + @"\level{0}.json", level);
                 if (File.Exists(path))
                 {
                     this.LevelFiles.Add(new GameFile(path));
