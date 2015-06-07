@@ -354,7 +354,7 @@ namespace breakout {
             if (!restart)
             {
                 gameLevel.CreateBackground(GraphicsDevice);
-                // gameLevel.CreateSong();
+                gameLevel.CreateSong();
             }
             foreach (Brick b in gameLevel.BricksMap)
             {
@@ -382,13 +382,13 @@ namespace breakout {
                 gameLevel.Score = 0;
                 gameLevel.Update(false, level);
                 gameLevel.CreateBackground(GraphicsDevice);
-                // gameLevel.CreateSong();
+                gameLevel.CreateSong();
                 foreach (Brick b in gameLevel.BricksMap)
                 {
                     b.LoadContent(Content, "brick");
                 }
-                gameState = GameState.READYTOSTART;
                 this.putBricksTexture();
+                gameState = GameState.READYTOSTART;
             }
         }
 
