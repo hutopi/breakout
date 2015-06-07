@@ -293,10 +293,10 @@ namespace breakout {
             }
 
             
-            if (gameState == GameState.READYTOSTART && previousKeyboardState.IsKeyDown(Keys.Enter) && keyboardState.IsKeyUp(Keys.Enter)) {
+            if (gameState == GameState.READYTOSTART && previousKeyboardState.IsKeyDown(Keys.Space) && keyboardState.IsKeyUp(Keys.Space)) {
                 gameState = GameState.PLAYING;
             }
-            if (keyboardState.IsKeyUp(Keys.Space) && previousKeyboardState.IsKeyDown(Keys.Space) && gameState != GameState.STARTMENU ) {
+            if (keyboardState.IsKeyUp(Keys.Escape) && previousKeyboardState.IsKeyDown(Keys.Escape) && gameState != GameState.STARTMENU) {
 
                 gameState = (gameState == GameState.PAUSED) ? (GameState.PLAYING) : (GameState.PAUSED);
             }
@@ -454,7 +454,7 @@ namespace breakout {
                         }
                     }
                     spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.White);
-                    spriteBatch.DrawString(helpControlFont, "Press Enter to launch the ball and Space to pause the game", new Vector2(200,10),Color.White);
+                    spriteBatch.DrawString(helpControlFont, "Press Space to launch the ball and Escape to pause the game", new Vector2(200,10),Color.White);
                     this.getLives(ref spriteBatch, gameTime);
                     break;
                 case GameState.PAUSED:
