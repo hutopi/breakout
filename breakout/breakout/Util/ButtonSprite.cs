@@ -29,8 +29,11 @@ namespace breakout {
                 if (previousMouseState.LeftButton == ButtonState.Pressed && mousestate.LeftButton == ButtonState.Released) {
                     
                     switch (name) {
-                        case "start":
+                        case "story":
                             gameState = GameState.READYTOSTART;
+                            break;
+                        case "custom":
+                            gameState = GameState.CUSTOM;
                             break;
                         case "ex":
                             gameState = GameState.RESTART;

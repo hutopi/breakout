@@ -13,6 +13,7 @@ namespace breakout {
         RESTART = 5,
         NEXT_LEVEL = 6,
         EXIT = 7,
-        READYTOSTART = 8
+        READYTOSTART = 8,
+        CUSTOM = 9
     }
 }
