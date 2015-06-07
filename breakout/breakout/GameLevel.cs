@@ -148,6 +148,16 @@ namespace breakout
             this.Initialize();
         }
 
+        public void Update(bool restart, GameFile file)
+        {
+            if (!restart)
+            {
+                this.LevelFile = file;
+            }
+
+            this.Initialize();
+        }
+
         public void InitializeBonus()
         {
             int index = 0;

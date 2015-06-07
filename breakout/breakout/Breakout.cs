@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using breakout.Textures;
 using breakout.Util;
 using Microsoft.Xna.Framework;
@@ -10,6 +12,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace breakout {
 
@@ -41,6 +44,8 @@ namespace breakout {
         private ButtonSprite resumeButton;
         private ButtonSprite restartButton;
         private ButtonSprite nextLevelButton;
+
+        private bool customMode;
 
         public Breakout() {
             graphics = new GraphicsDeviceManager(this);
@@ -179,9 +184,11 @@ namespace breakout {
                     customModeButton.Update(mouseState, previousMouseState, ref gameState);
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
                     menuArrow.Update(keyboardState, previousKeyboardState, ref gameState);
+                    this.customMode = false;
                     break;
                 case GameState.CUSTOM:
-                    //treatment here @TODO
+                    this.customMode = true;
+                    LevelSelection();
                     break;
                 case GameState.PLAYING:
                     this.checkSong();
@@ -220,7 +227,7 @@ namespace breakout {
                     }
                     this.resetBat();
                     this.IsMouseVisible = true;
-                    if (this.defaultLevels.Current < this.defaultLevels.MaxLevel)
+                    if (this.defaultLevels.Current < this.defaultLevels.MaxLevel && !this.customMode)
                     {
                         nextLevelButton.Update(mouseState, previousMouseState, ref gameState);
                     }
@@ -352,6 +359,35 @@ namespace breakout {
             gameState = GameState.READYTOSTART;
         }
 
+        public void LevelSelection()
+        {
+            var dialog = new System.Windows.Forms.OpenFileDialog();
+            dialog.DefaultExt = "json";
+            dialog.InitialDirectory = Directory.GetCurrentDirectory();
+            dialog.Filter = "Game level files (*.json)|*.json|All files (*.*)|*.*";
+            dialog.ShowDialog();
+
+            if (dialog.FileName == "")
+            {
+                gameState = GameState.STARTMENU;
+            }
+            else
+            {
+                GameFile level = new GameFile(dialog.FileName);
+                gameLevel.Lives = 3;
+                gameLevel.Score = 0;
+                gameLevel.Update(false, level);
+                gameLevel.CreateBackground(GraphicsDevice);
+                // gameLevel.CreateSong();
+                foreach (Brick b in gameLevel.BricksMap)
+                {
+                    b.LoadContent(Content, "brick");
+                }
+                gameState = GameState.READYTOSTART;
+                this.putBricksTexture();
+            }
+        }
+
         private void CheckIfBallOut() {
             int numberOfBalls = gameLevel.Balls.Count;
             foreach (Ball b in gameLevel.Balls)
@@ -473,7 +509,7 @@ namespace breakout {
                     break;
                 case GameState.WIN:
                     spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.White);
-                    if (this.defaultLevels.Current < this.defaultLevels.MaxLevel)
+                    if (this.defaultLevels.Current < this.defaultLevels.MaxLevel && !this.customMode)
                     {
                         nextLevelButton.Draw(spriteBatch, gameTime);
                     }
