@@ -34,7 +34,7 @@ namespace breakout.Util
         /// Gets or sets the data.
         /// </summary>
         /// <value>The data.</value>
-        public LevelData Data { get; set; }
+        public LevelData Data { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameFile"/> class.

@@ -79,7 +79,7 @@ namespace breakout.GameComponents
         /// Gets the hitbox.
         /// </summary>
         /// <value>The hitbox.</value>
-        public Rectangle Hitbox
+        private Rectangle hitbox
         {
             get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height); }
         }
@@ -125,7 +125,7 @@ namespace breakout.GameComponents
         public void Update(GameTime gameTime, Rectangle batHitBox, GameLevel gameLevel, Brick brick)
         {
             Direction = new Vector2(0, 1);
-            if (this.Hitbox.Intersects(batHitBox))
+            if (this.hitbox.Intersects(batHitBox))
             {
                 switch (this.Type)
                 {

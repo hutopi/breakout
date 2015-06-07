@@ -104,7 +104,7 @@ namespace breakout
         public Bat Bat
         {
             get { return bat; }
-            set { bat = value; }
+            private set { bat = value; }
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace breakout
         public List<Ball> Balls
         {
             get { return balls; }
-            set { balls = value; }
+            private set { balls = value; }
         }
 
 
@@ -126,7 +126,7 @@ namespace breakout
         /// Gets or sets the level file.
         /// </summary>
         /// <value>The level file.</value>
-        public GameFile LevelFile { get; set; }
+        private GameFile levelFile { get; set; }
 
         /// <summary>
         /// The score
@@ -182,19 +182,19 @@ namespace breakout
         public List<Brick> BricksMap
         {
             get { return bricksMap; }
-            set { bricksMap = value; }
+            private set { bricksMap = value; }
         }
 
         /// <summary>
         /// Gets or sets the background.
         /// </summary>
         /// <value>The background.</value>
-        public Texture2D Background { get; set; }
+        public Texture2D Background { get; private set; }
         /// <summary>
         /// Gets or sets the song.
         /// </summary>
         /// <value>The song.</value>
-        public Song Song { get; set; }
+        public Song Song { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameLevel"/> class.
@@ -210,7 +210,7 @@ namespace breakout
         {
             this.screenWidth = screenWidth;
             this.screenHeight = (int)(0.6 * (double)screenHeight);
-            this.LevelFile = level;
+            this.levelFile = level;
             this.Balls = balls;
             this.Bat = bat;
             this.lines = lines;
@@ -227,10 +227,10 @@ namespace breakout
             this.Score = 0;
             this.Lives = 3;
 
-            this.LevelFile.Load();
-            this.LoadLevel();
+            this.levelFile.Load();
+            this.loadLevel();
            
-            this.SetBonus();
+            this.setBonus();
             this.InitializeBonus();
         }
 
@@ -240,7 +240,7 @@ namespace breakout
         /// <param name="device">The device.</param>
         public void CreateBackground(GraphicsDevice device)
         {
-            byte[] bgbitmap = Convert.FromBase64String((string)this.LevelFile.Data.Background["file"]);
+            byte[] bgbitmap = Convert.FromBase64String((string)this.levelFile.Data.Background["file"]);
             var stream = new MemoryStream(bgbitmap);
             this.Background = Texture2D.FromStream(device, stream);
         }
@@ -250,8 +250,8 @@ namespace breakout
         /// </summary>
         public void CreateSong()
         {
-            byte[] songBytes = Convert.FromBase64String((string)this.LevelFile.Data.Music["file"]);
-            string mime = (string) this.LevelFile.Data.Music["type"];
+            byte[] songBytes = Convert.FromBase64String((string)this.levelFile.Data.Music["file"]);
+            string mime = (string) this.levelFile.Data.Music["type"];
             string temp = Path.GetTempFileName();
             File.WriteAllBytes(temp, songBytes);
 
@@ -270,8 +270,8 @@ namespace breakout
         {
             if (!restart)
             {
-                levels.nextLevel();
-                this.LevelFile = levels.getLevel();
+                levels.NextLevel();
+                this.levelFile = levels.GetLevel();
             }
 
             this.Initialize();
@@ -286,7 +286,7 @@ namespace breakout
         {
             if (!restart)
             {
-                this.LevelFile = file;
+                this.levelFile = file;
             }
 
             this.Initialize();
@@ -325,7 +325,7 @@ namespace breakout
         /// <param name="bricks">The bricks.</param>
         /// <param name="indestructible">The indestructible.</param>
         /// <param name="percentBonus">The percent bonus.</param>
-        public void InitializeBoard(int bricks, int indestructible, double percentBonus)
+        private void initializeBoard(int bricks, int indestructible, double percentBonus)
         {
             this.nb_bricks = bricks - indestructible;
             this.nbBonus = (int)(percentBonus * (double)(bricks));
@@ -335,17 +335,17 @@ namespace breakout
         /// <summary>
         /// Loads the level.
         /// </summary>
-        public void LoadLevel()
+        private void loadLevel()
         {
-            int indestructibles = countIndestructibles(this.LevelFile.Data.Bricks);
-            this.InitializeBoard(this.LevelFile.Data.Bricks.Count, indestructibles, 0.1);
+            int indestructibles = countIndestructibles(this.levelFile.Data.Bricks);
+            this.initializeBoard(this.levelFile.Data.Bricks.Count, indestructibles, 0.1);
             
             int margin_h = 20;
             int margin_w = 50;
             int x = 0;
             int y = 2 * margin_h;
 
-            foreach (Dictionary<string, object> brick in this.LevelFile.Data.Bricks)
+            foreach (Dictionary<string, object> brick in this.levelFile.Data.Bricks)
             {
                 var line = (double) brick["line"];
                 var column = (double) brick["column"];
@@ -359,7 +359,7 @@ namespace breakout
         /// </summary>
         /// <param name="bricksData">The bricks data.</param>
         /// <returns>System.Int32.</returns>
-        public static int countIndestructibles(List<object> bricksData)
+        private static int countIndestructibles(List<object> bricksData)
         {
             int result = 0;
             foreach (Dictionary<string, object> brick in bricksData)
@@ -375,16 +375,15 @@ namespace breakout
         /// <summary>
         /// Sets the bonus.
         /// </summary>
-        public void SetBonus()
+        private void setBonus()
         {
             Random rnd = new Random();
             Random x_rnd = new Random();
             Random y_rnd = new Random();
-            int x = 0;
 
             for (int i = 0; i < this.nbBonus; i++)
             {
-                x = x_rnd.Next(0, this.BricksMap.Count);
+                int x = x_rnd.Next(0, this.BricksMap.Count);
                 if (this.BricksMap[x].Bonus.Type == BonusType.NONE && this.BricksMap[x].Resistance > 0)
                 {
                     Array values = Enum.GetValues(typeof(BonusType));

@@ -33,7 +33,7 @@ namespace breakout.Util {
         /// Gets or sets the direction.
         /// </summary>
         /// <value>The direction.</value>
-        public Vector2 Direction {
+        protected Vector2 Direction {
             get { return direction; }
             set { direction = Vector2.Normalize(value); }
         }
@@ -59,7 +59,7 @@ namespace breakout.Util {
         /// </summary>
         /// <param name="screenWidth">Width of the screen.</param>
         /// <param name="screenHeight">Height of the screen.</param>
-        public MovingSprite(int screenWidth, int screenHeight) : base(screenWidth, screenHeight) { }
+        protected MovingSprite(int screenWidth, int screenHeight) : base(screenWidth, screenHeight) { }
 
         /// <summary>
         /// Updates the position of the moving sprite

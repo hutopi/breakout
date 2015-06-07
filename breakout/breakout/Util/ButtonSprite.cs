@@ -41,7 +41,7 @@ namespace breakout.Util {
         /// Gets the hitbox.
         /// </summary>
         /// <value>The hitbox.</value>
-        public Rectangle Hitbox {
+        private Rectangle hitbox {
             get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height); }
         }
 
@@ -64,7 +64,7 @@ namespace breakout.Util {
         /// <param name="gameState">State of the game.</param>
         public void Update(MouseState mouseState, MouseState previousMouseState, ref GameState gameState) {
             
-            if(Hitbox.Intersects(new Rectangle(mouseState.X,mouseState.Y,10,10))){
+            if(hitbox.Intersects(new Rectangle(mouseState.X,mouseState.Y,10,10))){
                 if (previousMouseState.LeftButton == ButtonState.Pressed && mouseState.LeftButton == ButtonState.Released) {
                     
                     switch (name) {

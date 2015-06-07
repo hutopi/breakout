@@ -33,18 +33,18 @@ namespace breakout.GameComponents
         /// Gets or sets the height.
         /// </summary>
         /// <value>The height.</value>
-        public int Height { get; set; }
+        private int height { get; set; }
         /// <summary>
         /// Gets or sets the width.
         /// </summary>
         /// <value>The width.</value>
-        public int Width { get; set; }
+        private int width { get; set; }
 
         /// <summary>
         /// Gets or sets the bonus.
         /// </summary>
         /// <value>The bonus.</value>
-        public Bonus Bonus { get; set; }
+        public Bonus Bonus { get; private set; }
 
         /// <summary>
         /// Gets or sets the resistance.
@@ -64,8 +64,8 @@ namespace breakout.GameComponents
         /// <summary>
         /// Initializes a new instance of the <see cref="Brick"/> class.
         /// </summary>
-        /// <param name="screenWidth">Width of the screen.</param>
-        /// <param name="screenHeight">Height of the screen.</param>
+        /// <param name="screenWidth">width of the screen.</param>
+        /// <param name="screenHeight">height of the screen.</param>
         /// <param name="position">The position.</param>
         /// <param name="h">The h.</param>
         /// <param name="w">The w.</param>
@@ -73,8 +73,8 @@ namespace breakout.GameComponents
         /// <param name="b">The b.</param>
         public Brick(int screenWidth, int screenHeight, Vector2 position, int h, int w, int r = 1, BonusType b = BonusType.NONE) : base( screenWidth, screenHeight)
         {
-            this.Height = h;
-            this.Width = w;
+            this.height = h;
+            this.width = w;
             this.Position = position;
             this.Resistance = r;
             this.Bonus = new Bonus(screenWidth, screenHeight, b);
@@ -161,7 +161,7 @@ namespace breakout.GameComponents
         /// <summary>
         /// Updates this instance.
         /// </summary>
-        public override void Update()
+        protected override void Update()
         {
             base.Update();
         }

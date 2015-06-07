@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Configuration;
 using System.Reflection;
 using breakout.Util;
 
@@ -34,31 +35,31 @@ namespace breakout
         /// Gets or sets the maximum level.
         /// </summary>
         /// <value>The maximum level.</value>
-        public int MaxLevel { get; set; }
+        private int maxLevel { get; set; }
         /// <summary>
         /// Gets or sets the current.
         /// </summary>
         /// <value>The current.</value>
-        public int Current { get; set; }
+        private int current { get; set; }
         /// <summary>
         /// Gets or sets the level files.
         /// </summary>
         /// <value>The level files.</value>
-        public List<GameFile> LevelFiles { get; set; }
+        private List<GameFile> levelFiles { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultLevels"/> class.
         /// </summary>
         public DefaultLevels()
         {
-            this.LevelFiles = new List<GameFile>();
-            this.Current = 1;
+            this.levelFiles = new List<GameFile>();
+            this.current = 1;
         }
 
         /// <summary>
         /// Loads the files.
         /// </summary>
-        public void loadFiles()
+        public void LoadFiles()
         {
             List<string> appPath = Assembly.GetExecutingAssembly().Location.Split('\\').ToList();
             appPath.RemoveAt(appPath.Count - 1);
@@ -69,8 +70,8 @@ namespace breakout
                 var path = String.Format(levelsDir + @"\level{0}.json", level);
                 if (File.Exists(path))
                 {
-                    this.LevelFiles.Add(new GameFile(path));
-                    this.MaxLevel++;
+                    this.levelFiles.Add(new GameFile(path));
+                    this.maxLevel++;
                 }
                 else
                 {
@@ -83,17 +84,22 @@ namespace breakout
         /// Gets the level.
         /// </summary>
         /// <returns>GameFile.</returns>
-        public GameFile getLevel()
+        public GameFile GetLevel()
         {
-            return this.LevelFiles[this.Current - 1];
+            return this.levelFiles[this.current - 1];
         }
 
         /// <summary>
         /// Nexts the level.
         /// </summary>
-        public void nextLevel()
+        public void NextLevel()
         {
-            this.Current++;
+            this.current++;
+        }
+
+        public bool IsLastLevel()
+        {
+            return this.current < this.maxLevel;
         }
     }
 }

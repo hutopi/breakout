@@ -29,29 +29,29 @@ namespace breakout.Util
         /// Gets or sets the bump.
         /// </summary>
         /// <value>The bump.</value>
-        public SoundEffect Bump { get; set; }
+        private SoundEffect bump { get; set; }
         /// <summary>
         /// Gets or sets the pause.
         /// </summary>
         /// <value>The pause.</value>
-        public SoundEffect Pause { get; set; }
+        public SoundEffect Pause { get; private set; }
         /// <summary>
         /// Gets or sets the win.
         /// </summary>
         /// <value>The win.</value>
-        public SoundEffect Win { get; set; }
+        public SoundEffect Win { get; private set; }
         /// <summary>
         /// Gets or sets the loose.
         /// </summary>
         /// <value>The loose.</value>
-        public SoundEffect Loose { get; set; }
+        public SoundEffect Loose { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sounds"/> class.
         /// </summary>
         public Sounds()
         {
-            Bump = null;
+            bump = null;
             Pause = null;
             Win = null;
             Loose = null;
@@ -66,7 +66,7 @@ namespace breakout.Util
         /// <param name="l">The l.</param>
         public void LoadContent(SoundEffect b, SoundEffect p, SoundEffect w, SoundEffect l)
         {
-            Bump = b;
+            bump = b;
             Pause = p;
             Win = w;
             Loose = l;

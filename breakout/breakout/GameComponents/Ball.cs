@@ -34,7 +34,7 @@ namespace breakout.GameComponents {
         ///The positions are taken from the top left of the circle and not the center so you have to to move the position with half the texture of the sprite to a have a circle hitbox that fits correctly the circle
         /// </summary>
         /// <value>The hitbox.</value>
-        public Circle Hitbox {
+        private Circle hitbox {
             get { return new Circle((int)Position.X + Texture.Width / 2, (int)Position.Y + Texture.Height / 2, (double)Texture.Width / 2); }
         }
         /// <summary>
@@ -134,8 +134,8 @@ namespace breakout.GameComponents {
         /// </summary>
         /// <param name="batHitBox">The bat hitbox.</param>
         private void bouncingOnTheBat(Rectangle batHitBox) {
-            if ((Direction.Y > 0 && this.Hitbox.IntersectsRec(batHitBox))) {
-                Direction = new Vector2(((float)Hitbox.X - batHitBox.Center.X) / (batHitBox.Width / 2), -Direction.Y);
+            if ((Direction.Y > 0 && this.hitbox.IntersectsRec(batHitBox))) {
+                Direction = new Vector2(((float)hitbox.X - batHitBox.Center.X) / (batHitBox.Width / 2), -Direction.Y);
                 Direction = Vector2.Normalize(Direction);
                 this.sm.bump.Play(0.5f, 0.0f, 0.0f);
             }
@@ -146,10 +146,10 @@ namespace breakout.GameComponents {
         /// </summary>
         /// <param name="gameLevel">The game level.</param>
         /// <returns>List&lt;Brick&gt;.</returns>
-        public List<Brick> getTouchedBricks(GameLevel gameLevel) {
+        private List<Brick> getTouchedBricks(GameLevel gameLevel) {
             List<Brick> touchedBricks = new List<Brick>();
             foreach (Brick b in gameLevel.BricksMap) {
-                if (this.Hitbox.IntersectsRec(b.Hitbox) && b.Resistance > 0) {
+                if (this.hitbox.IntersectsRec(b.Hitbox) && b.Resistance > 0) {
                     if (b.Resistance == 4) {
                         this.sm.bump.Play(0.5f, 0.0f, 0.0f);
                     } else {
@@ -178,16 +178,16 @@ namespace breakout.GameComponents {
         /// Changes the direction of the ball if it bounces on a brick.
         /// </summary>
         /// <param name="gameLevel">The game level.</param>
-        public void bouncingOnTheBricks(GameLevel gameLevel) {
+        private void bouncingOnTheBricks(GameLevel gameLevel) {
             List<Brick> touchedBricks = getTouchedBricks(gameLevel);
 
 
             foreach (Brick b in touchedBricks) {
 
-                Rectangle topBall = new Rectangle(Hitbox.X, (int)(Hitbox.Y - Hitbox.Radius), 2, 1);
-                Rectangle bottomBall = new Rectangle(Hitbox.X, (int)(Hitbox.Y + Hitbox.Radius), 2, 1);
-                Rectangle leftBall = new Rectangle((int)(Hitbox.X - Hitbox.Radius), Hitbox.Y, 1, 2);
-                Rectangle rightBall = new Rectangle((int)(Hitbox.X + Hitbox.Radius), Hitbox.Y, 1, 2);
+                Rectangle topBall = new Rectangle(hitbox.X, (int)(hitbox.Y - hitbox.Radius), 2, 1);
+                Rectangle bottomBall = new Rectangle(hitbox.X, (int)(hitbox.Y + hitbox.Radius), 2, 1);
+                Rectangle leftBall = new Rectangle((int)(hitbox.X - hitbox.Radius), hitbox.Y, 1, 2);
+                Rectangle rightBall = new Rectangle((int)(hitbox.X + hitbox.Radius), hitbox.Y, 1, 2);
                 Vector2 centerVector = new Vector2(b.Hitbox.Center.X - this.position.X, b.Hitbox.Center.Y - this.position.X);
 
                 centerVector = Vector2.Normalize(centerVector);

@@ -162,9 +162,9 @@ namespace breakout {
             }
 
             this.defaultLevels = new DefaultLevels();
-            this.defaultLevels.loadFiles();
+            this.defaultLevels.LoadFiles();
 
-            GameFile levelFile = this.defaultLevels.getLevel();
+            GameFile levelFile = this.defaultLevels.GetLevel();
             gameLevel = new GameLevel(screenWidth, screenHeight, levelFile, 3, 6, new List<Ball>(), new Bat(screenWidth, screenHeight));
             gameLevel.Balls.Add(new Ball(screenWidth, screenHeight));
             sounds = new Sounds();
@@ -285,7 +285,7 @@ namespace breakout {
                     break;
                 case GameState.CUSTOM:
                     this.customMode = true;
-                    LevelSelection();
+                    levelSelection();
                     break;
                 case GameState.PLAYING:
                     this.checkSong();
@@ -326,7 +326,7 @@ namespace breakout {
                     this.IsMouseVisible = true;
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
                    
-                    if (this.defaultLevels.Current < this.defaultLevels.MaxLevel && !this.customMode)
+                    if (this.defaultLevels.IsLastLevel() && !this.customMode)
                     {
                         nextLevelButton.Update(mouseState, previousMouseState, ref gameState);
                     }
@@ -396,7 +396,7 @@ namespace breakout {
             if (gameLevel.Nb_bricks == 0 && gameState != GameState.NEXT_LEVEL && gameState != GameState.EXIT) {
                 gameState = GameState.WIN;
                 menuArrow.ButtonGroup.Clear();
-                if (this.defaultLevels.Current < this.defaultLevels.MaxLevel && !this.customMode) {
+                if (this.defaultLevels.IsLastLevel() && !this.customMode) {
                     menuArrow.ButtonGroup.Add(nextLevelButton);
                 }
                 menuArrow.ButtonGroup.Add(exitButton);
@@ -474,7 +474,7 @@ namespace breakout {
         /// <summary>
         /// Levels the selection.
         /// </summary>
-        public void LevelSelection()
+        private void levelSelection()
         {
             var dialog = new System.Windows.Forms.OpenFileDialog();
             dialog.DefaultExt = "json";
@@ -635,7 +635,7 @@ namespace breakout {
                     break;
                 case GameState.WIN:
                     spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.White);
-                    if (this.defaultLevels.Current < this.defaultLevels.MaxLevel && !this.customMode)
+                    if (this.defaultLevels.IsLastLevel() && !this.customMode)
                     {
                         nextLevelButton.Draw(spriteBatch, gameTime);
                     }
@@ -672,7 +672,7 @@ namespace breakout {
         /// Builds the bat textures.
         /// </summary>
         /// <returns>BatTextures.</returns>
-        public BatTextures buildBatTextures() {
+        private BatTextures buildBatTextures() {
             Texture2D reduced = Content.Load<Texture2D>("reduced_bat");
             Texture2D regular = Content.Load<Texture2D>("bat");
             Texture2D extended = Content.Load<Texture2D>("extended_bat");
@@ -683,7 +683,7 @@ namespace breakout {
         /// <summary>
         /// Puts the bricks texture.
         /// </summary>
-        public void putBricksTexture()
+        private void putBricksTexture()
         {
             foreach (Brick b in gameLevel.BricksMap)
             {
@@ -700,7 +700,7 @@ namespace breakout {
         /// </summary>
         /// <param name="spriteBatch">The sprite batch.</param>
         /// <param name="gameTime">The game time.</param>
-        public void getLives(ref SpriteBatch spriteBatch, GameTime gameTime)
+        private void getLives(ref SpriteBatch spriteBatch, GameTime gameTime)
         {
             livesSprites[gameLevel.Lives].Draw(spriteBatch, gameTime);
 
