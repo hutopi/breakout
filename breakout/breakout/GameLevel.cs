@@ -233,25 +233,18 @@ namespace breakout
             Random rnd = new Random();
             Random x_rnd = new Random();
             Random y_rnd = new Random();
-            int x, y = 0;
-
-            Console.WriteLine("Nombre de bonus:" + nbBonus);
+            int x = 0;
 
             for (int i = 0; i < this.nbBonus; i++)
             {
                 x = x_rnd.Next(0, this.BricksMap.Count);
-
-                
-
                 if (this.BricksMap[x].Bonus.Type == BonusType.NONE && this.BricksMap[x].Resistance > 0)
                 {
-                    Console.WriteLine("{0}, {1}", x, y);
                     Array values = Enum.GetValues(typeof(BonusType));
                     this.BricksMap[x].Bonus.Type = (BonusType)values.GetValue(rnd.Next(1, values.Length));
                 }
                 else
                 {
-                    Console.WriteLine("i--");
                     i--;
                 }
             }
