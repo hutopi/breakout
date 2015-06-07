@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Super Roberto Breakout Editor</title>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="bower_components/react/react.js"></script>
+    <script src="bower_components/react/JSXTransformer.js"></script>
+    <style type="text/css">
+        #grid td {
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Super Roberto Breakout <small>Level Editor</small></h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-9">
+                <h4>Brick grid</h4>
+                <div id="grid"></div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Background</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="background"></div>
+                    </div>
+                </div>
+                <br />
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Music</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="music"></div>
+                    </div>
+                </div>
+                <br />
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Levelfile</h3>
+                    </div>
+                    <div class="panel-body">
+                        <input id="toload" type="file" /><br />
+                        <button id="save" type="button" class="btn btn-danger">Save</button>
+                        <button id="load" type="button" class="btn btn-primary">Load</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/pako/dist/pako.min.js"></script>
+    <script src="bower_components/file-saver-saveas-js/FileSaver.js"></script>
+    <script type="text/jsx" src="grid.jsx"></script>
+    <script type="text/jsx" src="image.jsx"></script>
+    <script type="text/jsx" src="sound.jsx"></script>
+    <script type="text/javascript" src="editor.js"></script>
+    <script type="text/jsx">
+        var grid = React.render(<GameGrid />, $('#grid')[0]);
+        var background = React.render(<Image />, $('#background')[0]);
+        var music = React.render(<Sound />, $('#music')[0]);
+    </script>
+</body>
+</html>
