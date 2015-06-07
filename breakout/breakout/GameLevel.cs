@@ -57,7 +57,7 @@ namespace breakout
         }
 
 
-        public int Level { get; set; }
+        public GameFile LevelFile { get; set; }
 
         private int score = 0;
         public int Score
@@ -88,16 +88,14 @@ namespace breakout
             set { bricksMap = value; }
         }
 
-        public GameFile CurrentLevelData { get; set; }
-
         public Texture2D Background { get; set; }
         public Song Song { get; set; }
 
-        public GameLevel(int screenWidth, int screenHeight, int level, int lines, int columns, List<Ball> balls, Bat bat)
+        public GameLevel(int screenWidth, int screenHeight, GameFile level, int lines, int columns, List<Ball> balls, Bat bat)
         {
             this.screenWidth = screenWidth;
             this.screenHeight = (int)(0.6 * (double)screenHeight);
-            this.Level = level;
+            this.LevelFile = level;
             this.Balls = balls;
             this.Bat = bat;
             this.lines = lines;
@@ -111,21 +109,9 @@ namespace breakout
             this.Score = 0;
             this.Lives = 3;
 
-            this.CurrentLevelData = new GameFile(@"..\..\..\..\..\levels\level4.json");
-            this.CurrentLevelData.Load();
+            this.LevelFile.Load();
 
-            this.LevelOne();
-
-            /*switch (this.Level)
-            {
-                case 1:
-                    this.LevelOne();
-                    this.Background = "background_1";
-                    break;
-                default:
-                    this.Background = "background_1";
-                    break;
-            }*/
+            this.LoadLevel();
            
             this.SetBonus();
             this.InitializeBonus();
@@ -133,15 +119,15 @@ namespace breakout
 
         public void CreateBackground(GraphicsDevice device)
         {
-            byte[] bgbitmap = Convert.FromBase64String((string)this.CurrentLevelData.Data.Background["file"]);
+            byte[] bgbitmap = Convert.FromBase64String((string)this.LevelFile.Data.Background["file"]);
             var stream = new MemoryStream(bgbitmap);
             this.Background = Texture2D.FromStream(device, stream);
         }
 
         public void CreateSong()
         {
-            byte[] songBytes = Convert.FromBase64String((string)this.CurrentLevelData.Data.Music["file"]);
-            string mime = (string) this.CurrentLevelData.Data.Music["type"];
+            byte[] songBytes = Convert.FromBase64String((string)this.LevelFile.Data.Music["file"]);
+            string mime = (string) this.LevelFile.Data.Music["type"];
             File.WriteAllBytes("level.mp3", songBytes);
             this.Song = Song.FromUri("level", new Uri(Directory.GetCurrentDirectory() + @"\level.mp3"));
         }
@@ -151,11 +137,12 @@ namespace breakout
             this.constructLevel();
         }
 
-        public void Update(bool restart)
+        public void Update(bool restart, DefaultLevels levels)
         {
             if (!restart)
             {
-                this.Level++;
+                levels.nextLevel();
+                this.LevelFile = levels.getLevel();
             }
 
             this.Initialize();
@@ -192,17 +179,17 @@ namespace breakout
             this.BricksMap = new List<Brick>();
         }
 
-        public void LevelOne()
+        public void LoadLevel()
         {
-            int indestructibles = countIndestructibles(this.CurrentLevelData.Data.Bricks);
-            this.InitializeBoard(this.CurrentLevelData.Data.Bricks.Count, indestructibles, 0.1);
+            int indestructibles = countIndestructibles(this.LevelFile.Data.Bricks);
+            this.InitializeBoard(this.LevelFile.Data.Bricks.Count, indestructibles, 0.1);
             
             int margin_h = 20;
             int margin_w = 50;
             int x = 0;
             int y = 2 * margin_h;
 
-            foreach (Dictionary<string, object> brick in this.CurrentLevelData.Data.Bricks)
+            foreach (Dictionary<string, object> brick in this.LevelFile.Data.Bricks)
             {
                 var line = (double) brick["line"];
                 var column = (double) brick["column"];

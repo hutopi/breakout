@@ -82,6 +82,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultLevels.cs" />
     <Compile Include="Util\GameFile.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="Textures\BatTextures.cs" />

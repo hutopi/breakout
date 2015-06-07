@@ -25,6 +25,7 @@ namespace breakout {
 
         private GameState gameState;
         private GameLevel gameLevel;
+        private DefaultLevels defaultLevels;
 
         private KeyboardState keyboardState;
         private KeyboardState previousKeyboardState;
@@ -67,7 +68,11 @@ namespace breakout {
                 livesSprites[i] = new Sprite(screenWidth, screenHeight);
             }
 
-            gameLevel = new GameLevel(screenWidth, screenHeight, 1, 3, 6, new List<Ball>(), new Bat(screenWidth, screenHeight));
+            this.defaultLevels = new DefaultLevels();
+            this.defaultLevels.loadFiles();
+
+            GameFile levelFile = this.defaultLevels.getLevel();
+            gameLevel = new GameLevel(screenWidth, screenHeight, levelFile, 3, 6, new List<Ball>(), new Bat(screenWidth, screenHeight));
             gameLevel.Balls.Add(new Ball(screenWidth, screenHeight));
             sounds = new Sounds();
             songs = new Songs();
@@ -227,7 +232,7 @@ namespace breakout {
                     }
                     this.resetBat();
                     this.IsMouseVisible = true;
-                    if (gameLevel.Level < 5)
+                    if (this.defaultLevels.Current <= this.defaultLevels.MaxLevel)
                     {
                         nextLevelButton.Update(mouseState, previousMouseState, ref gameState);
                     }
@@ -321,7 +326,7 @@ namespace breakout {
         {
             gameLevel.Lives = 3;
             gameLevel.Score = 0;
-            gameLevel.Update(restart);
+            gameLevel.Update(restart, this.defaultLevels);
             foreach (Brick b in gameLevel.BricksMap)
             {
                 b.LoadContent(Content, "brick");
@@ -450,7 +455,7 @@ namespace breakout {
                     this.getLives(ref spriteBatch, gameTime);
                     break;
                 case GameState.WIN:
-                    if (gameLevel.Level < 5)
+                    if (this.defaultLevels.Current <= this.defaultLevels.MaxLevel)
                     {
                         nextLevelButton.Draw(spriteBatch, gameTime);
                     }
