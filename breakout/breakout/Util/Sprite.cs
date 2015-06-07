@@ -7,7 +7,8 @@
 // Last Modified On : 06-07-2015
 // ***********************************************************************
 // <copyright file="Sprite.cs" company="Hutopi">
-//     Copyright ©  2015
+//     Copyright ©  2015 Hugo Caille, Pierre Defache & Thomas Fossati.
+//      Breakout is released upon the terms of the Apache 2.0 License.
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
