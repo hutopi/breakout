@@ -35,14 +35,6 @@ namespace breakout
     public class GameLevel
     {
         /// <summary>
-        /// The columns
-        /// </summary>
-        private int columns;
-        /// <summary>
-        /// The lines
-        /// </summary>
-        private int lines;
-        /// <summary>
         /// The screen width
         /// </summary>
         private int screenWidth;
@@ -83,15 +75,6 @@ namespace breakout
         /// The nb bonus
         /// </summary>
         private int nbBonus;
-        /// <summary>
-        /// Gets or sets the nb bonus.
-        /// </summary>
-        /// <value>The nb bonus.</value>
-        public int NbBonus
-        {
-            get { return nbBonus; }
-            set { nbBonus = value; }
-        }
 
         /// <summary>
         /// The bat
@@ -131,7 +114,7 @@ namespace breakout
         /// <summary>
         /// The score
         /// </summary>
-        private int score = 0;
+        private int score;
         /// <summary>
         /// Gets or sets the score.
         /// </summary>
@@ -209,14 +192,12 @@ namespace breakout
         public GameLevel(int screenWidth, int screenHeight, GameFile level, int lines, int columns, List<Ball> balls, Bat bat)
         {
             this.screenWidth = screenWidth;
-            this.screenHeight = (int)(0.6 * (double)screenHeight);
+            this.screenHeight = (int)(0.6 * screenHeight);
             this.levelFile = level;
             this.Balls = balls;
             this.Bat = bat;
-            this.lines = lines;
-            this.columns = columns;
             this.BricksMap = new List<Brick>();
-            this.nb_bricks = this.lines * this.columns;
+            this.nb_bricks = lines * columns;
         }
 
         /// <summary>
@@ -251,7 +232,6 @@ namespace breakout
         public void CreateSong()
         {
             byte[] songBytes = Convert.FromBase64String((string)this.levelFile.Data.Music["file"]);
-            string mime = (string) this.levelFile.Data.Music["type"];
             string temp = Path.GetTempFileName();
             File.WriteAllBytes(temp, songBytes);
 
@@ -297,7 +277,6 @@ namespace breakout
         /// </summary>
         public void InitializeBonus()
         {
-            int index = 0;
             foreach (Brick brick in this.BricksMap)
             {
                 if (brick.Bonus.Type != BonusType.NONE)
@@ -314,7 +293,6 @@ namespace breakout
                     {
                         brick.Bonus.Name = "malus";
                     }
-                    index++;
                 }
             }
         }
@@ -350,7 +328,7 @@ namespace breakout
                 var line = (double) brick["line"];
                 var column = (double) brick["column"];
                 var resistance = (double) brick["resistance"];
-                this.BricksMap.Add(new Brick(this.screenWidth, this.screenHeight, new Vector2(x + (int) column * margin_w, y + (int) line * margin_h), 20, 50, (int) resistance));
+                this.BricksMap.Add(new Brick(this.screenWidth, this.screenHeight, new Vector2(x + (int) column * margin_w, y + (int) line * margin_h), (int) resistance));
             }
         }
 
@@ -379,7 +357,6 @@ namespace breakout
         {
             Random rnd = new Random();
             Random x_rnd = new Random();
-            Random y_rnd = new Random();
 
             for (int i = 0; i < this.nbBonus; i++)
             {

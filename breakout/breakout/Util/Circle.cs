@@ -36,7 +36,6 @@ namespace breakout.Util {
         /// <value>The x.</value>
         public int X {
             get { return x; }
-            set { x = value; }
         }
 
         /// <summary>
@@ -49,7 +48,6 @@ namespace breakout.Util {
         /// <value>The y.</value>
         public int Y {
             get { return y; }
-            set { y = value; }
         }
 
         /// <summary>
@@ -62,7 +60,6 @@ namespace breakout.Util {
         /// <value>The radius.</value>
         public double Radius {
             get { return radius; }
-            set { radius = value; }
         }
 
         /// <summary>

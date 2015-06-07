@@ -35,7 +35,7 @@ namespace breakout.Util {
         /// Gets or sets the name.
         /// </summary>
         /// <value>The name.</value>
-        public String Name { get { return name; } set { name = value; } }
+        public String Name { get { return name; } }
 
         /// <summary>
         /// Gets the hitbox.
@@ -89,11 +89,7 @@ namespace breakout.Util {
                         case "next":
                             gameState = GameState.NEXT_LEVEL;
                             break;
-                        default:
-                            break;
                     }
-
-                    
                 }
             }
 

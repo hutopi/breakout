@@ -30,17 +30,6 @@ namespace breakout.GameComponents
     public class Brick : Sprite
     {
         /// <summary>
-        /// Gets or sets the height.
-        /// </summary>
-        /// <value>The height.</value>
-        private int height { get; set; }
-        /// <summary>
-        /// Gets or sets the width.
-        /// </summary>
-        /// <value>The width.</value>
-        private int width { get; set; }
-
-        /// <summary>
         /// Gets or sets the bonus.
         /// </summary>
         /// <value>The bonus.</value>
@@ -71,21 +60,11 @@ namespace breakout.GameComponents
         /// <param name="w">The w.</param>
         /// <param name="r">The r.</param>
         /// <param name="b">The b.</param>
-        public Brick(int screenWidth, int screenHeight, Vector2 position, int h, int w, int r = 1, BonusType b = BonusType.NONE) : base( screenWidth, screenHeight)
+        public Brick(int screenWidth, int screenHeight, Vector2 position, int r = 1, BonusType b = BonusType.NONE) : base( screenWidth, screenHeight)
         {
-            this.height = h;
-            this.width = w;
             this.Position = position;
             this.Resistance = r;
             this.Bonus = new Bonus(screenWidth, screenHeight, b);
-        }
-
-        /// <summary>
-        /// Initializes this instance and sets a default position at the top right of the screen.
-        /// </summary>
-        public override void Initialize()
-        {
-            base.Initialize();
         }
 
         /// <summary>
@@ -156,14 +135,6 @@ namespace breakout.GameComponents
                     break;
             }
             return newScore;
-        }
-
-        /// <summary>
-        /// Updates this instance.
-        /// </summary>
-        public override void Update()
-        {
-            base.Update();
         }
     }
 }

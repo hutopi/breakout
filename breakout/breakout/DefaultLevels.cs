@@ -17,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Configuration;
 using System.Reflection;
 using breakout.Util;
 

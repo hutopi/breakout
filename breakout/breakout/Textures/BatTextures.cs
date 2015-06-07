@@ -36,7 +36,6 @@ namespace breakout.Textures
         public Texture2D Reduced
         {
             get { return reduced; }
-            set { reduced = value; }
         }
 
         /// <summary>
@@ -50,7 +49,6 @@ namespace breakout.Textures
         public Texture2D Regular
         {
             get { return regular; }
-            set { regular = value; }
         }
 
         /// <summary>
@@ -64,7 +62,6 @@ namespace breakout.Textures
         public Texture2D Extended
         {
             get { return extended; }
-            set { extended = value; }
         }
 
 

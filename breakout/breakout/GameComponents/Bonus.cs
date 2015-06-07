@@ -59,7 +59,7 @@ namespace breakout.GameComponents
         /// <summary>
         /// The activated
         /// </summary>
-        private bool activated = false;
+        private bool activated;
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="Bonus"/> is activated.
         /// </summary>
@@ -83,13 +83,6 @@ namespace breakout.GameComponents
         {
             get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height); }
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Sprite" /> class.
-        /// </summary>
-        /// <param name="screenWidth">Width of the screen.</param>
-        /// <param name="screenHeight">Height of the screen.</param>
-        public Bonus(int screenWidth, int screenHeight) : base(screenWidth, screenHeight) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Bonus"/> class.
@@ -122,7 +115,7 @@ namespace breakout.GameComponents
         /// <param name="batHitBox">The bat hit box.</param>
         /// <param name="gameLevel">The game level.</param>
         /// <param name="brick">The brick.</param>
-        public void Update(GameTime gameTime, Rectangle batHitBox, GameLevel gameLevel, Brick brick)
+        public void Update(GameTime gameTime, Rectangle batHitBox, GameLevel gameLevel)
         {
             Direction = new Vector2(0, 1);
             if (this.hitbox.Intersects(batHitBox))
@@ -130,14 +123,14 @@ namespace breakout.GameComponents
                 switch (this.Type)
                 {
                     case BonusType.HIGH_SPEED:
-                        this.sm.powerDown.Play();
+                        this.sm.PowerDown.Play();
                         foreach (Ball b in gameLevel.Balls)
                         {
                             b.Speed *= 1.5f;
                         }
                         break;
                     case BonusType.HIGH_RESISTANCE:
-                        this.sm.powerDown.Play();
+                        this.sm.PowerDown.Play();
                         foreach (Brick b in gameLevel.BricksMap)
                         {
                             if (b.Resistance != 0 && b.Resistance != 4)
@@ -148,22 +141,22 @@ namespace breakout.GameComponents
                         }
                         break;
                     case BonusType.BAT_REDUCED:
-                        this.sm.powerDown.Play();
+                        this.sm.PowerDown.Play();
                         gameLevel.Bat.Texture = gameLevel.BatTexture.Reduced;
                         break;
                     case BonusType.BAT_EXTENDED:
-                        this.sm.powerUp.Play();
+                        this.sm.PowerUp.Play();
                         gameLevel.Bat.Texture = gameLevel.BatTexture.Extended;
                         break;
                     case BonusType.DOWN_LIFE:
-                        this.sm.powerDown.Play();
+                        this.sm.PowerDown.Play();
                         if (gameLevel.Lives > 0)
                         {
                             gameLevel.Lives--;
                         }
                         break;
                     case BonusType.LOW_RESISTANCE:
-                        this.sm.powerUp.Play();
+                        this.sm.PowerUp.Play();
                         foreach (Brick b in gameLevel.BricksMap)
                         {
                             if (b.Resistance != 0 && b.Resistance != 4)
@@ -174,14 +167,14 @@ namespace breakout.GameComponents
                         }
                         break;
                     case BonusType.LOW_SPEED:
-                        this.sm.powerUp.Play();
+                        this.sm.PowerUp.Play();
                         foreach (Ball b in gameLevel.Balls)
                         {
                             b.Speed /= 1.5f;
                         }
                         break;
                     case BonusType.UP_LIFE:
-                        this.sm.powerUp.Play();
+                        this.sm.PowerUp.Play();
                         if (gameLevel.Lives < 4)
                         {
                             gameLevel.Lives++;
@@ -199,7 +192,7 @@ namespace breakout.GameComponents
 
                 Type = BonusType.NONE;
                 Activated = false;
-            } else if(Position.Y >= screenHeight/0.6){
+            } else if(Position.Y >= ScreenHeight/0.6){
                 Activated = false;
             }
 

@@ -37,11 +37,6 @@ namespace breakout.GameComponents {
         /// </summary>
         private Vector2 acceleration = Vector2.Zero;
         /// <summary>
-        /// Gets or sets the acceleration.
-        /// </summary>
-        /// <value>The acceleration.</value>
-        public Vector2 Acceleration { get { return acceleration; } set { acceleration = value; } }
-        /// <summary>
         /// Gets the hitbox.
         /// </summary>
         /// <value>The hitbox.</value>
@@ -57,20 +52,13 @@ namespace breakout.GameComponents {
         public Bat(int screenWidth, int screenHeight) : base(screenWidth, screenHeight) { }
 
         /// <summary>
-        /// Initializes this instance and sets a default position at the top right of the screen and a zero direction/speed.
-        /// </summary>
-        public override void Initialize() {
-            base.Initialize();
-        }
-
-        /// <summary>
         /// Loads the content common to every sprite of our game, the texture 2D
         /// </summary>
         /// <param name="content">The content manager.</param>
         /// <param name="assetName">Name of the asset.</param>
         public override void LoadContent(ContentManager content, string assetName) {
             base.LoadContent(content, assetName);
-            Position = new Vector2(screenWidth / 2 - Texture.Width / 2, screenHeight - 10 - Texture.Height / 2);
+            Position = new Vector2(ScreenWidth / 2 - Texture.Width / 2, ScreenHeight - 10 - Texture.Height / 2);
         }
 
         /// <summary>
@@ -113,7 +101,7 @@ namespace breakout.GameComponents {
         /// </summary>
         /// <param name="gameTime">The game time.</param>
         public override void Update(GameTime gameTime) {
-            if ((position.X <= 0  && direction.X < 0) || (position.X >= screenWidth - Texture.Width  && direction.X > 0)) { 
+            if ((position.X <= 0  && direction.X < 0) || (position.X >= ScreenWidth - Texture.Width  && direction.X > 0)) { 
                 speed = 0;
                 acceleration = Vector2.Zero;
             }

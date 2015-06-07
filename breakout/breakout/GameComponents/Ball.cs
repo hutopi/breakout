@@ -54,7 +54,7 @@ namespace breakout.GameComponents {
         /// </summary>
         /// <param name="ball">The ball.</param>
         public Ball(Ball ball)
-            : base(ball.screenWidth, ball.screenHeight) {
+            : base(ball.ScreenWidth, ball.ScreenHeight) {
             this.Position = ball.Position;
             this.Texture = ball.Texture;
             this.Direction = -ball.Direction;
@@ -119,12 +119,12 @@ namespace breakout.GameComponents {
         /// <param name="gameLevel">The game level.</param>
         private void BouncingOnTheWalls(GameLevel gameLevel) {
             if ((Position.Y <= 0 && Direction.Y < 0)) {
-                this.sm.bump.Play(0.5f, 0.0f, 0.0f);
+                this.sm.Bump.Play(0.5f, 0.0f, 0.0f);
                 Direction = new Vector2(Direction.X, -Direction.Y);
                 gameLevel.Score -= 10;
             }
-            if (Position.X <= 0 && Direction.X < 0 || Position.X > screenWidth - Texture.Height && Direction.X > 0) {
-                this.sm.bump.Play(0.5f, 0.0f, 0.0f);
+            if (Position.X <= 0 && Direction.X < 0 || Position.X > ScreenWidth - Texture.Height && Direction.X > 0) {
+                this.sm.Bump.Play(0.5f, 0.0f, 0.0f);
                 Direction = new Vector2(-Direction.X, Direction.Y);
                 gameLevel.Score -= 10;
             }
@@ -137,7 +137,7 @@ namespace breakout.GameComponents {
             if ((Direction.Y > 0 && this.hitbox.IntersectsRec(batHitBox))) {
                 Direction = new Vector2(((float)hitbox.X - batHitBox.Center.X) / (batHitBox.Width / 2), -Direction.Y);
                 Direction = Vector2.Normalize(Direction);
-                this.sm.bump.Play(0.5f, 0.0f, 0.0f);
+                this.sm.Bump.Play(0.5f, 0.0f, 0.0f);
             }
         }
 
@@ -151,9 +151,9 @@ namespace breakout.GameComponents {
             foreach (Brick b in gameLevel.BricksMap) {
                 if (this.hitbox.IntersectsRec(b.Hitbox) && b.Resistance > 0) {
                     if (b.Resistance == 4) {
-                        this.sm.bump.Play(0.5f, 0.0f, 0.0f);
+                        this.sm.Bump.Play(0.5f, 0.0f, 0.0f);
                     } else {
-                        this.sm.bumpBrick.Play(0.5f, 0.0f, 0.0f);
+                        this.sm.BumpBrick.Play(0.5f, 0.0f, 0.0f);
                     }
 
                     if (b.Bonus.Type != BonusType.NONE && b.Bonus.Activated == false) {

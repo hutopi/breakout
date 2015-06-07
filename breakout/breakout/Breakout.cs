@@ -34,10 +34,6 @@ namespace breakout {
     /// </summary>
     public class Breakout : Game {
         /// <summary>
-        /// The graphics
-        /// </summary>
-        GraphicsDeviceManager graphics;
-        /// <summary>
         /// The sprite batch
         /// </summary>
         SpriteBatch spriteBatch;
@@ -49,14 +45,16 @@ namespace breakout {
         /// The sounds
         /// </summary>
         private Sounds sounds;
+
         /// <summary>
         /// The song start
         /// </summary>
-        private bool songStart = false;
+        private bool songStart;
+
         /// <summary>
         /// The Mute song
         /// </summary>
-        private bool muteSong = false;
+        private bool muteSong;
 
         /// <summary>
         /// The game state
@@ -138,9 +136,11 @@ namespace breakout {
         /// Initializes a new instance of the <see cref="Breakout"/> class.
         /// </summary>
         public Breakout() {
-            graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 800;
-            graphics.PreferredBackBufferHeight = 600;
+            new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferWidth = 800,
+                PreferredBackBufferHeight = 600
+            };
 
             Content.RootDirectory = "Content";
             int screenWidth = Window.ClientBounds.Width;
@@ -296,9 +296,9 @@ namespace breakout {
                     }
 
                     foreach(Brick b in gameLevel.BricksMap){
-                        if (b.Bonus.Activated == true)
+                        if (b.Bonus.Activated)
                         {
-                            b.Bonus.Update(gameTime, gameLevel.Bat.Hitbox, gameLevel, b);
+                            b.Bonus.Update(gameTime, gameLevel.Bat.Hitbox, gameLevel);
                         }
                     }
                     gameLevel.Bat.HandleInput(keyboardState, previousKeyboardState);
@@ -373,8 +373,6 @@ namespace breakout {
                     break;
                 case GameState.EXIT:
                     this.Exit();
-                    break;
-                default:
                     break;
             }
 
@@ -576,7 +574,7 @@ namespace breakout {
 
                     foreach (Brick b in gameLevel.BricksMap)
                     {
-                        if (b.Bonus.Activated == true)
+                        if (b.Bonus.Activated)
                         {
                             b.Bonus.Draw(spriteBatch, gameTime);
                         }
@@ -598,7 +596,7 @@ namespace breakout {
 
                     foreach (Brick b in gameLevel.BricksMap)
                     {
-                        if (b.Bonus.Activated == true)
+                        if (b.Bonus.Activated)
                         {
                             b.Bonus.Draw(spriteBatch, gameTime);
                         }
@@ -624,7 +622,7 @@ namespace breakout {
 
                     foreach (Brick b in gameLevel.BricksMap)
                     {
-                        if (b.Bonus.Activated == true)
+                        if (b.Bonus.Activated)
                         {
                             b.Bonus.Draw(spriteBatch, gameTime);
                         }
@@ -646,8 +644,6 @@ namespace breakout {
                     restartButton.Draw(spriteBatch, gameTime);
                     exitButton.Draw(spriteBatch, gameTime);
                     menuArrow.Draw(spriteBatch, gameTime);
-                    break;
-                default:
                     break;
             }
             spriteBatch.End();
@@ -698,11 +694,11 @@ namespace breakout {
         /// <summary>
         /// Gets the lives.
         /// </summary>
-        /// <param name="spriteBatch">The sprite batch.</param>
+        /// <param name="batch">The sprite batch.</param>
         /// <param name="gameTime">The game time.</param>
-        private void GetLives(ref SpriteBatch spriteBatch, GameTime gameTime)
+        private void GetLives(ref SpriteBatch batch, GameTime gameTime)
         {
-            livesSprites[gameLevel.Lives].Draw(spriteBatch, gameTime);
+            livesSprites[gameLevel.Lives].Draw(batch, gameTime);
 
         }
     }

@@ -65,7 +65,6 @@ namespace breakout.Util {
         /// <value>The button group.</value>
         public List<ButtonSprite> ButtonGroup {
             get { return buttonGroup; }
-            set { buttonGroup = value; }
         }
 
         /// <summary>
@@ -129,10 +128,7 @@ namespace breakout.Util {
                     case "next":
                         gameState = GameState.NEXT_LEVEL;
                         break;
-                    default:
-                        break;
                 }
-
             }
 
         }
