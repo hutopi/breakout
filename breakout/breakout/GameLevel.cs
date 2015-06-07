@@ -105,7 +105,7 @@ namespace breakout
             this.nb_bricks = this.lines * this.columns;
         }
 
-        public void constructLevel()
+        public void Initialize()
         {
             this.Score = 0;
             this.Lives = 3;
@@ -135,10 +135,6 @@ namespace breakout
                 BindingFlags.NonPublic | BindingFlags.Instance, null,
                 new[] { typeof(string), typeof(string), typeof(int) }, null);
             this.Song = (Song)ctor.Invoke(new object[] { "level", Directory.GetCurrentDirectory() + @"\level.mp3", 0 });
-        }
-        public void Initialize()
-        {
-            this.constructLevel();
         }
 
         public void Update(bool restart, DefaultLevels levels)

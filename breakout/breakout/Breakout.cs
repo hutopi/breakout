@@ -220,7 +220,7 @@ namespace breakout {
                     }
                     this.resetBat();
                     this.IsMouseVisible = true;
-                    if (this.defaultLevels.Current <= this.defaultLevels.MaxLevel)
+                    if (this.defaultLevels.Current < this.defaultLevels.MaxLevel)
                     {
                         nextLevelButton.Update(mouseState, previousMouseState, ref gameState);
                     }
@@ -340,6 +340,11 @@ namespace breakout {
             gameLevel.Lives = 3;
             gameLevel.Score = 0;
             gameLevel.Update(restart, this.defaultLevels);
+            if (!restart)
+            {
+                gameLevel.CreateBackground(GraphicsDevice);
+                // gameLevel.CreateSong();
+            }
             foreach (Brick b in gameLevel.BricksMap)
             {
                 b.LoadContent(Content, "brick");
@@ -468,7 +473,7 @@ namespace breakout {
                     break;
                 case GameState.WIN:
                     spriteBatch.DrawString(scoreFont, "Score : " + gameLevel.Score.ToString(), new Vector2(10, 10), Color.White);
-                    if (this.defaultLevels.Current <= this.defaultLevels.MaxLevel)
+                    if (this.defaultLevels.Current < this.defaultLevels.MaxLevel)
                     {
                         nextLevelButton.Draw(spriteBatch, gameTime);
                     }
