@@ -78,7 +78,6 @@ namespace breakout {
             gameLevel = new GameLevel(screenWidth, screenHeight, levelFile, 3, 6, new List<Ball>(), new Bat(screenWidth, screenHeight));
             gameLevel.Balls.Add(new Ball(screenWidth, screenHeight));
             sounds = new Sounds();
-            songs = new Songs();
         }
 
         protected override void Initialize() {
@@ -160,11 +159,6 @@ namespace breakout {
                                Content.Load<SoundEffect>("pause"),
                                Content.Load<SoundEffect>("win"),
                                Content.Load<SoundEffect>("loose"));
-
-            songs.LoadContent(Content.Load<Song>("sound"),
-                              Content.Load<Song>("underground"),
-                              Content.Load<Song>("underwater"),
-                              Content.Load<Song>("bowser"));
         }
 
 
@@ -357,7 +351,7 @@ namespace breakout {
             if (!restart)
             {
                 gameLevel.CreateBackground(GraphicsDevice);
-                // gameLevel.CreateSong();
+                gameLevel.CreateSong();
             }
             foreach (Brick b in gameLevel.BricksMap)
             {
@@ -385,13 +379,11 @@ namespace breakout {
                 gameLevel.Score = 0;
                 gameLevel.Update(false, level);
                 gameLevel.CreateBackground(GraphicsDevice);
-                // gameLevel.CreateSong();
-                foreach (Brick b in gameLevel.BricksMap)
-                {
-                    b.LoadContent(Content, "brick");
-                }
+
                 gameState = GameState.READYTOSTART;
+                gameLevel.CreateSong();
                 this.putBricksTexture();
+                gameState = GameState.READYTOSTART;
             }
         }
 

@@ -59,6 +59,7 @@ namespace breakout
 
 
         public GameFile LevelFile { get; set; }
+        private bool alreadyLoaded { get; set; }
 
         private int score = 0;
         public int Score
@@ -103,6 +104,7 @@ namespace breakout
             this.columns = columns;
             this.BricksMap = new List<Brick>();
             this.nb_bricks = this.lines * this.columns;
+            this.alreadyLoaded = false;
         }
 
         public void Initialize()
@@ -110,7 +112,11 @@ namespace breakout
             this.Score = 0;
             this.Lives = 3;
 
-            this.LevelFile.Load();
+            if (!this.alreadyLoaded)
+            {
+                this.LevelFile.Load();
+                this.alreadyLoaded = true;
+            }
 
             this.LoadLevel();
            
@@ -129,12 +135,13 @@ namespace breakout
         {
             byte[] songBytes = Convert.FromBase64String((string)this.LevelFile.Data.Music["file"]);
             string mime = (string) this.LevelFile.Data.Music["type"];
-            File.WriteAllBytes("level.mp3", songBytes);
+            string temp = Path.GetTempFileName();
+            File.WriteAllBytes(temp, songBytes);
 
             var ctor = typeof(Song).GetConstructor(
                 BindingFlags.NonPublic | BindingFlags.Instance, null,
                 new[] { typeof(string), typeof(string), typeof(int) }, null);
-            this.Song = (Song)ctor.Invoke(new object[] { "level", Directory.GetCurrentDirectory() + @"\level.mp3", 0 });
+            this.Song = (Song)ctor.Invoke(new object[] { "level", temp, 0 });
         }
 
         public void Update(bool restart, DefaultLevels levels)
