@@ -136,7 +136,7 @@ namespace breakout {
 
             menuArrow.ButtonGroup.Add(storyModeButton);
             menuArrow.ButtonGroup.Add(customModeButton);
-            menuArrow.CurrentButtonSelected = storyModeButton;
+            menuArrow.ButtonGroup.Add(exitButton);
 
             gameLevel.Bat.LoadContent(Content, "bat");
             foreach (Ball b in gameLevel.Balls)
@@ -228,18 +228,15 @@ namespace breakout {
                     this.resetBat();
                     this.IsMouseVisible = true;
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
-                    menuArrow.ButtonGroup.Clear();
+                   
                     if (this.defaultLevels.Current < this.defaultLevels.MaxLevel && !this.customMode)
                     {
                         nextLevelButton.Update(mouseState, previousMouseState, ref gameState);
-                        menuArrow.ButtonGroup.Add(nextLevelButton);
-                        menuArrow.CurrentButtonSelected = nextLevelButton;
                     }
                     else
                     {
                         menuArrow.CurrentButtonSelected = exitButton;
                     }
-                    menuArrow.ButtonGroup.Add(exitButton);
                     menuArrow.Update(keyboardState, previousKeyboardState, ref gameState);
                     break;
                 case GameState.LOOSE:
@@ -253,9 +250,6 @@ namespace breakout {
                     this.resetBat();
                     restartButton.Update(mouseState, previousMouseState, ref gameState);
                     exitButton.Update(mouseState, previousMouseState, ref gameState);
-                    menuArrow.ButtonGroup.Clear();
-                    menuArrow.ButtonGroup.Add(restartButton);
-                    menuArrow.ButtonGroup.Add(exitButton);
                     menuArrow.Update(keyboardState, previousKeyboardState, ref gameState);
                     break;
                 case GameState.RESTART:
@@ -304,12 +298,21 @@ namespace breakout {
 
             if (gameLevel.Nb_bricks == 0 && gameState != GameState.NEXT_LEVEL && gameState != GameState.EXIT) {
                 gameState = GameState.WIN;
-                menuArrow.CurrentButtonSelectedIndex = 0;
+                menuArrow.ButtonGroup.Clear();
+                if (this.defaultLevels.Current < this.defaultLevels.MaxLevel && !this.customMode) {
+                    menuArrow.ButtonGroup.Add(nextLevelButton);
+                }
+                menuArrow.ButtonGroup.Add(exitButton);
+
+
+               
             }
 
             if (gameLevel.Lives < 0 && gameState != GameState.RESTART && gameState != GameState.EXIT) {
                 gameState = GameState.LOOSE;
-                menuArrow.CurrentButtonSelectedIndex = 0;
+                menuArrow.ButtonGroup.Clear();
+                menuArrow.ButtonGroup.Add(restartButton);
+                menuArrow.ButtonGroup.Add(exitButton);
             }
 
             previousKeyboardState = keyboardState;

@@ -31,7 +31,13 @@ namespace breakout {
         public MenuArrow(int screenWidth, int screenHeight) : base(screenWidth, screenHeight) { }
 
         public void Update(KeyboardState keyboardState, KeyboardState previousKeyboardState, ref GameState gameState) {
-            if (keyboardState.IsKeyUp(Keys.Right) && previousKeyboardState.IsKeyDown(Keys.Right)) {
+            if (!buttonGroup.Contains(currentButtonSelected)) {
+                currentButtonSelectedIndex = 0;
+                CurrentButtonSelected = buttonGroup.ElementAt(currentButtonSelectedIndex);
+                Console.WriteLine(currentButtonSelected.Name);
+            }
+
+            if ((keyboardState.IsKeyUp(Keys.Right) && previousKeyboardState.IsKeyDown(Keys.Right)) || (keyboardState.IsKeyUp(Keys.Down) && previousKeyboardState.IsKeyDown(Keys.Down))) {
                 if (currentButtonSelectedIndex < buttonGroup.Count-1) {
                     currentButtonSelectedIndex++;
                 }else{
@@ -40,9 +46,10 @@ namespace breakout {
                 CurrentButtonSelected = buttonGroup.ElementAt(currentButtonSelectedIndex);
 
                 Console.WriteLine(currentButtonSelectedIndex);
+                Console.WriteLine(currentButtonSelected.Name);
                 Console.WriteLine(position);
             }
-            if (keyboardState.IsKeyUp(Keys.Left) && previousKeyboardState.IsKeyDown(Keys.Left)) {
+            if ((keyboardState.IsKeyUp(Keys.Left) && previousKeyboardState.IsKeyDown(Keys.Left)) || (keyboardState.IsKeyUp(Keys.Up) && previousKeyboardState.IsKeyDown(Keys.Up))) {
                 if (currentButtonSelectedIndex > 0) {
                     currentButtonSelectedIndex--;
                 } else {
@@ -51,6 +58,7 @@ namespace breakout {
                 CurrentButtonSelected = buttonGroup.ElementAt(currentButtonSelectedIndex);
 
                 Console.WriteLine(currentButtonSelectedIndex);
+                Console.WriteLine(currentButtonSelected.Name);
 
             }
 
