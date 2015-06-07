@@ -39,7 +39,9 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: {#XGAGSLocation}\Redist\XNA FX Redist\{#XNARedist}; DestDir: {tmp}
 Source: ".\breakout\breakout\bin\x86\Release\Super Roberto Breakout.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\breakout\breakout\bin\x86\Release\Json.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\breakout\breakout\bin\x86\Release\Content\*"; DestDir: "{app}\Content"; Flags: ignoreversion
+Source: ".\breakout\breakout\bin\x86\Release\levels\*"; DestDir: "{app}\levels"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -56,7 +58,7 @@ var
     key: string;
     install: cardinal;
     success: boolean;
- 
+
 begin
     WizardForm.StatusLabel.Caption := 'Checking for XNA Framework Redistributable 4.0 Refresh.';
     if IsWin64 then begin
@@ -67,7 +69,7 @@ begin
     success := RegQueryDWordValue(HKLM, key, 'Installed', install);
     result := success and (install = 1);
 end;
- 
+
 function CheckXNAFramework: boolean;
 begin
     if IsXNAFrameworkDetected then begin
